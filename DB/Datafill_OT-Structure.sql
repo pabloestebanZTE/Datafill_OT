@@ -1,8 +1,10 @@
 /*==============================================================*/
 /* DBMS name:      MySQL 5.0                                    */
-/* Created on:     26/07/2017 11:05:09 a.m.                     */
+/* Created on:     26/07/2017 12:30:55 p.m.                     */
 /*==============================================================*/
 
+
+drop table if exists ORDER;
 
 drop table if exists PERMISSION;
 
@@ -14,13 +16,24 @@ drop table if exists SITE;
 
 drop table if exists SKILL;
 
-drop table if exists SPECIFIC_SERVICE_;
+drop table if exists SPECIFIC_SERVICE;
 
 drop table if exists USER;
 
 drop table if exists USER_PERMISSIONS;
 
 drop table if exists USER_SKILL;
+
+/*==============================================================*/
+/* Table: "ORDER"                                               */
+/*==============================================================*/
+create table ORDER
+(
+   K_IDORDER            varchar(20) not null,
+   N_NAME               varchar(50) not null,
+   D_DATE_CREATION      date not null,
+   primary key (K_IDORDER)
+);
 
 /*==============================================================*/
 /* Table: PERMISSION                                            */
@@ -78,20 +91,24 @@ create table SKILL
 );
 
 /*==============================================================*/
-/* Table: SPECIFIC_SERVICE_                                     */
+/* Table: SPECIFIC_SERVICE                                      */
 /*==============================================================*/
-create table SPECIFIC_SERVICE_
+create table SPECIFIC_SERVICE
 (
    K_ID_SP_SERVICE      varchar(20) not null,
    K_IDUSER             varchar(20),
    K_IDSERVICE          int,
    K_IDSITE             int,
-   D_DATE_START         datetime,
+   K_IDORDER            varchar(20),
+   D_DATE_START_P       date,
    N_DURATION           varchar(5),
-   D_FINISHDATE         datetime,
+   D_DATE_FINISH_P      date,
    D_FORECAST           date,
    K_IDCLARO            varchar(20),
    N_DESCRIPTION        varchar(200),
+   D_DATE_START_R       date,
+   D_DATE_FINISH_R      date,
+   D_DATE_CREATION      date,
    primary key (K_ID_SP_SERVICE)
 );
 
@@ -132,13 +149,16 @@ create table USER_SKILL
    primary key (K_IDUSER, K_IDSKILL)
 );
 
-alter table SPECIFIC_SERVICE_ add constraint FK_SERV_SPSERVICE foreign key (K_IDSERVICE)
+alter table SPECIFIC_SERVICE add constraint FK_ORDER_SPSERVICE foreign key (K_IDORDER)
+      references ORDER (K_IDORDER) on delete restrict on update restrict;
+
+alter table SPECIFIC_SERVICE add constraint FK_SERV_SPSERVICE foreign key (K_IDSERVICE)
       references SERVICE (K_IDSERVICE) on delete restrict on update restrict;
 
-alter table SPECIFIC_SERVICE_ add constraint FK_SITE_SPSERVICE foreign key (K_IDSITE)
+alter table SPECIFIC_SERVICE add constraint FK_SITE_SPSERVICE foreign key (K_IDSITE)
       references SITE (K_IDSITE) on delete restrict on update restrict;
 
-alter table SPECIFIC_SERVICE_ add constraint FK_USER_SPSERV foreign key (K_IDUSER)
+alter table SPECIFIC_SERVICE add constraint FK_USER_SPSERV foreign key (K_IDUSER)
       references USER (K_IDUSER) on delete restrict on update restrict;
 
 alter table USER add constraint FK_USER_ROLE foreign key (K_IDROLE)
