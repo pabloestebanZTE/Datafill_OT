@@ -27,9 +27,11 @@ insert into service (K_IDSERVICE, N_GERENCY, N_TYPE, N_DESCRIPTION, N_SCOPE, N_D
 
 /*Data de Roles*/
   insert into role (K_IDROLE, N_NAME)
-    values (0, 'Gerente'),
-           (1, 'Ingeniero de campo'),
-           (2, 'Front Office');
+    values (0, 'PM'),
+           (1, 'Ingeniero Datafill GDRT'),
+           (2, 'Ingeniero Datafill GDRCD'),
+           (3, 'Ingeniero Datafill GRF'),
+           (4, 'Coordinador');
 
 /*Data de usuarios*/
 
