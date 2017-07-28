@@ -27,7 +27,7 @@ drop table if exists USER_SKILL;
 /*==============================================================*/
 /* Table: "ORDER"                                               */
 /*==============================================================*/
-create table ORDER
+create table OT
 (
    K_IDORDER            varchar(20) not null,
    N_NAME               varchar(50) not null,
@@ -150,7 +150,7 @@ create table USER_SKILL
 );
 
 alter table SPECIFIC_SERVICE add constraint FK_ORDER_SPSERVICE foreign key (K_IDORDER)
-      references ORDER (K_IDORDER) on delete restrict on update restrict;
+      references OT (K_IDORDER) on delete restrict on update restrict;
 
 alter table SPECIFIC_SERVICE add constraint FK_SERV_SPSERVICE foreign key (K_IDSERVICE)
       references SERVICE (K_IDSERVICE) on delete restrict on update restrict;

@@ -29,5 +29,16 @@
             }
             return $answer;
           }
+
+        public function getSitePerId($siteId){
+          $dbConnection = new configdb_model();
+          $session = $dbConnection->openSession();
+          $sql = "SELECT * FROM site WHERE K_IDSITE = ".$siteId.";";
+          $result = $session->query($sql);
+          $row = $result->fetch_assoc();
+          $site = new site_model;
+          $site->createSite($row['K_IDSITE'], $row['N_NAME']);
+          return $site;
+        }
     }
 ?>

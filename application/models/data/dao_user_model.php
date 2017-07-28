@@ -6,6 +6,7 @@
 
         public function __construct(){
             $this->load->model('data/configdb_model');
+            $this->load->model('data/dao_service_model');
             $this->load->model('user_model');
             $this->load->model('role_model');
         }
@@ -25,8 +26,8 @@
                   $result2 = $session->query($sql2);
                   $row2 = $result2->fetch_assoc();
                   $role = new role_model;
-                  $role->createRole($row2['K_IDROLE'], $row2['N_NAME']);
-                  $eng->setRole($role);
+                  $eng->setRole($role->createRole($row2['K_IDROLE'], $row2['N_NAME']));
+                  $eng->setSchedule($this->dao_service_model->getServicesPerUser($eng->getId()));
                   $answer[$i] = $eng;
                   $i++;
                 }

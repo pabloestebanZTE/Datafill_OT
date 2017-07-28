@@ -7,6 +7,11 @@
       function __construct() {
         parent::__construct();
       }
+
+      public function assignService(){
+        $answer['services'] = $this->dao_service_model->getAllServices();
+      }
+
   }
 
 ?>

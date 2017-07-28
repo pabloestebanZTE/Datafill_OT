@@ -14,6 +14,11 @@ class Welcome extends CI_Controller {
 	{
 		$answer['services'] = $this->dao_service_model->getAllServices();
 		$answer['engineers'] = $this->dao_user_model->getAllEngineers();
+		for($i = 0; $i < count($answer['engineers']); $i++){
+		print_r($answer['engineers'][$i]);
+		echo "<br><br>";
+		}
+
 		$answer['sites'] = $this->dao_site_model->getAllSites();
 
 		$this->load->view('welcome_message');

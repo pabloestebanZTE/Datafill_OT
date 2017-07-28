@@ -9,9 +9,6 @@
         $this->load->model('data/dao_service_model');
       }
 
-      public function assignService(){
-        $answer['services'] = $this->dao_service_model->getAllServices();
-      }
   }
 
 ?>

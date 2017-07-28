@@ -12,6 +12,7 @@
     protected $permissions;
     protected $skill;
     protected $role;
+		protected $schedule;
 
 		public function __construct(){
 
@@ -52,6 +53,10 @@
     public function getPermissions(){return $this->permissions;}
 
     public function setPermissions($permissions){$this->permissions = $permissions;}
+
+    public function getSchedule(){return $this->schedule;}
+
+    public function setSchedule($schedule){$this->schedule = $schedule;}
 
 		public function createUser($id, $name, $lastname, $phone, $cellphone, $mail){
 			$this->setId($id);

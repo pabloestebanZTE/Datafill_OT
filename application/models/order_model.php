@@ -21,7 +21,7 @@
 
     public function setCreationDate($creationDate){$this->creationDate = $creationDate;}
 
-		public function createService($id, $name, $creationDate){
+		public function createOrder($id, $name, $creationDate){
 			$this->setId($id);
 			$this->setName($name);
 			$this->setCreationDate($creationDate);

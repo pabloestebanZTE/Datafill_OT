@@ -1,5 +1,5 @@
 <?php
-	class order_model extends CI_Model{
+	class service_spec_model extends CI_Model{
 
 		protected $id;
 		protected $duration;
