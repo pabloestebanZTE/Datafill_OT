@@ -21,6 +21,6 @@ class Welcome extends CI_Controller {
 
 		$answer['sites'] = $this->dao_site_model->getAllSites();
 
-		$this->load->view('welcome_message');
+		$this->load->view('login');
 	}
 }
