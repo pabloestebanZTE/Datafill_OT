@@ -62,8 +62,8 @@
 			$this->setId($id);
 			$this->setName($name);
 			$this->setPhone($phone);
-      $this->setLastname($cellphone);
-      $this->setCellphone($lastname);
+      $this->setLastname($lastname);
+      $this->setCellphone($cellphone);
       $this->setMail($mail);
 			return $this;
     }

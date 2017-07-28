@@ -20,7 +20,7 @@
                 while($row = $result->fetch_assoc()) {
                   $site = new site_model;
                   $site->createSite($row['K_IDSITE'], $row['N_NAME']);
-                  $answer[$i] = $service;
+                  $answer[$i] = $site;
                   $i++;
                 }
               }

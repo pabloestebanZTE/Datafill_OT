@@ -16,6 +16,21 @@
 
  <script>
 
+    function changeTextTypeService(){
+      var services = '<?php echo json_encode($services); ?>';
+      var servicesObj = JSON.parse(services );
+      //console.log(servicesObj);
+      var select = $("#tipo option:selected").attr('value');
+      //console.log(select);
+      for(var i = 0; i<servicesObj.length; i++){
+        if (servicesObj[i].id == select){
+          $("#parInfo").remove();
+          var newP = "<p name='parInfo' id='parInfo'>"+servicesObj[i].gerency+"</p>";
+          $("#spanInfo").append(newP);
+        }
+      }
+    }
+
     $(document).ready(function() {
         
         $('#calendar').fullCalendar({
@@ -187,34 +202,31 @@
                 <div class="form-group"> 
                   <label class="col-md-3 control-label">Tipo</label>
                     <div class="col-md-8 selectContainer">
-                    <div class="input-group">
+                      <div class="input-group">
                         <span class="input-group-addon"><i class="glyphicon glyphicon-briefcase"></i></span>
-                    <select name="tipo" class="form-control selectpicker" required>
-                      <option value="" >seleccione tipo de Actividad</option>
-                      <option>tipo A1</option>
-                      <option>tipo A2</option>
-                      <option>tipo A3</option>
-                      <option>tipo C1</option>
-                      <option>tipo C2</option>
-                      <option>tipo C3</option>
-                      <option>tipo H1</option>
-                      <option>tipo H2</option>
-                      <option>tipo H3</option>      
-                    </select>
-                  </div>
-                </div>
-                </div>
+                        <?php 
+                          echo "<select name='tipo' id='tipo' class='form-control selectpicker' onchange='changeTextTypeService()' required>";
+                            echo "<option value='' >Seleccione tipo de Actividad </option>";
+                            if (isset($services)){
+                              for ($i=0; $i < count($services); $i++) { 
+                                echo "<option value='".$services[$i]->getId()."'>".$services[$i]->getType()."</option>";
+                              }
+                            }
+                          echo "</select>";
+                        ?>
+                      </div>
+                    </div>
+                 </div>
 
                 <!--text informacion-->
 
                     <div class="form-group">
                       <label class="col-md-3 control-label">Información Tarea</label>
                        <div class="col-md-8 inputGroupContainer">
-                       <div class="input-group">
-                         <span class="input-group-addon"><i class="glyphicon glyphicon-info-sign"></i></span>
-                             <p>informacion del tipo de actividad o la tarea a realizar por la persona asignada 
-                              y el tiempo amximo para la realizacion de la misma</p>
-                       </div> 
+                          <div class="input-group">
+                            <span class="input-group-addon"><i class="glyphicon glyphicon-info-sign"></i><span id="spanInfo" name="spanInfo">
+                             <p id="parInfo" name="parInfo">Información de la actividad</p>
+                          </div> 
                         </div>                
                     </div>
 
@@ -233,15 +245,13 @@
                         <span class="input-group-addon"><i class="glyphicon glyphicon-pushpin"></i></span>
                         <select name="sitio" class="form-control selectpicker" required>
                           <option value="" >seleccione el lugar</option>
-                          <option>Sitio 1</option>
-                          <option>sitio 2</option>
-                          <option>Sitio 3</option>
-                          <option>Sitio 4</option>
-                          <option>Sitio 5</option>
-                          <option>Sitio 6</option>
-                          <option>Sitio 7</option>
-                          <option>Sitio 8</option>
-                          <option>Sitio 9</option>      
+                          <?php
+                            if (isset($site)){
+                              for ($i=0; $i < count($site) ; $i++) { 
+                                 echo "<option value='".$site[$i]->getId()."'>".$site[$i]->getName()."</option>";
+                              }
+                            }
+                          ?>     
                         </select>
                      </div>
                     </div>
@@ -280,15 +290,13 @@
                         <span class="input-group-addon"><i class="glyphicon glyphicon-user"></i></span>
                         <select name="ingeniero" class="form-control selectpicker" required>
                           <option value="" >Seleccione el Ingeniero</option>
-                          <option>Ingeniero</option>
-                          <option>Ingeniero</option>
-                          <option>Ingeniero</option>
-                          <option>Ingeniero</option>
-                          <option>Ingeniero</option>
-                          <option>Ingeniero</option>
-                          <option>Ingeniero</option>
-                          <option>Ingeniero</option>
-                          <option>Ingeniero</option>      
+                            <?php
+                            if (isset($engineers)){
+                              for ($i=0; $i < count($engineers) ; $i++) { 
+                                 echo "<option value='".$engineers[$i]->getId()."'>".$engineers[$i]->getName()." ".$engineers[$i]->getLastname()."</option>";
+                              }
+                            }
+                          ?>    
                         </select>
                      </div>
                     </div>
