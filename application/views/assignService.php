@@ -26,7 +26,7 @@
       var js_obj_data = JSON.parse(js_data);
       for (var i=0; i<js_obj_data.length; i++) {
           var sel = document.getElementById("sitio");
-          sel.options[sel.options.length] = new Option(js_obj_data[i].name, js_obj_data[i].id);
+          sel.options[sel.options.length] = new Option(js_obj_data[i].name, js_obj_data[i].name+"@"+js_obj_data[i].id);
       }
     }
 
@@ -61,6 +61,24 @@
         if(gerenciaEng[2] == gerencia[0]){
           var newOption = "<option value='"+js_obj_data[i].id+"'>"+js_obj_data[i].name+" "+js_obj_data[i].lastname+"</option>";
           $('#ingeniero').append(newOption);
+        }
+      }
+    }
+
+    function sel(c){
+      formu=document.forms['assignService'];
+      select = formu['sitio'];
+      caracteres=c.length;
+      if(caracteres!=0){
+        for (x=0;x<formu['sitio'].options.length;x++){
+          value = formu['sitio'].options[x].value;
+          if(value.toLowerCase().slice(0,caracteres)==c.toLowerCase()){
+            formu['sitio'].selectedIndex=x;
+            formu['sitio'].style.visibility="visible";
+            break;
+          }else{
+            formu['sitio'].style.visibility="hidden";
+          }
         }
       }
     }
@@ -152,7 +170,7 @@
      <br><br>
 
 <div class="container">
-  <form class="well form-horizontal" action=" " method="post"  id="contact_form">
+  <form class="well form-horizontal" action=" " method="post"  id="assignService" name="assignServie">
     <center>
       <legend >Asignar Actividad</legend>
     </center>
@@ -163,12 +181,12 @@
           <div class="col-md-8 selectContainer">
             <div class="input-group">
               <span class="input-group-addon"><i class="glyphicon glyphicon-briefcase"></i></span>
-            <select name="orden" class="form-control selectpicker" required >
-              <option value="" >ID Orden</option>
-              <option>Id Orden</option>
-              <option>Id Orden</option>
-              <option>Id Orden</option>
-            </select>
+              <select name="orden" class="form-control selectpicker" required >
+                <option value="" >ID Orden</option>
+                <option>Id Orden</option>
+                <option>Id Orden</option>
+                <option>Id Orden</option>
+              </select>
           </div>
         </div>
       </div>
@@ -236,14 +254,24 @@
 
     <!--  inicio seccion derecha form---->
       <fieldset >
+        <!-- Text input-->
+        <div class="form-group">
+          <label class="col-md-3 control-label">Nombre PB</label>
+          <div class="col-md-8 inputGroupContainer">
+            <div class="input-group">
+              <span class="input-group-addon"><i class="glyphicon glyphicon-edit"></i></span>
+              <input type='text' class="form-control" onKeyUp='sel(this.value)' placeholder='Digite el nombre del PB' required>
+            </div>
+          </div>
+        </div>
         <!-- Select Basic -->
         <div class="form-group">
-          <label class="col-md-3 control-label">Sitio</label>
+          <label class="col-md-3 control-label">PB</label>
           <div class="col-md-8 selectContainer">
             <div class="input-group">
               <span class="input-group-addon"><i class="glyphicon glyphicon-pushpin"></i></span>
-              <select name="sitio" id="sitio" class="form-control selectpicker" required>
-                <option value="" >seleccione el lugar</option>
+              <select name="sitio" id="sitio" class="form-control selectpicker" disabled required>
+                <option value="" ></option>
                 <?php
                   if (isset($sites)) {
                     echo '<script type="text/javascript">generateOptions();</script>';
