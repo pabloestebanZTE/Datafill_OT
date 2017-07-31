@@ -1,20 +1,20 @@
 <?php
 	class service_spec_model extends CI_Model{
 
-		protected $id;
-		protected $duration;
-		protected $idClaro;
-    protected $description;
-    protected $dateStartP;
-    protected $dateFinishP;
-    protected $dateStartR;
-    protected $dateFinishR;
-    protected $dateCreation;
-    protected $dateForecast;
-    protected $order;
-    protected $site;
-    protected $service;
-    protected $user;
+		public $id;
+		public $duration;
+		public $idClaro;
+    public $description;
+    public $dateStartP;
+    public $dateFinishP;
+    public $dateStartR;
+    public $dateFinishR;
+    public $dateCreation;
+    public $dateForecast;
+    public $order;
+    public $site;
+    public $service;
+    public $user;
 
 		public function __construct(){
 
@@ -46,7 +46,7 @@
 
     public function getDateFinishP(){return $this->dateFinishP;}
 
-    public function setDateFinishP($dateFinishtP){$this->dateFinishP = $dateFinishP;}
+    public function setDateFinishP($dateFinishP){$this->dateFinishP = $dateFinishP;}
 
     public function getDateFinishR(){return $this->dateFinishR;}
 
@@ -76,7 +76,7 @@
 
     public function setUser($user){$this->user = $user;}
 
-		public function createService($id, $duration, $idClaro, $description, $dateStartP, $dateFinishP, $dateCreation, $dateForecast, $order, $site, $service, $user){
+		public function createServiceS($id, $duration, $idClaro, $description, $dateStartP, $dateFinishP, $dateCreation, $dateForecast, $order, $site, $service, $user){
 			$this->setId($id);
 			$this->setDuration($duration);
 			$this->setIdClaro($idClaro);

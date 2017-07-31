@@ -20,98 +20,110 @@
         <script src='/Datafill_OT/assets/plugins/fullcalendar/fullcalendar.js'></script>
         <link href='http://fonts.googleapis.com/css?family=Open+Sans' rel='stylesheet' type='text/css' />
 
- <script>
-    function generateOptions(){
-      var js_data = '<?php echo json_encode($sites); ?>';
-      var js_obj_data = JSON.parse(js_data);
-      for (var i=0; i<js_obj_data.length; i++) {
-          var sel = document.getElementById("sitio");
-          sel.options[sel.options.length] = new Option(js_obj_data[i].name, js_obj_data[i].name+"@"+js_obj_data[i].id);
-      }
-    }
-
-    function editText(){
-      var tipo = $("#tipo option:selected").attr('value');
-      var services = '<?php echo json_encode($services); ?>';
-      var js_obj_data = JSON.parse(services);
-      for(var i = 0;i < js_obj_data.length; i++){
-        if(js_obj_data[i].id == tipo){
-          $("#textoGerencia").remove();
-          $("#textoAlcance").remove();
-          $("#textoDescripcion").remove();
-          var newAlacance = "<p align='center' style='border: 2px solid #7cb6d6;' id='textoAlcance'>"+js_obj_data[i].scope+"</p>";
-          var newGerencia = "<p align='center' style='border: 2px solid #7cb6d6;' id='textoGerencia'>"+js_obj_data[i].gerency+"</p>";
-          var newDescripcion = "<p align='center' style='border: 2px solid #7cb6d6;' id='textoDescripcion'>"+js_obj_data[i].description+"</p>";
-          var gerencia = js_obj_data[i].gerency;
-          $("#divGerencia").append(newGerencia);
-          $("#divAlcance").append(newAlacance);
-          $("#divDescripcion").append(newDescripcion);
-        }
-      }
-      replaceOptionsEngineers(gerencia);
-    }
-
-    function replaceOptionsEngineers(gerencia){
-      $('#ingeniero').empty();
-      gerencia = gerencia.split(" ");
-      var ingenieros =  '<?php echo json_encode($engineers); ?>';
-      var js_obj_data = JSON.parse(ingenieros);
-      for(var i = 0;i < js_obj_data.length; i++){
-        var gerenciaEng = js_obj_data[i].role.name.split(" ");
-        if(gerenciaEng[2] == gerencia[0]){
-          var newOption = "<option value='"+js_obj_data[i].id+"'>"+js_obj_data[i].name+" "+js_obj_data[i].lastname+"</option>";
-          $('#ingeniero').append(newOption);
-        }
-      }
-    }
-
-    function sel(c){
-      formu=document.forms['assignService'];
-      select = formu['sitio'];
-      caracteres=c.length;
-      if(caracteres!=0){
-        for (x=0;x<formu['sitio'].options.length;x++){
-          value = formu['sitio'].options[x].value;
-          if(value.toLowerCase().slice(0,caracteres)==c.toLowerCase()){
-            formu['sitio'].selectedIndex=x;
-            formu['sitio'].style.visibility="visible";
-            break;
-          }else{
-            formu['sitio'].style.visibility="hidden";
+       <script>
+          function enableSelect(){
+            $( "#sitio" ).prop( "disabled", false );
           }
-        }
-      }
-    }
 
-    $(document).ready(function() {
-        $('#calendar').fullCalendar({
-            header: {
-                left: 'prev,next today',
-                center: 'title',
-                right: 'month,listWeek'
-            },
-            navLinks: true, // can click day/week names to navigate views
-            editable: true,
-            eventLimit: true, // allow "more" link when too many events
-            events: [
-                {
-                    title: 'All Day Event All Day Event All Day Event All Day Event All Day Event All Day EventAll Day EventAll Day Event',
-                    start: '2017-07-29'
-                },
-                {
-                    title: 'All Day Event',
-                    start: '2017-07-28'
-                },
-                {
-                    id: 999,
-                    title: 'Repeating Event',
-                    start: '2017-07-29'
+          function generateOptions(){
+            var js_data = '<?php echo json_encode($sites); ?>';
+            var js_obj_data = JSON.parse(js_data);
+            for (var i=0; i<js_obj_data.length; i++) {
+                var sel = document.getElementById("sitio");
+                sel.options[sel.options.length] = new Option(js_obj_data[i].name, js_obj_data[i].name+"@"+js_obj_data[i].id);
+            }
+          }
+
+          function editText(){
+            var tipo = $("#tipo option:selected").attr('value');
+            var services = '<?php echo json_encode($services); ?>';
+            var js_obj_data = JSON.parse(services);
+            for(var i = 0;i < js_obj_data.length; i++){
+              if(js_obj_data[i].id == tipo){
+                $("#textoGerencia").remove();
+                $("#textoAlcance").remove();
+                $("#textoDescripcion").remove();
+                var newAlacance = "<p align='center' style='border: 2px solid #7cb6d6;' id='textoAlcance'>"+js_obj_data[i].scope+"</p>";
+                var newGerencia = "<p align='center' style='border: 2px solid #7cb6d6;' id='textoGerencia'>"+js_obj_data[i].gerency+"</p>";
+                var newDescripcion = "<p align='center' style='border: 2px solid #7cb6d6;' id='textoDescripcion'>"+js_obj_data[i].description+"</p>";
+                var gerencia = js_obj_data[i].gerency;
+                $("#divGerencia").append(newGerencia);
+                $("#divAlcance").append(newAlacance);
+                $("#divDescripcion").append(newDescripcion);
+              }
+            }
+            replaceOptionsEngineers(gerencia);
+            loadCalendar();
+          }
+
+          function replaceOptionsEngineers(gerencia){
+            $('#ingeniero').empty();
+            gerencia = gerencia.split(" ");
+            var ingenieros =  '<?php echo json_encode($engineers); ?>';
+            var js_obj_data = JSON.parse(ingenieros);
+            for(var i = 0;i < js_obj_data.length; i++){
+              var gerenciaEng = js_obj_data[i].role.name.split(" ");
+              if(gerenciaEng[2] == gerencia[0]){
+                var newOption = "<option value='"+js_obj_data[i].id+"'>"+js_obj_data[i].name+" "+js_obj_data[i].lastname+"</option>";
+                $('#ingeniero').append(newOption);
+              }
+            }
+          }
+
+          function sel(c){
+            formu=document.forms['assignService'];
+            select = formu['sitio'];
+            caracteres=c.length;
+            if(caracteres!=0){
+              for (x=0;x<formu['sitio'].options.length;x++){
+                value = formu['sitio'].options[x].value;
+                if(value.toLowerCase().slice(0,caracteres)==c.toLowerCase()){
+                  formu['sitio'].selectedIndex=x;
+                  formu['sitio'].style.visibility="visible";
+                  break;
+                }else{
+                  formu['sitio'].style.visibility="hidden";
                 }
-            ]
-        });
-    });
+              }
+            }
+          }
 
- </script>
+          function loadCalendar() {
+            $("#calendar").remove();
+            $("#calendarDiv").append("<div id='calendar'></div>");
+
+            var engineers = '<?php echo json_encode($engineers); ?>';
+            var eng = JSON.parse(engineers);
+            var idEng = $("#ingeniero option:selected").attr('value');
+            var ev = [];
+
+            for(var i = 0; i < eng.length; i++){
+              if(eng[i].id == idEng && eng[i].schedule != null){
+                for(var j = 0; j < eng[i].schedule.length; j++){
+                  ev[j] = {title : eng[i].schedule[j].service.type, start : eng[i].schedule[j].dateStartP};
+                }
+              }
+            }
+
+            $('#calendar').fullCalendar({
+                header: {
+                    left: 'prev,next today',
+                    center: 'title',
+                    right: 'month,listWeek'
+                },
+                navLinks: true, // can click day/week names to navigate views
+                editable: true,
+                eventLimit: true, // allow "more" link when too many events
+                events: ev
+            });
+          }
+
+          function editIdOrder(){
+            var idOrder = $("#orden option:selected").attr('value');
+            document.getElementById("idOrden").value = idOrder;
+          }
+
+       </script>
     <style>
         body {
             margin: 40px 10px;
@@ -177,26 +189,30 @@
     <fieldset class="col-md-6 control-label">
       <!-- Select Basic -->
       <div class="form-group">
-        <label class="col-md-3 control-label">ID Orden</label>
+        <label class="col-md-3 control-label">Orden</label>
           <div class="col-md-8 selectContainer">
             <div class="input-group">
               <span class="input-group-addon"><i class="glyphicon glyphicon-briefcase"></i></span>
-              <select name="orden" class="form-control selectpicker" required >
+              <select name="orden" id="orden" class="form-control selectpicker" onchange=editIdOrder();>
                 <option value="" >ID Orden</option>
-                <option>Id Orden</option>
-                <option>Id Orden</option>
-                <option>Id Orden</option>
+                <?php
+                  if(isset($orders)){
+                    for($i =0; $i < count($orders); $i++){
+                      echo "<option value='".$orders[$i]->getId()."'>".$orders[$i]->getId()."</option>";
+                    }
+                  }
+                 ?>
               </select>
           </div>
         </div>
       </div>
       <!-- Text input-->
       <div class="form-group">
-        <label class="col-md-3 control-label">ID Actividad</label>
+        <label class="col-md-3 control-label">ID Claro</label>
         <div class="col-md-8 inputGroupContainer">
           <div class="input-group">
             <span class="input-group-addon"><i class="glyphicon glyphicon-edit"></i></span>
-            <input  name="idActividad" placeholder="ID Actividad" class="form-control" required type="text">
+            <input  name="idActividad" placeholder="ID Claro" class="form-control" required type="text">
           </div>
         </div>
       </div>
@@ -207,7 +223,7 @@
           <div class="input-group">
             <span class="input-group-addon"><i class="glyphicon glyphicon-briefcase"></i></span>
             <select name="tipo" id="tipo" class="form-control selectpicker" onchange="editText()"; required>
-              <option value="" >seleccione tipo de Actividad</option>
+              <option value="" >Seleccione tipo de actividad</option>
               <?php
                 if(isset($services)){
                   for($i =0; $i < count($services); $i++){
@@ -254,7 +270,17 @@
 
     <!--  inicio seccion derecha form---->
       <fieldset >
-        <!-- Text input-->
+        <!-- Input Orden -->
+        <div class="form-group">
+          <label class="col-md-3 control-label">ID Orden</label>
+            <div class="col-md-8 selectContainer">
+              <div class="input-group">
+                <span class="input-group-addon"><i class="glyphicon glyphicon-briefcase"></i></span>
+                  <input type='text' name="idOrden" id="idOrden" class="form-control" onKeyUp='sel(this.value)' value='' placeholder='Digite el Id de la orden' required>
+            </div>
+          </div>
+        </div>
+        <!-- PB input-->
         <div class="form-group">
           <label class="col-md-3 control-label">Nombre PB</label>
           <div class="col-md-8 inputGroupContainer">
@@ -317,11 +343,21 @@
             <div class="col-md-8 selectContainer">
              <div class="input-group">
                 <span class="input-group-addon"><i class="glyphicon glyphicon-user"></i></span>
-                <select name="ingeniero" id="ingeniero" class="form-control selectpicker" required>
+                <select name="ingeniero" id="ingeniero" onchange="loadCalendar()" class="form-control selectpicker" required>
                   <option value="" >Seleccione el Ingeniero</option>
                 </select>
              </div>
             </div>
+        </div>
+        <!-- Date Plan-->
+        <div class="form-group">
+          <label class="col-md-3 control-label">Fecha Asignación</label>
+            <div class="col-md-8 inputGroupContainer">
+              <div class="input-group">
+                <span class="input-group-addon"><i class="glyphicon glyphicon-calendar"></i></span>
+                <input name="fechaA" id="fechaA" placeholder="Fecha Asignación" class="form-control" required type="date">
+              </div>
+          </div>
         </div>
       </fieldset>
       <!--   fin seccion derecha---->
@@ -331,7 +367,7 @@
             <div class="form-group">
                 <label class="col-md-12 control-label"></label>
                  <div class="col-md-12">
-                     <button type="submit" class="btn btn-primary" >Crear <span class="glyphicon glyphicon-ok"></span></button>
+                     <button type="submit" class="btn btn-primary" onclick = "enableSelect();this.form.action = 'http://localhost/Datafill_OT/index.php/SpecificService/saveServiceS'">Crear <span class="glyphicon glyphicon-ok"></span></button>
                 </div>
             </div>
         </center>
@@ -342,8 +378,9 @@
 <!--          container ------------>
 
   <!--calendar-->
-  <div id='calendar'></div><br><br><br>
-
+  <div id='calendarDiv'>
+    <div id='calendar'></div><br><br><br>
+  </div>
   <!--footer-->
   <div class="for-full-back " id="footer">
       Zolid By ZTE Colombia | All Right Reserved

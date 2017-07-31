@@ -17,6 +17,8 @@
         $answer['services'] = $this->dao_service_model->getAllServices();
         $answer['engineers'] = $this->dao_user_model->getAllEngineers();
         $answer['sites'] = $this->dao_site_model->getAllSites();
+        $answer['orders'] = $this->dao_order_model->getAllOrders();
+
         $this->load->view('assignService', $answer);
       }
   }
