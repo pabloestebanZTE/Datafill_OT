@@ -6,7 +6,7 @@
 
     100% To use For Personal And Commercial Use.
     IN EXCHANGE JUST GIVE US CREDITS AND TELL YOUR FRIENDS ABOUT US
-   
+
     ========================================================  */
 
 
@@ -20,34 +20,34 @@
                 margin:0px;
                 padding:0px;
             }
-            
-            
+
+
             ul, ol {
                 list-style:none;
             }
-            
+
             .nav li a {
                 background-color:#207be5;
                 text-decoration:'Open Sans', sans-serif;;
                 padding:15px 12px;
                 display:block;
             }
-            
-            
+
+
             .nav li ul {
                 display:none;
                 position:absolute;
                 min-width:180px;
             }
-            
+
             .nav li a:hover {
                 background-color: rgba(22, 69, 231, 0.6);
             }
             .nav li:hover > ul {
                 display:block;
             }
-  /*----------------------------------------------------*/          
-            
+  /*----------------------------------------------------*/
+
 
 body {
           font-family: 'Open Sans', sans-serif;
@@ -65,7 +65,7 @@ h1, h2, h3, h4, h5, h6 {
 h1 {
     margin-top:320px;
     text-transform:uppercase;
-   
+
 }
 h2 {
     color: #207be5;
@@ -79,7 +79,7 @@ background:  #207be5 ;
 margin: 10px auto 40px;
 
     }
-    
+
 
 h3 {
     line-height:30px;
@@ -131,9 +131,9 @@ nav {
     z-index:99;
 }
 .fixed {
-	position: fixed; 
-	top: 0; 
-	min-height: 50px; 
+	position: fixed;
+	top: 0;
+	min-height: 50px;
 	z-index: 99;
 }
 
@@ -167,7 +167,7 @@ margin-left: 1100px;
 .head-main {
    font-size: 70px !important;
 font-weight: 900!important;
- color:#fff;
+color: #207be5;
 }
 .head-sub-main {
     font-size:40px !important;
@@ -176,12 +176,12 @@ font-weight: 900!important;
     color: #207be5;
 }
 .head-last {
-  
+
     padding:5px 20px 200px 20px;
     color:#fff;
 }
 #home {
-background-image: url("../img/img5.jpg");
+background-image: url("../img/img8.png");
 background-repeat: no-repeat;
 background-position: center 0;
 background-size: cover;
@@ -238,7 +238,7 @@ color:#eef1f3;
     margin: 30px 0px;
     list-style: none;
     text-align: center;
-  
+
 }
 
 .plan-active {
@@ -308,4 +308,3 @@ color: #5e5d5d ;
     padding:20px 50px 20px 50px;
     text-align:center;
 }
-

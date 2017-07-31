@@ -3,16 +3,16 @@
 
 	class user_model extends CI_Model{
 
-		protected $id;
-		protected $name;
-		protected $lastname;
-    protected $mail;
-    protected $phone;
-    protected $cellphone;
-    protected $permissions;
-    protected $skill;
-    protected $role;
-		protected $schedule;
+		public $id;
+		public $name;
+		public $lastname;
+    public $mail;
+    public $phone;
+    public $cellphone;
+    public $permissions;
+    public $skill;
+    public $role;
+		public $schedule;
 
 		public function __construct(){
 
@@ -62,8 +62,8 @@
 			$this->setId($id);
 			$this->setName($name);
 			$this->setPhone($phone);
-      $this->setLastname($cellphone);
-      $this->setCellphone($lastname);
+      $this->setLastname($lastname);
+      $this->setCellphone($cellphone);
       $this->setMail($mail);
 			return $this;
     }

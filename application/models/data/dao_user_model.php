@@ -26,8 +26,10 @@
                 $result2 = $session->query($sql2);
                 $row2 = $result2->fetch_assoc();
                 $role = new role_model;
-                $eng->setRole($role->createRole($row2['K_IDROLE'], $row2['N_NAME']));
-                $eng->setSchedule($this->dao_service_model->getServicesPerUser($eng->getId()));
+                $role->createRole($row2['K_IDROLE'], $row2['N_NAME']);
+                $eng->setRole($role);
+                $schedule = $this->dao_service_model->getServicesPerUser($eng->getId());
+                $eng->setSchedule($schedule);
                 $answer[$i] = $eng;
                 $i++;
               }

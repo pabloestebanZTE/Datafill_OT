@@ -4,8 +4,6 @@
 /*==============================================================*/
 
 
-drop table if exists ORDER;
-
 drop table if exists PERMISSION;
 
 drop table if exists ROLE;
@@ -64,7 +62,7 @@ create table SERVICE
    N_GERENCY            varchar(50) not null,
    N_TYPE               varchar(10) not null,
    N_DESCRIPTION        varchar(200) not null,
-   N_SCOPE              varchar(500) not null,
+   N_SCOPE              varchar(1000) not null,
    N_DURATION           varchar(5) not null,
    primary key (K_IDSERVICE)
 );

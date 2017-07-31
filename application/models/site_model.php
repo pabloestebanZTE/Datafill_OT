@@ -3,8 +3,8 @@
 
 	class site_model extends CI_Model{
 
-		protected $id;
-		protected $name;
+		public $id;
+		public $name;
 
 		public function __construct(){
 

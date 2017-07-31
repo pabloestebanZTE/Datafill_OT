@@ -3,26 +3,26 @@
                 margin:0px;
                 padding:0px;
             }
-            
-            
+
+
             ul, ol {
                 list-style:none;
             }
-            
+
             .nav li a {
                 background-color:#207be5;
                 text-decoration:'Open Sans', sans-serif;;
                 padding:15px 12px;
                 display:block;
             }
-            
-            
+
+
             .nav li ul {
                 display:none;
                 position:absolute;
                 min-width:180px;
             }
-            
+
             .nav li a:hover {
                 background-color: rgba(22, 69, 231, 0.6);
             }
@@ -40,8 +40,8 @@
             background-color: #207be5;
             border-color: blue;
             }
-  /*----------------------------------------------------*/          
-            
+  /*----------------------------------------------------*/
+
 
 body {
           font-family: 'Open Sans', sans-serif;
@@ -51,9 +51,21 @@ body {
 
 #logo{
 height: 30px;
-width:70px;
+width: 60px;
 margin-top: 10px;
 /*margin-left: -80px;*/
 }
 
 
+/*=======================================
+    FOOTER STYLES
+==================================================*/
+
+
+#footer {
+    background-color:#207be5;
+    color:#fff;
+    padding:20px 50px 20px 50px;
+    text-align:center;
+    position:relative;
+}

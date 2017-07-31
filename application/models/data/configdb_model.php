@@ -11,17 +11,13 @@
         public function __construct(){
         }
 
-        public function startSession($user,$pass,$name,$lastname,$permissions){
-             $_SESSION['id'] = $user;
-             $_SESSION['pass'] = $pass;
-             $_SESSION['name'] = $name;
-             $_SESSION['lastname'] = $lastname;
-             $_SESSION['permissions'] = $permissions;
+        public function startSession($user){
+             $_SESSION['userName'] = $user->getName();
         }
 
         public function openSession(){
           $user = "root";
-          $pass =  "ZTE-536";
+          $pass =  "";
           $db = "Datafill_OT";
 
           try {

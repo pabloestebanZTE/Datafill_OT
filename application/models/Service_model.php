@@ -1,12 +1,12 @@
 <?php
 	class service_model extends CI_Model{
 
-		protected $id;
-		protected $gerency;
-		protected $type;
-    protected $description;
-    protected $scope;
-    protected $duration;
+		public $id;
+		public $gerency;
+		public $type;
+    public $description;
+    public $scope;
+    public $duration;
 
 		public function __construct(){
 
