@@ -37,8 +37,8 @@
                         <li class="cam"><a href="#services">Servicios</a>
                         <ul>
                             <li><a href="/Datafill_OT/index.php/Service/assignService">Agendar Actividad</a></li>
-                            <li><a href="#">Ver Actividad</a></li>
-                            <li><a href="#">Asignar Actividad</a></li>
+                            <li><a href="/Datafill_OT/index.php/Service/listServices">Ver Actividades</a></li>
+                            <li><a href="#">Ver Ingenieros</a></li>
                         </ul>
                         </li>
                         <li class="cam"><a href="#price-sec">Reportes</a>

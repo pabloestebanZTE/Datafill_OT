@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <title>asignar actividad</title>
+    <title>Asignar Actividad</title>
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
         <!--   ICONO PAGINA    -->
@@ -100,7 +100,7 @@
             for(var i = 0; i < eng.length; i++){
               if(eng[i].id == idEng && eng[i].schedule != null){
                 for(var j = 0; j < eng[i].schedule.length; j++){
-                  ev[j] = {title : eng[i].schedule[j].service.type, start : eng[i].schedule[j].dateStartP};
+                  ev[j] = {title : eng[i].schedule[j].service.type+", "+eng[i].schedule[j].service.duration+" horas", start : eng[i].schedule[j].dateStartP};
                 }
               }
             }
@@ -162,8 +162,8 @@
                         <li class="cam"><a href="#services">Servicios</a>
                         <ul>
                             <li><a href="/Datafill_OT/index.php/Service/assignService">Agendar Actividad</a></li>
-                            <li><a href="#">Ver Actividad</a></li>
-                            <li><a href="#">Asignar Actividad</a></li>
+                            <li><a href="/Datafill_OT/index.php/Service/listServices">Ver Actividades</a></li>
+                            <li><a href="#">Ver Ingenieros</a></li>
                         </ul>
                         </li>
                         <li class="cam"><a href="#price-sec">Reportes</a>
@@ -276,7 +276,7 @@
             <div class="col-md-8 selectContainer">
               <div class="input-group">
                 <span class="input-group-addon"><i class="glyphicon glyphicon-briefcase"></i></span>
-                  <input type='text' name="idOrden" id="idOrden" class="form-control" onKeyUp='sel(this.value)' value='' placeholder='Digite el Id de la orden' required>
+                  <input type='text' name="idOrden" id="idOrden" class="form-control" value='' placeholder='Digite el Id de la orden' required>
             </div>
           </div>
         </div>

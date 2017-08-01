@@ -5,6 +5,7 @@
 		public $duration;
 		public $idClaro;
     public $description;
+		public $claroDescription;
     public $dateStartP;
     public $dateFinishP;
     public $dateStartR;
@@ -35,6 +36,10 @@
     public function getDescription(){return $this->description;}
 
     public function setDescription($description){$this->description = $description;}
+
+		public function getClaroDescription(){return $this->claroDescription;}
+
+    public function setClaroDescription($claroDescription){$this->claroDescription = $claroDescription;}
 
     public function getDateStartP(){return $this->dateStartP;}
 
@@ -76,11 +81,12 @@
 
     public function setUser($user){$this->user = $user;}
 
-		public function createServiceS($id, $duration, $idClaro, $description, $dateStartP, $dateFinishP, $dateCreation, $dateForecast, $order, $site, $service, $user){
+		public function createServiceS($id, $duration, $idClaro, $description, $dateStartP, $dateFinishP, $dateCreation, $dateForecast, $order, $site, $service, $user, $claroDescription){
 			$this->setId($id);
 			$this->setDuration($duration);
 			$this->setIdClaro($idClaro);
       $this->setDescription($description);
+			$this->setClaroDescription($claroDescription);
       $this->setDateStartP($dateStartP);
       $this->setDateFinishP($dateFinishP);
       $this->setDateCreation($dateCreation);
