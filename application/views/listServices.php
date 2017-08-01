@@ -99,6 +99,8 @@
                 <th>Tipo</th>
                 <th>Punto base</th>
                 <th>Ingeniero</th>
+                <th>F. Forecast</th>
+                <th>F. Asignación</th>
             </tr>
 
             <?php
@@ -110,6 +112,9 @@
                     echo "<td>".$services[$i]->getService()->getType()."</td>";
                     echo "<td>".$services[$i]->getSite()->getName()."</td>";
                     echo "<td>".$services[$i]->getUser()->getName()."</td>";
+                    echo "<td>".$services[$i]->getDateForecast()."</td>";
+                    echo "<td>".$services[$i]->getDateStartP()."</td>";
+
                   echo "</tr>";
                 }
               }

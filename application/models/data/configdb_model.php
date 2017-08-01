@@ -17,7 +17,7 @@
 
         public function openSession(){
           $user = "root";
-          $pass =  "";
+          $pass =  "ZTE-536";
           $db = "Datafill_OT";
 
           try {

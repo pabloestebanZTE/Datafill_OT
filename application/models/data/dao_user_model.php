@@ -74,10 +74,10 @@
           return $answer;
         }
 
-        public function getUserById(){
+        public function getUserById($idUser){
           $dbConnection = new configdb_model();
           $session = $dbConnection->openSession();
-          $sql = "SELECT * FROM user";
+          $sql = "SELECT * FROM user WHERE K_IDUSER = ".$idUser.";";
           if ($session != "false"){
             $result = $session->query($sql);
             $row = $result->fetch_assoc();
