@@ -99,17 +99,22 @@
                 <th>Tipo</th>
                 <th>Punto base</th>
                 <th>Ingeniero</th>
+                <th>F. Forecast</th>
+                <th>F. Asignación</th>
             </tr>
 
             <?php
               if(isset($services)){
                 for($i = 0; $i < count($services); $i++){
                   echo "<tr>";
-                    echo "<td><strong>".$services[$i]->getIdClaro()."</strong></td>";
+                     echo "<td><a href='/Datafill_OT/index.php/service/serviceDetails?K_ID_SP_SERVICE=".$services[$i]->getId()."'>".$services[$i]->getId()."</a></td>";
                     echo "<td>".$services[$i]->getOrder()->getId()."</td>";
                     echo "<td>".$services[$i]->getService()->getType()."</td>";
                     echo "<td>".$services[$i]->getSite()->getName()."</td>";
                     echo "<td>".$services[$i]->getUser()->getName()."</td>";
+                    echo "<td>".$services[$i]->getDateForecast()."</td>";
+                    echo "<td>".$services[$i]->getDateStartP()."</td>";
+
                   echo "</tr>";
                 }
               }

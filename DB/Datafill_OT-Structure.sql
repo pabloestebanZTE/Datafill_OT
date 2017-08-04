@@ -108,6 +108,10 @@ create table SPECIFIC_SERVICE
    D_DATE_START_R       date,
    D_DATE_FINISH_R      date,
    D_DATE_CREATION      date,
+   N_ESTADO             varchar(20),
+   N_INGENIERO_SOL      varchar(100),
+   N_PROYECTO           varchar(100),
+   N_CRQ                varchar(50),
    primary key (K_ID_SP_SERVICE)
 );
 

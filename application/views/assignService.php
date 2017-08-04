@@ -225,6 +225,7 @@
             <select name="tipo" id="tipo" class="form-control selectpicker" onchange="editText()"; required>
               <option value="" >Seleccione tipo de actividad</option>
               <?php
+                echo "<br><br><br><br>o.o";
                 if(isset($services)){
                   for($i =0; $i < count($services); $i++){
                     echo "<option value='".$services[$i]->getId()."'>".$services[$i]->getType()."</option>";
@@ -347,6 +348,26 @@
                   <option value="" >Seleccione el Ingeniero</option>
                 </select>
              </div>
+            </div>
+        </div>
+        <!-- Select Basic -->
+        <div class="form-group">
+          <label class="col-md-3 control-label">Ingeniero Solicitante</label>
+            <div class="col-md-8 selectContainer">
+              <div class="input-group">
+                <span class="input-group-addon"><i class="glyphicon glyphicon-user"></i></span>
+                <input type='text' id="ingSol" name="ingSol" class="form-control" placeholder='Ingeniero Solicitante' required>
+              </div>
+            </div>
+        </div>
+        <!-- Select Basic -->
+        <div class="form-group">
+          <label class="col-md-3 control-label">Proyecto</label>
+            <div class="col-md-8 selectContainer">
+              <div class="input-group">
+                <span class="input-group-addon"><i class="glyphicon glyphicon-edit"></i></span>
+                <input type='text' id="proyecto" name="proyecto" class="form-control" placeholder='Proyecto' required>
+              </div>
             </div>
         </div>
         <!-- Date Plan-->
