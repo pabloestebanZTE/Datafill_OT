@@ -4,24 +4,6 @@
 /*==============================================================*/
 
 
-drop table if exists PERMISSION;
-
-drop table if exists ROLE;
-
-drop table if exists SERVICE;
-
-drop table if exists SITE;
-
-drop table if exists SKILL;
-
-drop table if exists SPECIFIC_SERVICE;
-
-drop table if exists USER;
-
-drop table if exists USER_PERMISSIONS;
-
-drop table if exists USER_SKILL;
-
 /*==============================================================*/
 /* Table: "ORDER"                                               */
 /*==============================================================*/
@@ -102,12 +84,16 @@ create table SPECIFIC_SERVICE
    N_DURATION           varchar(5),
    D_DATE_FINISH_P      date,
    D_FORECAST           date,
-   K_IDCLARO            varchar(20),
+   K_IDCLARO            varchar(20) UNIQUE,
    N_DESCRIPTION        varchar(500),
    N_CLARO_DESCRIPTION  varchar(500),
    D_DATE_START_R       date,
    D_DATE_FINISH_R      date,
    D_DATE_CREATION      date,
+   N_ESTADO             varchar(20),
+   N_ING_SOL            varchar(100),
+   N_PROYECTO           varchar(100),
+   N_CRQ                varchar(50),
    primary key (K_ID_SP_SERVICE)
 );
 

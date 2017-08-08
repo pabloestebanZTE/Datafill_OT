@@ -16,6 +16,10 @@
     public $site;
     public $service;
     public $user;
+		public $ingSol;
+		public $proyecto;
+		public $estado;
+		public $CRQ;
 
 		public function __construct(){
 
@@ -81,7 +85,23 @@
 
     public function setUser($user){$this->user = $user;}
 
-		public function createServiceS($id, $duration, $idClaro, $description, $dateStartP, $dateFinishP, $dateCreation, $dateForecast, $order, $site, $service, $user, $claroDescription){
+		public function getIngSol(){return $this->ingSol;}
+
+    public function setIngSol($ingSol){$this->ingSol = $ingSol;}
+
+		public function getProyecto(){return $this->proyecto;}
+
+    public function setProyecto($proyecto){$this->proyecto = $proyecto;}
+
+		public function getEstado(){return $this->estado;}
+
+    public function setEstado($estado){$this->estado = $estado;}
+
+		public function getCRQ(){return $this->CRQ;}
+
+    public function setCRQ($CRQ){$this->CRQ = $CRQ;}
+
+		public function createServiceS($id, $duration, $idClaro, $description, $dateStartP, $dateFinishP, $dateCreation, $dateForecast, $order, $site, $service, $user, $claroDescription, $ingSol, $proyecto, $estado, $CRQ){
 			$this->setId($id);
 			$this->setDuration($duration);
 			$this->setIdClaro($idClaro);
@@ -95,6 +115,10 @@
       $this->setSite($site);
       $this->setService($service);
       $this->setUser($user);
+			$this->setIngSol($ingSol);
+			$this->setProyecto($proyecto);
+			$this->setEstado($estado);
+			$this->setCRQ($CRQ);
     }
 	}
 ?>

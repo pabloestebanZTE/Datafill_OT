@@ -26,6 +26,11 @@
         $answer['services'] = $this->dao_service_model->getAllServicesS();
         $this->load->view('listServices', $answer);
       }
+
+      public function serviceDetails(){
+        $answer['service']=$this->dao_service_model->getServiceById($_GET['K_ID_SP_SERVICE']);
+        $this->load->view('orderDetail',$answer);
+      }
   }
 
 ?>

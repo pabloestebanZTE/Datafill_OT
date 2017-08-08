@@ -45,7 +45,7 @@ insert into user (K_IDUSER, K_IDROLE, N_NAME, N_LASTNAME, N_MAIL, N_PHONE, N_CEL
          (1069722400, 4, 'Andrea Lorena', 'Rosero Chasoy', '', '', '', 'a4b3c2d1', 'alroseroc');
 /*Data de sites*/
   insert into site(K_IDSITE, N_NAME)
-    values /*(0, 'AMZ.Atacuari'),
+    values (0, 'AMZ.Atacuari'),
           (1, 'AMZ.El Encanto'),
           (2, 'AMZ.Fuerte Amazonas'),
           (3, 'AMZ.La Chorrera'),
@@ -1113,7 +1113,7 @@ insert into user (K_IDUSER, K_IDROLE, N_NAME, N_LASTNAME, N_MAIL, N_PHONE, N_CEL
           (1065, 'BNV.Triunfo'),
           (1066, 'BNV.Variante'),
           (1067, 'BNV.Zona Franca'),
-          (1068, 'BNV.Zona Franca-2'),*/
+          (1068, 'BNV.Zona Franca-2'),
           (1069, 'BOG.11 de Noviembre'),
           (1070, 'BOG.12 de Octubre'),
           (1071, 'BOG.12 de Octubre-2'),
@@ -2746,7 +2746,7 @@ insert into user (K_IDUSER, K_IDROLE, N_NAME, N_LASTNAME, N_MAIL, N_PHONE, N_CEL
           (2698, 'BOG.Zona Industrial'),
           (2699, 'BOG.Zona Rosa'),
           (2700, 'BOG.Zona T'),
-          /*(2701, 'BOL.Achi'),
+          (2701, 'BOL.Achi'),
           (2702, 'BOL.Altos del Rosario'),
           (2703, 'BOL.Arenal'),
           (2704, 'BOL.Arenal del Sur'),
@@ -4472,7 +4472,7 @@ insert into user (K_IDUSER, K_IDROLE, N_NAME, N_LASTNAME, N_MAIL, N_PHONE, N_CEL
           (4424, 'CUC.Trigal del Norte-2'),
           (4425, 'CUC.Unilibre'),
           (4426, 'CUC.Valparaiso Suite'),
-          (4427, 'CUC.Ventura Plaza'),*/
+          (4427, 'CUC.Ventura Plaza'),
           (4428, 'CUN.Abocol Calle 80'),
           (4429, 'CUN.Agua de Dios'),
           (4430, 'CUN.Ajover'),
@@ -4929,8 +4929,8 @@ insert into user (K_IDUSER, K_IDROLE, N_NAME, N_LASTNAME, N_MAIL, N_PHONE, N_CEL
           (4881, 'CUN.Yacopi'),
           (4882, 'CUN.Yacopi-2'),
           (4883, 'CUN.Yerbabuena'),
-          (4884, 'CUN.Zipacon');
-          /*(4885, 'DUI.Alcazares'),
+          (4884, 'CUN.Zipacon'),
+          (4885, 'DUI.Alcazares'),
           (4886, 'DUI.Candido Quintero'),
           (4887, 'DUI.Carrefour'),
           (4888, 'DUI.Centro'),
@@ -8147,4 +8147,4 @@ insert into user (K_IDUSER, K_IDROLE, N_NAME, N_LASTNAME, N_MAIL, N_PHONE, N_CEL
           (8099, 'ZIP.Terminal'),
           (8100, 'ZIP.Via Cogua'),
           (8101, 'ZIP.Zipaquira-5'),
-          (8102, 'ZIP.Zipaquira-7'),*/
+          (8102, 'ZIP.Zipaquira-7');
