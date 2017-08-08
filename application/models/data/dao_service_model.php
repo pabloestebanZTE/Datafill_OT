@@ -82,9 +82,8 @@
                 $newOrder->createOrder($service->getOrder(), "", $service->getDateCreation());
                 $this->dao_order_model->insertOrder($newOrder);
               }
-
               $sql2 = "INSERT INTO specific_service (K_ID_SP_SERVICE, K_IDUSER, K_IDSERVICE, K_IDSITE, K_IDORDER, D_DATE_START_P, D_DATE_FINISH_P, D_FORECAST, K_IDCLARO, N_DESCRIPTION, D_DATE_CREATION, N_ING_SOL, N_ESTADO, N_PROYECTO, N_CRQ, N_CLARO_DESCRIPTION)
-                values (".$row['count(*)'].", ".$service->getUser().", ".$service->getService().", ".$service->getSite()." , '".$service->getOrder()."', STR_TO_DATE('".$service->getDateStartP()."', '%Y-%m-%d'), STR_TO_DATE('".$service->getDateFinishP()."', '%Y-%m-%d'), STR_TO_DATE('".$service->getDateForecast()."', '%Y-%m-%d'), '".$service->getIdClaro()."', '".$service->getDescription()."', STR_TO_DATE('".$service->getDateCreation()."', '%Y-%m-%d'), '".$service->getIngSol()."', '".$service->getEstado()."', '".$service->getProyecto()."', '".$service->getCRQ()."', '".$service->getClaroDescription."');";
+                values (".$row['count(*)'].", ".$service->getUser().", ".$service->getService().", ".$service->getSite()." , '".$service->getOrder()."', STR_TO_DATE('".$service->getDateStartP()."', '%Y-%m-%d'), STR_TO_DATE('".$service->getDateFinishP()."', '%Y-%m-%d'), STR_TO_DATE('".$service->getDateForecast()."', '%Y-%m-%d'), '".$service->getIdClaro()."', '".$service->getDescription()."', STR_TO_DATE('".$service->getDateCreation()."', '%Y-%m-%d'), '".$service->getIngSol()."', '".$service->getEstado()."', '".$service->getProyecto()."', '".$service->getCRQ()."', '".$service->getClaroDescription()."');";
               $result = $session->query($sql2);
             } else {
               $answer = "Error de informacion";

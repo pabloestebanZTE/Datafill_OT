@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <title>Lista Actividades</title>
+    <title>Detalles Actividad</title>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
     <!--   ICONO PAGINA    -->
@@ -14,7 +14,7 @@
     <!--LIST CSS-->
   <link rel="stylesheet" type="text/css" href="/Datafill_OT/assets/css/styleList.css">
   <link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Open+Sans:Condensed" />
-  <link href='https://fonts.googleapis.com/css?family=Open+Sans:400,800' rel='stylesheet' type='text/css'>  
+  <link href='https://fonts.googleapis.com/css?family=Open+Sans:400,800' rel='stylesheet' type='text/css'>
     <!--   SWEET ALERT    -->
     <link rel="stylesheet" href="/Datafill_OT/assets/plugins/sweetalert-master/dist/sweetalert.css" />
     <script type="text/javascript" src="/Datafill_OT/assets/plugins/sweetalert-master/dist/sweetalert.min.js"></script>
@@ -63,130 +63,126 @@
      </header>
 <!--      fin header         -->
      <br><br><br>
-<div id="container">
-<?php
-//echo "<br>";
-//print_r($service);
-      echo ";<div class='whole' style='margin: 8px'>";
-          echo "<div class='type'>";
-           echo "<p>Orden</p>";
-          echo "</div>";
-        echo "<div class='plan'>";
+  <div id="container">
+    <form>
+    <?php
+      echo "<div class='whole' style='margin: 8px'>";
+        echo "<div class='type'>";
+          echo "<p>Orden</p>";
+        echo "</div>";
+      echo "<div class='plan'>";
 
-          echo "<div class='header'>";
-           echo "<span></span><img src='/Datafill_OT/assets/img/orden.png'><sup></sup>";
-          echo "</div>";
-
-              echo "<div class='content'>";
-                echo "<ul>";  
-                  echo "<li>INGENIERO: ".$service->getUser()->getName()." ".$service->getUser()->getLastname()."</li>";
-                  echo "<li>ORDEN:    ".$service->getOrder()->getId()."</li>";
-                  echo "<li>ID ACTIVIDAD:    ".$service->getId()."</li>";
-                  echo "<li>EB:    ".$service->getSite()->getName()."</li>";
-                  echo "<li>DURACION:    ".$service->getDuration()."</li>";
-                echo "</ul>";
-              echo "</div>";    
-           echo "</div>";
+      echo "<div class='header'>";
+        echo "<span></span><img src='/Datafill_OT/assets/img/orden.png'><sup></sup>";
       echo "</div>";
-  //------------------------------------------------------------------------------
+
+      echo "<div class='content'>";
+        echo "<ul>";
+          echo "<li>Ingeniero: ".$service->getUser()->getName()." ".$service->getUser()->getLastname()."</li>";
+          echo "<li>Orden:    ".$service->getOrder()->getId()."</li>";
+          echo "<li>ID Actividad:    ".$service->getIdClaro()."</li>";
+          echo "<li>Estación Base:    ".$service->getSite()->getName()."</li>";
+          echo "<li>Duración:    ".$service->getDuration()."</li>";
+        echo "</ul>";
+        echo "</div>";
+        echo "</div>";
+      echo "</div>";
+      //------------------------------------------------------------------------------
       echo "<div class='whole' style='margin: 8px'>";
         echo "<div class='type'>";
           echo "<p>Tipo Actividad</p>";
         echo "</div>";
-
         echo "<div class='plan'>";
           echo "<div class='header'>";
             echo "<span></span><img src='/Datafill_OT/assets/img/actividades.png'><sup></sup>";
             echo "<p class='month'></p>";
           echo "</div>";
-              echo "<div class='content'>";
-                echo "<ul>";
-                  echo "<li>TIPO:    ".$service->getService()->getType()."</li>";
-                  echo "<li>G TAREA:    ".$service->getService()->getGerency()."</li>";
-                  echo "<div class='header'>D TAREA:    ".$service->getService()->getDescription()."</div>";
-                  echo "<div class='header'>ALCANCE:    ".$service->getService()->getScope()."</div>";
-                 echo "</ul>";
-              echo "</div>";
+          echo "<div class='content'>";
+            echo "<ul>";
+              echo "<li>Tipo:    ".$service->getService()->getType()."</li>";
+              echo "<li>Gerencia Tarea:    ".$service->getService()->getGerency()."</li>";
+              echo "<div class='header'>Descripción Tarea:    ".$service->getService()->getDescription()."</div>";
+              echo "<div class='header'>Alcance:    ".$service->getService()->getScope()."</div>";
+            echo "</ul>";
+          echo "</div>";
         echo "</div>";
       echo "</div>";
-      //<!--____________________________________________-->
+          //<!--____________________________________________-->
 
       echo "<div class='whole' style='margin: 8px'>";
         echo "<div class='type'>";
           echo "<p>Fechas</p>";
         echo "</div>";
-            echo "<div class='plan'>";
-              echo "<div class='header'>";
-                echo "<span></span><img src='/Datafill_OT/assets/img/fecha.png'><sup></sup>";
-                echo "<p class='month'></p>";
+        echo "<div class='plan'>";
+          echo "<div class='header'>";
+            echo "<span></span><img src='/Datafill_OT/assets/img/fecha.png'><sup></sup>";
+            echo "<p class='month'></p>";
+          echo "</div>";
+          echo "<div class='content'>";
+            echo "<ul>";
+              echo "<li>Fecha Inicio:    ".$service->getDateStartP()."</li>";
+              echo "<li>Fecha Fin:     ".$service->getDateFinishP()."</li>";
+              echo "<div id='ultimate'>";
+                echo "<p>Fecha inicio real</p>";
               echo "</div>";
-                  echo "<div class='content'>";
-                    echo "<ul>";
-                      echo "<li>FECHA INICIO:    ".$service->getDateStartP()."</li>";
-                      echo "<li>FECHA FIN:     ".$service->getDateFinishP()."</li>";  
-                      echo "<div id='ultimate'>";
-                       echo "<p>Fecha inicio real</p>";
-                      echo "</div>"; 
-                      echo "<li><input type='date' name='fInicior' id='fInicior' class='form-control' value='' placeholder='Fecha Inicio Real' required style='display: center; color: white; background-color: #333;'></li>";
-                      echo "<div id='ultimate'>";
-                       echo "<p>Fecha fin real</p>";
-                      echo "</div>"; 
-                      echo "<li><input type='date' name='fFinr' id='fFinr' class='form-control' value='' placeholder='Fecha Fin Real' required style='display: center; color: white; background-color: #333;'></li>";                     
-                    echo "</ul>";
-                  echo "</div>";
-
-            echo "</div>";            
+                echo "<li><input type='date' name='fInicior' id='fInicior' class='form-control' value='' placeholder='Fecha Inicio Real' required style='display: center; color: white; background-color: #333;'></li>";
+                echo "<div id='ultimate'>";
+                  echo "<p>Fecha fin real</p>";
+                echo "</div>";
+              echo "<li><input type='date' name='fFinr' id='fFinr' class='form-control' value='' placeholder='Fecha Fin Real' required style='display: center; color: white; background-color: #333;'></li>";
+            echo "</ul>";
+          echo "</div>";
+        echo "</div>";
       echo "</div>";
-                      echo "<div class='whole' style='margin-left: 28px'>";
-                        echo "<div class='type'>";
-                          echo "<p>Observaciones</p>";
-                        echo "</div>";
-                          echo "<div class='plan'>";
-                            echo "<span></span><img src='/Datafill_OT/assets/img/editar.png'><sup></sup>";
-                            echo "<div class='content'>";
-                                  echo "<ul>";
-                                    echo "<div class='header'>OBSERVACIONES ACTIVIDAD: ".$service->getClaroDescription()."</div>";
-                                    echo "<div class='header'>OBSERVACIONES COORDINADOR: ".$service->getDescription()."</div></li>";
-                                    
-?>
-                                <div id='ultimate'>
-                                    <p>Observaciones de cierre</p>
-                                </div>
-                                    <li>
-                                      <textarea class="form-control" name="observaciones" placeholder="Observaciones" style="display: center; color: white; background-color: #333;">                                  
-                                      </textarea>
-                                    </li>
-                                  </ul>
-                            </div>
-                            <div class="content">
-                            <div id="ultimate">
-                                <p>CRQ</p>
-                            </div>
-                              <ul>
-                                <input type='text' name="crq" id="crq" class="form-control" value='' placeholder='Digite el CRQ' required style="display: center; color: white; background-color: #333;">
-                              </ul>
-                            </div>
-                            <div class="content">
-                            <div id="ultimate">
-                                <p>Estado</p>
-                            </div>
-                              <ul>
-                                <select name="state" id="state" class="form-control" required style="display: center; color: white; background-color: #333;">
-                                  <option value="">Seleccione Estado</option>
-                                  <option value="">Seleccione Estado</option>
-                                  <option value="">Seleccione Estado</option>
-                                  <option value="">Seleccione Estado</option>
-                                  <option value="">Seleccione Estado</option>
-                                </select>
-                              </ul>
-                            </div>
-                          </div>
-                              <a class="boton_personalizado" href="#">CERRAR <i class="glyphicon glyphicon-share-alt"></i></a>
-                      </div>
-      <!--______________________________________________________________-->
-        
 
+      echo "<div class='whole' style='margin-left: 28px'>";
+        echo "<div class='type'>";
+          echo "<p>Observaciones</p>";
+        echo "</div>";
+        echo "<div class='plan'>";
+          echo "<div class='header'>";
+            echo "<span></span><img src='/Datafill_OT/assets/img/editar.png'><sup></sup>";
+            echo "<p class='month'></p>";
+          echo "</div>";
+          echo "<div class='content'>";
+            echo "<ul>";
+              echo "<li>Observaciones Actividad: ".$service->getClaroDescription()."</li>";
+              echo "<li>Observaciones Coordinador: ".$service->getDescription()."</li>";
+            echo "</ul>";
+          echo "</div>";
+          echo "<div class='content'>";
+            echo "<div id='ultimate'>";
+              echo "<p>CRQ</p>";
+            echo "</div>";
+             echo "<ul>";
+              echo "<input type='text' name='crq' id='crq' class='form-control' value='' placeholder='Digite el CRQ' required style='display: center; color: white; background-color: #333;'>";
+            echo "</ul>";
+          echo "</div>";
+          echo "<div class='content'>";
+            echo "<div id='ultimate'>";
+              echo "<p>Estado</p>";
+            echo "</div>";
+            echo "<ul>";
+              echo "<select name='state' id='state' class='form-control' required style='display: center; color: white; background-color: #333;'>";
+                echo "<option value=''>Seleccione Estado</option>";
+                echo "<option value=''>Seleccione Estado</option>";
+              echo "</select>";
+            echo "</ul>";
+          echo "</div>";
+          echo "<div class='content'>";
+            echo "<div id='ultimate'>";
+              echo "<p>Observaciones de cierre</p>";
+            echo "</div>";
+             echo "<ul>";
+               echo "<textarea class='form-control' name='observaciones' placeholder='Observaciones' style='display: center; color: white; background-color: #333;'>";
+               echo "</textarea>";
+             echo "</ul>";
+          echo "</div>";
+        echo "</div>";
+        echo "<a class='boton_personalizado' href='#'>CERRAR <i class='glyphicon glyphicon-share-alt'></i></a>";
+      echo "</div>";
+    ?>
     </form>
-</div><br><br>.
+  </div><br><br>
 </body>
 </html>

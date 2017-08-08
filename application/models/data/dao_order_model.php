@@ -12,7 +12,7 @@
         public function getOrderById($orderId){
             $dbConnection = new configdb_model();
             $session = $dbConnection->openSession();
-            $sql = "SELECT * FROM ot WHERE K_IDORDER = ".$orderId.";";
+            $sql = "SELECT * FROM ot WHERE K_IDORDER = '".$orderId."';";
             $order = new order_model;
             $result = $session->query($sql);
             if ($result->num_rows > 0) {

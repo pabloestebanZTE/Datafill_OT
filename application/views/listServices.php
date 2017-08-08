@@ -107,11 +107,11 @@
               if(isset($services)){
                 for($i = 0; $i < count($services); $i++){
                   echo "<tr>";
-                     echo "<td><a href='/Datafill_OT/index.php/service/serviceDetails?K_ID_SP_SERVICE=".$services[$i]->getId()."'>".$services[$i]->getId()."</a></td>";
+                    echo "<td><a href='/Datafill_OT/index.php/service/serviceDetails?K_ID_SP_SERVICE=".$services[$i]->getId()."'>".$services[$i]->getIdClaro()."</a></td>";
                     echo "<td>".$services[$i]->getOrder()->getId()."</td>";
                     echo "<td>".$services[$i]->getService()->getType()."</td>";
                     echo "<td>".$services[$i]->getSite()->getName()."</td>";
-                    echo "<td>".$services[$i]->getUser()->getName()."</td>";
+                    echo "<td>".$services[$i]->getUser()->getName()." ".$services[$i]->getUser()->getLastname()."</td>";
                     echo "<td>".$services[$i]->getDateForecast()."</td>";
                     echo "<td>".$services[$i]->getDateStartP()."</td>";
 
