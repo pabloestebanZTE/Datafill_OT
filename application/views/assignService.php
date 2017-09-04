@@ -171,7 +171,7 @@
                          <li class="cam"><a href="#contact-sec">Contactos</a>
                         </li>
                         </li>
-                         <li class="cam"><a href="#">Salir</a>
+                         <li class="cam"><a href="/Datafill_OT/index.php/welcome/index">Salir</a>
                         </li>
                     </ul>
                 </div>
@@ -208,11 +208,11 @@
       </div>
       <!-- Text input-->
       <div class="form-group">
-        <label class="col-md-3 control-label">ID Claro</label>
+        <label class="col-md-3 control-label">ID Actividad</label>
         <div class="col-md-8 inputGroupContainer">
           <div class="input-group">
             <span class="input-group-addon"><i class="glyphicon glyphicon-edit"></i></span>
-            <input  name="idActividad" placeholder="ID Claro" class="form-control" required type="text">
+            <input  name="idActividad" placeholder="ID Actividad" class="form-control" required type="text">
           </div>
         </div>
       </div>
@@ -225,7 +225,6 @@
             <select name="tipo" id="tipo" class="form-control selectpicker" onchange="editText()"; required>
               <option value="" >Seleccione tipo de actividad</option>
               <?php
-                echo "<br><br><br><br>o.o";
                 if(isset($services)){
                   for($i =0; $i < count($services); $i++){
                     echo "<option value='".$services[$i]->getId()."'>".$services[$i]->getType()."</option>";
@@ -281,19 +280,19 @@
             </div>
           </div>
         </div>
-        <!-- PB input-->
+        <!-- EB input-->
         <div class="form-group">
-          <label class="col-md-3 control-label">Nombre PB</label>
+          <label class="col-md-3 control-label">Nombre EB</label>
           <div class="col-md-8 inputGroupContainer">
             <div class="input-group">
               <span class="input-group-addon"><i class="glyphicon glyphicon-edit"></i></span>
-              <input type='text' class="form-control" onKeyUp='sel(this.value)' placeholder='Digite el nombre del PB' required>
+              <input type='text' class="form-control" onKeyUp='sel(this.value)' placeholder='Digite el nombre del EB' required>
             </div>
           </div>
         </div>
         <!-- Select Basic -->
         <div class="form-group">
-          <label class="col-md-3 control-label">PB</label>
+          <label class="col-md-3 control-label">EB</label>
           <div class="col-md-8 selectContainer">
             <div class="input-group">
               <span class="input-group-addon"><i class="glyphicon glyphicon-pushpin"></i></span>
@@ -397,6 +396,29 @@
 </div>
 
 <!--          container ------------>
+
+
+<div class="container">
+  <form class="well form-horizontal" action=" " method="post"  id="assignService" name="assignServie" enctype="multipart/form-data">
+          <center>
+            <legend >Agendar con Excel</legend>
+          </center>
+    <div class="form-group">
+        <label class="col-md-4 control-label">Elegir Archivo</label>
+          <div class="col-md-4 inputGroupContainer">        
+            <div class="input-group">
+              <span class="input-group-addon"><i class="glyphicon glyphicon-paperclip"></i></span>
+              <input  name="idarchivo" class="form-control"  type="file">
+            </div>
+          </div>
+     
+           <div class="col-md-4">
+               <button type="submit" class="btn btn-primary" onclick = "enableSelect();this.form.action = 'http://localhost/Datafill_OT/index.php/SpecificService/upExcel'">Crear <span class="glyphicon glyphicon-ok"></span></button>
+          </div>
+    </div> 
+  </form>
+</div>
+
 
   <!--calendar-->
   <div id='calendarDiv'>

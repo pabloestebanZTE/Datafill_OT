@@ -49,6 +49,7 @@
           $sql = "INSERT INTO ot (K_IDORDER, N_NAME, D_DATE_CREATION)
             values ('".$order->getId()."', '".$order->getName()."', STR_TO_DATE('".$order->getCreationDate()."', '%Y-%m-%d'));";
           if ($session != "false"){
+            print_r($sql);
             $result = $session->query($sql);
           }
         }

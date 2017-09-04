@@ -19,7 +19,8 @@
 		public $ingSol;
 		public $proyecto;
 		public $estado;
-		public $CRQ;
+        public $CRQ;
+        
 
 		public function __construct(){
 
@@ -44,6 +45,10 @@
 		public function getClaroDescription(){return $this->claroDescription;}
 
     public function setClaroDescription($claroDescription){$this->claroDescription = $claroDescription;}
+
+    public function getCierreDescription(){return $this->cierreDescription;}//CAMILO
+
+    public function setCierreDescription($cierreDescription){$this->cierreDescription = $cierreDescription;}//CAMILO
 
     public function getDateStartP(){return $this->dateStartP;}
 
@@ -119,6 +124,17 @@
 			$this->setProyecto($proyecto);
 			$this->setEstado($estado);
 			$this->setCRQ($CRQ);
-    }
+        }
+//camilo--------------------------------------------------------------------------------------
+        public function closeService($dateStartR, $dateFinishR, $CRQ, $estado, $cierreDescription){
+            $this->setDateStartR($dateStartR);
+            $this->setDateFinishR($dateFinishR);
+            $this->setCRQ($CRQ);
+            $this->setEstado($estado);
+            $this->setCierreDescription($cierreDescription);
+        }
+//-----------------------------------------------------------------------------------------------
+
+
 	}
 ?>

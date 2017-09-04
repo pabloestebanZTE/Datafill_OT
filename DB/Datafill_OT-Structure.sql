@@ -94,6 +94,7 @@ create table SPECIFIC_SERVICE
    N_ING_SOL            varchar(100),
    N_PROYECTO           varchar(100),
    N_CRQ                varchar(50),
+   N_CIERRE_DESCRIPTION varchar(500),
    primary key (K_ID_SP_SERVICE)
 );
 

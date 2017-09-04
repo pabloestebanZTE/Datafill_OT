@@ -46,7 +46,7 @@
                          <li class="cam"><a href="#contact-sec">Contactos</a>
                         </li>
                         </li>
-                         <li class="cam"><a href="#">Salir</a>
+                         <li class="cam"><a href="/Datafill_OT/index.php/welcome/index">Salir</a>
                         </li>
                     </ul>
                 </div>
