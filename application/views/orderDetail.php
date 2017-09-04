@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -54,7 +55,7 @@
                          <li class="cam"><a href="#contact-sec">Contactos</a>
                         </li>
                         </li>
-                         <li class="cam"><a href="#">Salir</a>
+                         <li class="cam"><a href="/Datafill_OT/index.php/welcome/index">Salir</a>
                         </li>
                     </ul>
                 </div>
@@ -64,7 +65,7 @@
 <!--      fin header         -->
      <br><br><br>
   <div id="container">
-    <form>
+    <form action=" " method="post"  id="assignService" name="assignServie">
     <?php
       echo "<div class='whole' style='margin: 8px'>";
         echo "<div class='type'>";
@@ -78,7 +79,9 @@
 
       echo "<div class='content'>";
         echo "<ul>";
-          echo "<li>Ingeniero: ".$service->getUser()->getName()." ".$service->getUser()->getLastname()."</li>";
+          echo "<div class='header'>Ing solicitante: ".$service->getIngSol()."</div>";
+          echo "<div class='header'>Proyecto: ".$service->getProyecto()."</div>";
+          echo "<div class='header'>Ing Asignado: ".$service->getUser()->getName()." ".$service->getUser()->getLastname()."</div>";
           echo "<li>Orden:    ".$service->getOrder()->getId()."</li>";
           echo "<li>ID Actividad:    ".$service->getIdClaro()."</li>";
           echo "<li>Estación Base:    ".$service->getSite()->getName()."</li>";
@@ -100,7 +103,7 @@
           echo "<div class='content'>";
             echo "<ul>";
               echo "<li>Tipo:    ".$service->getService()->getType()."</li>";
-              echo "<li>Gerencia Tarea:    ".$service->getService()->getGerency()."</li>";
+              echo "<div class='header'>Gerencia Tarea:    ".$service->getService()->getGerency()."</div>";
               echo "<div class='header'>Descripción Tarea:    ".$service->getService()->getDescription()."</div>";
               echo "<div class='header'>Alcance:    ".$service->getService()->getScope()."</div>";
             echo "</ul>";
@@ -120,36 +123,59 @@
           echo "</div>";
           echo "<div class='content'>";
             echo "<ul>";
+              echo "<li>Fecha Creacion:    ".$service->getDateCreation()."</li>";
               echo "<li>Fecha Inicio:    ".$service->getDateStartP()."</li>";
               echo "<li>Fecha Fin:     ".$service->getDateFinishP()."</li>";
-              echo "<div id='ultimate'>";
-                echo "<p>Fecha inicio real</p>";
-              echo "</div>";
-                echo "<li><input type='date' name='fInicior' id='fInicior' class='form-control' value='' placeholder='Fecha Inicio Real' required style='display: center; color: white; background-color: #333;'></li>";
-                echo "<div id='ultimate'>";
-                  echo "<p>Fecha fin real</p>";
-                echo "</div>";
-              echo "<li><input type='date' name='fFinr' id='fFinr' class='form-control' value='' placeholder='Fecha Fin Real' required style='display: center; color: white; background-color: #333;'></li>";
+              echo "<li>Fecha Inicio Real:     ".$service->getDateStartR()."</li>";
+              echo "<li>Fecha Fin Real:     ".$service->getDateFinishR()."</li>";
+              echo "<li>Fecha Forecast:     ".$service->getDateForecast()."</li>";
             echo "</ul>";
           echo "</div>";
         echo "</div>";
       echo "</div>";
+//-----------------------------------------------------------------------------
 
-      echo "<div class='whole' style='margin-left: 28px'>";
+      echo "<div class='whole' style='margin: 8px'>";
         echo "<div class='type'>";
           echo "<p>Observaciones</p>";
+        echo "</div>";
+        echo "<div class='plan'>";
+          echo "<div class='header'>";
+            echo "<span></span><img src='/Datafill_OT/assets/img/comentarios.png'><sup></sup>";
+            echo "<p class='month'></p>";
+          echo "</div>";
+          echo "<div class='content'>";
+            echo "<ul>";
+              echo "<div class='header'>Observaciones Actividad: ".$service->getClaroDescription()."</div>";
+              echo "<div class='header'>Observaciones Coordinador: ".$service->getDescription()."</div>";
+              echo "<div class='header'>Observaciones de Cierre: ".$service->getCierreDescription()."</div>";
+            echo "</ul>";
+          echo "</div>";
+          echo "<div class='content'>";   
+          echo "</div>";
+        echo "</div>";
+      echo "</div>";
+
+      //---------------------------------------------
+
+      if ($service->getCRQ() == "" ) {
+      echo "<div class='whole' style='margin: 8px'>";
+        echo "<div class='type'>";
+          echo "<p>Datos cierre</p>";
         echo "</div>";
         echo "<div class='plan'>";
           echo "<div class='header'>";
             echo "<span></span><img src='/Datafill_OT/assets/img/editar.png'><sup></sup>";
             echo "<p class='month'></p>";
           echo "</div>";
-          echo "<div class='content'>";
-            echo "<ul>";
-              echo "<li>Observaciones Actividad: ".$service->getClaroDescription()."</li>";
-              echo "<li>Observaciones Coordinador: ".$service->getDescription()."</li>";
-            echo "</ul>";
-          echo "</div>";
+              echo "<div id='ultimate'>";
+                echo "<p>Fecha inicio real</p>";
+              echo "</div>";
+                echo "<input type='date' name='fInicior' id='fInicior' class='form-control' value='' placeholder='Fecha Inicio Real' required style='display: center; color: white; background-color: #333;'>";
+                echo "<div id='ultimate'>";
+                  echo "<p>Fecha fin real</p>";
+                echo "</div>";
+              echo "<input type='date' name='fFinr' id='fFinr' class='form-control' value='' placeholder='Fecha Fin Real' required style='display: center; color: white; background-color: #333;'>";
           echo "<div class='content'>";
             echo "<div id='ultimate'>";
               echo "<p>CRQ</p>";
@@ -165,7 +191,8 @@
             echo "<ul>";
               echo "<select name='state' id='state' class='form-control' required style='display: center; color: white; background-color: #333;'>";
                 echo "<option value=''>Seleccione Estado</option>";
-                echo "<option value=''>Seleccione Estado</option>";
+                echo "<option value='Cerrado'>Cerrado</option>";
+                echo "<option value='Cancelado'>Cancelado</option>";
               echo "</select>";
             echo "</ul>";
           echo "</div>";
@@ -174,15 +201,42 @@
               echo "<p>Observaciones de cierre</p>";
             echo "</div>";
              echo "<ul>";
-               echo "<textarea class='form-control' name='observaciones' placeholder='Observaciones' style='display: center; color: white; background-color: #333;'>";
+               echo "<textarea class='form-control' name='observacionesCierre' placeholder='observacionesCierre' style='display: center; color: white; background-color: #333;'>";
                echo "</textarea>";
              echo "</ul>";
           echo "</div>";
         echo "</div>";
-        echo "<a class='boton_personalizado' href='#'>CERRAR <i class='glyphicon glyphicon-share-alt'></i></a>";
+        echo "<input name='keyId' value='".$service->getId()."' hidden>";
+        echo "<input name='idService' value='".$service->getIdClaro()."' hidden>";
+        echo "<input class='boton_personalizado' value='cerrar &raquo' type='submit' onclick = \"this.form.action = 'http://localhost/Datafill_OT/index.php/SpecificService/updateSpectService' \">";
       echo "</div>";
+      }
+
+      echo "<div class='whole' style='margin: 8px'>";
+        echo "<div class='type' id='percho'>";
+          echo "<p>estado</p>";
+        echo "</div>";
+        echo "<div id='".$service->getEstado()."'>";
+          echo "<p>".$service->getEstado()."</p>";
+        echo "</div>";
+        echo "<div class='plan'>";          
+        echo "</div>";
+      echo "</div>";
+      
+      echo "<div class='whole' style='margin: 8px'>";
+          echo "<div class='type' style='margin-top: 15px' id='percho'>";
+          echo "<p>CRQ</p>";
+        echo "</div>";         
+        echo "<div id='".$service->getEstado()."'>";
+          echo "<p>".$service->getCRQ()."</p>";
+        echo "</div>";
+
+
     ?>
     </form>
   </div><br><br>
+  <div class="for-full-back " id="footer">
+      Zolid By ZTE Colombia | All Right Reserved
+  </div>
 </body>
 </html>

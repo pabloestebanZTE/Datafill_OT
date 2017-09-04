@@ -82,13 +82,33 @@
                 $newOrder->createOrder($service->getOrder(), "", $service->getDateCreation());
                 $this->dao_order_model->insertOrder($newOrder);
               }
-              $sql2 = "INSERT INTO specific_service (K_ID_SP_SERVICE, K_IDUSER, K_IDSERVICE, K_IDSITE, K_IDORDER, D_DATE_START_P, D_DATE_FINISH_P, D_FORECAST, K_IDCLARO, N_DESCRIPTION, D_DATE_CREATION, N_ING_SOL, N_ESTADO, N_PROYECTO, N_CRQ, N_CLARO_DESCRIPTION)
-                values (".$row['count(*)'].", ".$service->getUser().", ".$service->getService().", ".$service->getSite()." , '".$service->getOrder()."', STR_TO_DATE('".$service->getDateStartP()."', '%Y-%m-%d'), STR_TO_DATE('".$service->getDateFinishP()."', '%Y-%m-%d'), STR_TO_DATE('".$service->getDateForecast()."', '%Y-%m-%d'), '".$service->getIdClaro()."', '".$service->getDescription()."', STR_TO_DATE('".$service->getDateCreation()."', '%Y-%m-%d'), '".$service->getIngSol()."', '".$service->getEstado()."', '".$service->getProyecto()."', '".$service->getCRQ()."', '".$service->getClaroDescription()."');";
+              $sql2 = "INSERT INTO specific_service (K_IDUSER, K_IDSERVICE, K_IDSITE, K_IDORDER, D_DATE_START_P, D_DATE_FINISH_P, D_FORECAST, K_IDCLARO, N_DESCRIPTION, D_DATE_CREATION, N_ING_SOL, N_ESTADO, N_PROYECTO, N_CRQ, N_CLARO_DESCRIPTION)
+                values (".$service->getUser().", ".$service->getService().", ".$service->getSite()." , '".$service->getOrder()."', STR_TO_DATE('".$service->getDateStartP()."', '%Y-%m-%d'), STR_TO_DATE('".$service->getDateFinishP()."', '%Y-%m-%d'), STR_TO_DATE('".$service->getDateForecast()."', '%Y-%m-%d'), '".$service->getIdClaro()."', '".$service->getDescription()."', STR_TO_DATE('".$service->getDateCreation()."', '%Y-%m-%d'), '".$service->getIngSol()."', '".$service->getEstado()."', '".$service->getProyecto()."', '".$service->getCRQ()."', '".$service->getClaroDescription()."');";               
               $result = $session->query($sql2);
             } else {
               $answer = "Error de informacion";
             }
           }
+
+ //CAMILO-------------------------------------------------INSERTA DATOS DE EXCEL           
+          public function insertFromExcel($activity){
+            $dbConnection = new configdb_model();
+            $session = $dbConnection->openSession();            
+              $sql = "INSERT INTO specific_service (K_IDCLARO, N_DESCRIPTION, N_CLARO_DESCRIPTION, D_DATE_CREATION, D_FORECAST, K_IDORDER, K_IDSITE, K_IDSERVICE, N_ING_SOL, N_PROYECTO, N_ESTADO) values (".$activity->getIdClaro().",'".$activity->getDescription()."','".$activity->getClaroDescription()."', STR_TO_DATE('".$activity->getDateCreation()."','%m-%d-%Y'), STR_TO_DATE('".$activity->getDateForecast()."','%m-%d-%Y'),".$activity->getOrder().",".$activity->getSite().",".$activity->getService().",'".$activity->getIngSol()."','".$activity->getProyecto()."','".$activity->getEstado()."');";
+                $session->query($sql);
+              print_r($sql);
+            }
+          
+
+//CAMILO-------------------------------------------------INSERTA DATOS DE CIERRE
+          public function updateClose($close){
+           $dbConnection = new configdb_model();
+           $session = $dbConnection->openSession();
+           $sql = "UPDATE specific_service SET D_DATE_START_R = STR_TO_DATE('".$close->getDateStartR()."', '%Y-%m-%d'),  D_DATE_FINISH_R = STR_TO_DATE('".$close->getDateStartR()."', '%Y-%m-%d'),  N_ESTADO = '".$close->getEstado()."', N_CRQ = '".$close->getCRQ()."', N_CIERRE_DESCRIPTION = '".$close->getCierreDescription()."' WHERE K_IDCLARO = '".$close->getIdClaro()."'AND K_ID_SP_SERVICE = '".$close->getId()."';";
+           $session->query($sql);
+          }
+//---------------------------------------------------------------------------------------
+
 
           public function getAllServicesS(){
             $dbConnection = new configdb_model();
@@ -100,7 +120,7 @@
                 $i = 0;
                 while($row = $result->fetch_assoc()) {
                   $sService = new service_spec_model;
-                  $sService->createServiceS($row['K_ID_SP_SERVICE'], $row['N_DURATION'], $row['K_IDCLARO'], $row['N_DESCRIPTION'], $row['D_DATE_START_P'], $row['D_DATE_FINISH_P'], $row['D_DATE_CREATION'], $row['D_FORECAST'], $this->dao_order_model->getOrderById($row['K_IDORDER']), $this->dao_site_model->getSitePerId($row['K_IDSITE']), $this->getServicePerId($row['K_IDSERVICE']), $this->dao_user_model->getUserById($row['K_IDUSER']), $row['N_CLARO_DESCRIPTION'], $row['N_INGENIERO_SOL'],$row['N_PROYECTO'], $row['N_ESTADO'], $row['N_CRQ']);
+                  $sService->createServiceS($row['K_ID_SP_SERVICE'], $row['N_DURATION'], $row['K_IDCLARO'], $row['N_DESCRIPTION'], $row['D_DATE_START_P'], $row['D_DATE_FINISH_P'], $row['D_DATE_CREATION'], $row['D_FORECAST'], $this->dao_order_model->getOrderById($row['K_IDORDER']), $this->dao_site_model->getSitePerId($row['K_IDSITE']), $this->getServicePerId($row['K_IDSERVICE']), $this->dao_user_model->getUserById($row['K_IDUSER']), $row['N_CLARO_DESCRIPTION'], $row['N_ING_SOL'],$row['N_PROYECTO'], $row['N_ESTADO'], $row['N_CRQ']);
                   $sService->setDateFinishR($row['D_DATE_FINISH_R']);
                   $sService->setDateStartR($row['D_DATE_START_R']);
                   $answer[$i] = $sService;
@@ -125,6 +145,7 @@
                    $sService->createServiceS($row['K_ID_SP_SERVICE'], $row['N_DURATION'], $row['K_IDCLARO'], $row['N_DESCRIPTION'], $row['D_DATE_START_P'], $row['D_DATE_FINISH_P'], $row['D_DATE_CREATION'], $row['D_FORECAST'], $this->dao_order_model->getOrderById($row['K_IDORDER']), $this->dao_site_model->getSitePerId($row['K_IDSITE']), $this->getServicePerId($row['K_IDSERVICE']), $this->dao_user_model->getUserById($row['K_IDUSER']), $row['N_CLARO_DESCRIPTION'], $row['N_ING_SOL'], $row['N_PROYECTO'], $row['N_ESTADO'], $row['N_CRQ']);
                      $sService->setDateFinishR($row['D_DATE_FINISH_R']);
                      $sService->setDateStartR($row['D_DATE_START_R']);
+                     $sService->setCierreDescription($row['N_CIERRE_DESCRIPTION']); 
                   }
               } else{
                   $sService = "Error de informacion";

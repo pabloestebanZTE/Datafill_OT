@@ -80,10 +80,12 @@
           $sql = "SELECT * FROM user WHERE K_IDUSER = ".$idUser.";";
           if ($session != "false"){
             $result = $session->query($sql);
-            $row = $result->fetch_assoc();
-            $user = new user_model;
-            $user->createUser($row['K_IDUSER'], $row['N_NAME'], $row['N_LASTNAME'], $row['N_PHONE'], $row['N_CELPHONE'], $row['N_MAIL']);
-            $answer = $user;
+             if ($result->num_rows > 0) {
+                $row = $result->fetch_assoc();  
+                $user = new user_model;
+                $user->createUser($row['K_IDUSER'], $row['N_NAME'], $row['N_LASTNAME'], $row['N_PHONE'], $row['N_CELPHONE'], $row['N_MAIL']);
+                $answer = $user;              
+             }
           } else {
             $answer = "Error de BD";
           }
