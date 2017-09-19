@@ -90,16 +90,67 @@
             }
           }
 
- //CAMILO-------------------------------------------------INSERTA DATOS DE EXCEL           
+ //CAMILO-------------------------------------------------INSERTA DATOS DE EXCEL  
+
           public function insertFromExcel($activity){
             $dbConnection = new configdb_model();
-            $session = $dbConnection->openSession();            
-              $sql = "INSERT INTO specific_service (K_IDCLARO, N_DESCRIPTION, N_CLARO_DESCRIPTION, D_DATE_CREATION, D_FORECAST, K_IDORDER, K_IDSITE, K_IDSERVICE, N_ING_SOL, N_PROYECTO, N_ESTADO) values (".$activity->getIdClaro().",'".$activity->getDescription()."','".$activity->getClaroDescription()."', STR_TO_DATE('".$activity->getDateCreation()."','%m-%d-%Y'), STR_TO_DATE('".$activity->getDateForecast()."','%m-%d-%Y'),".$activity->getOrder().",".$activity->getSite().",".$activity->getService().",'".$activity->getIngSol()."','".$activity->getProyecto()."','".$activity->getEstado()."');";
-                $session->query($sql);
-              print_r($sql);
-            }
-          
+            $session = $dbConnection->openSession();
+            $sql = "SELECT count(*) FROM specific_service;";
+            $count = 0;
+            if ($session != "false"){
+              $result = $session->query($sql);
+              $row = $result->fetch_assoc();
+              $order = $this->dao_order_model->getOrderById($activity->getOrder());
+              if($order->getId() == ""){
+                $newOrder = new order_model;
+                $newOrder->createOrder($activity->getOrder(), "", $activity->getDateCreation());
+                $this->dao_order_model->insertOrder($newOrder);
+              }
+               $timezone = date_default_timezone_get();
+               $date = date('m-d-Y', time());
 
+               $sql3 = "SELECT  COUNT(*) FROM specific_service where K_IDCLARO = ".$activity->getIdClaro().";";
+               $result = $session->query($sql3);
+               $row = $result->fetch_assoc();
+               if($row['COUNT(*)'] == 0){
+                  $sql2 = "INSERT INTO specific_service (K_IDUSER, K_IDCLARO, N_DESCRIPTION, N_CLARO_DESCRIPTION, D_DATE_CREATION, D_FORECAST, K_IDORDER, K_IDSITE, K_IDSERVICE, N_ING_SOL, N_PROYECTO, N_ESTADO, N_CANTIDAD, N_REGION, D_DATE_START_P) values (".$activity->getId().", ".$activity->getIdClaro().",'$activity->getDescription(), en el sao service_model no deja entrar la descripcion por alguna razon', '$activity->getClaroDescription(), otra descrtipcion, dao_service_model insertFromExcel', STR_TO_DATE('".$activity->getDateCreation()."','%d-%m-%Y'), STR_TO_DATE('".$activity->getDateForecast()."','%m-%d-%Y'),".$activity->getOrder().",".$activity->getSite().",".$activity->getService().",'".$activity->getIngSol()."','".$activity->getProyecto()."','".$activity->getEstado()."' ,".$activity->getQuantity().", '".$activity->getRegion()."',STR_TO_DATE('".$date."','%m-%d-%Y'));";
+                    $result = $session->query($sql2);
+                    $count++;
+               } 
+            } else {
+              $answer = "Error de informacion";
+            }
+            return $count;
+          }
+//CAMILO--------------------------------------------Cancela con excel
+          public function CancelFromExcel($cancel){
+            $dbConnection = new configdb_model();
+            $session = $dbConnection->openSession();
+            if ($session != "false"){
+                if ($cancel->getIdClaro() != "") {                 
+                  $sql = "UPDATE specific_service SET N_ESTADO = '".$cancel->getEstado()."' WHERE K_IDCLARO = '".$cancel->getIdClaro()."';";
+                   $session->query($sql);
+                }   
+
+            } else {
+              $answer = "Error de informacion";
+             }
+          }
+
+//CAMILO--------------------------------------------Cancela con excel
+          public function executeFromExcel($executed){
+            $dbConnection = new configdb_model();
+            $session = $dbConnection->openSession();
+            if ($session != "false"){
+                if ($executed->getIdClaro() != "") {                 
+                  $sql = "UPDATE specific_service SET N_ESTADO = '".$executed->getEstado()."' WHERE K_IDCLARO = '".$executed->getIdClaro()."';";
+                   $session->query($sql);
+                }   
+
+            } else {
+              $answer = "Error de informacion";
+             }
+          }          
 //CAMILO-------------------------------------------------INSERTA DATOS DE CIERRE
           public function updateClose($close){
            $dbConnection = new configdb_model();
@@ -152,5 +203,5 @@
               }
             return $sService;
           }
-    }
+      }
 ?>

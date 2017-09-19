@@ -93,6 +93,8 @@ create table SPECIFIC_SERVICE
    N_ESTADO             varchar(20),
    N_ING_SOL            varchar(100),
    N_PROYECTO           varchar(100),
+   N_REGION             varchar(20),
+   N_CANTIDAD           varchar(3);
    N_CRQ                varchar(50),
    N_CIERRE_DESCRIPTION varchar(500),
    primary key (K_ID_SP_SERVICE)
@@ -161,3 +163,7 @@ alter table USER_SKILL add constraint FK_USER_SKILL foreign key (K_IDUSER)
 
 alter table USER_SKILL add constraint FK_USER_SKILL2 foreign key (K_IDSKILL)
       references SKILL (K_IDSKILL) on delete restrict on update restrict;
+
+alter table specific_service add n_region varchar(20);
+alter table specific_service add n_cantidad varchar(3);
+alter table specific_service MODIFY COLUMN  K_ID_SP_SERVICE int not null AUTO_INCREMENT;

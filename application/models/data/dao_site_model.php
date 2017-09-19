@@ -40,5 +40,12 @@
           $site->createSite($row['K_IDSITE'], $row['N_NAME']);
           return $site;
         }
+
+        public function insertNewSite($newSite){
+          $dbConnection = new configdb_model();
+          $session = $dbConnection->openSession();
+          $sql = "INSERT INTO site (K_IDSITE, N_NAME) values (".$newSite->getId().", '".$newSite->getName()."');";
+          $result = $session->query($sql);
+        }
     }
 ?>

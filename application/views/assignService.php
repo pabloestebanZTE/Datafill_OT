@@ -1,18 +1,20 @@
-<!DOCTYPE html>
+  <!DOCTYPE html>
 <html lang="en">
 <head>
     <title>Asignar Actividad</title>
         <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
         <!--   ICONO PAGINA    -->
         <link rel="icon" href="http://cellaron.com/media/wysiwyg/zte-mwc-2015-8-l-124x124.png">
         <!--   BOOTSTRAP    -->
         <link href="/Datafill_OT/assets/css/bootstrap.css" rel="stylesheet" />
         <link href="/Datafill_OT/assets/css/font-awesome.min.css" rel="stylesheet" />
+        <link href="/Datafill_OT/assets/plugins/datatables/dataTables.bootstrap.css" rel="stylesheet">
         <!--   HEADER CSS    -->
         <link href="/Datafill_OT/assets/css/styleHeader.css" rel="stylesheet" />
         <!--   FORMULARIO CSS    -->
-        <link href="/Datafill_OT/assets/css/formStyle.css" rel="stylesheet" />
+        <link href="/Datafill_OT/assets/css/formStyle.css" rel="stylesheet" />        
         <!--   CALENDAR JS    -->
         <link rel='stylesheet' href='/Datafill_OT/assets/plugins/fullcalendar/fullcalendar.css' />
         <script src='/Datafill_OT/assets/plugins/fullcalendar/lib/jquery.min.js'></script>
@@ -86,7 +88,7 @@
                 }
               }
             }
-          }
+          }         
 
           function loadCalendar() {
             $("#calendar").remove();
@@ -179,15 +181,97 @@
         </nav>
      </header>
 <!--      fin header         -->
-     <br><br>
+     <br> 
 
 <div class="container">
+  <form class="well form-horizontal" action=" " method="post"  id="assignService" name="assignServie" enctype="multipart/form-data">
+   <fieldset>
+      <legend >Asignacion con Excel</legend>    
+    <!-- Text input-->
+    <div class="form-group">
+        <label class="col-md-4 control-label">Elegir Archivo</label>
+          <div class="col-md-6 inputGroupContainer">        
+            <div class="input-group">
+              <span class="input-group-addon"><i class="glyphicon glyphicon-paperclip"></i></span>
+              <input  name="idarchivo" class="form-control"  type="file">
+            </div>
+          </div>     
+    </div> 
+      <center>
+         <button type="submit" class="btn btn-primary" onclick = "enableSelect();this.form.action = 'http://localhost/Datafill_OT/index.php/SpecificService/viewExcel?option=1'">Asignacion  <span class="glyphicon glyphicon-ok"></span></button>
+      </center>  
+
+  
+      <!-- Select Basic 
+                <a class="btn btn-primary" onclick = "cloneEng()" id="clonar" >
+        <span class="glyphicon glyphicon-plus" aria-hidden="true"></span></a>
+         
+      <div class="form-group" id="inge"> 
+        <label class="col-md-4 control-label">Ingeniero</label>
+          <div class="col-md-6 selectContainer">
+            <div class="input-group">
+               <span class="input-group-addon"><i class="glyphicon glyphicon-user"></i></span>
+                <select name="inge" class="form-control selectpicker" >
+                  <option value=" " >Seleccione Ingeniero</option>
+                  <option>ingeniero</option>
+                  <option>ingeniero</option>
+                </select>
+
+            </div>
+          </div>          
+      </div>
+             /.row -->
+   </fieldset>
+  </form>
+</div>
+
+<div class="container">
+  <form class="well form-horizontal" action=" " method="post"  id="assignService" name="assignServie" enctype="multipart/form-data">
+   <fieldset>
+      <legend >Cancelación con Excel</legend>    
+    <!-- Text input-->
+    <div class="form-group">
+        <label class="col-md-4 control-label">Elegir Archivo</label>
+          <div class="col-md-6 inputGroupContainer">        
+            <div class="input-group">
+              <span class="input-group-addon"><i class="glyphicon glyphicon-paperclip"></i></span>
+              <input  name="idarchivo" class="form-control"  type="file">
+            </div>
+          </div>     
+    </div> 
+      <center>
+         <button type="submit" class="btn btn-primary" onclick = "enableSelect();this.form.action = 'http://localhost/Datafill_OT/index.php/SpecificService/viewExcel?option=2'">Cancelación <span class="glyphicon glyphicon-ok"></span></button>
+      </center>  
+   </fieldset>
+  </form>
+</div>
+
+<div class="container">
+  <form class="well form-horizontal" action=" " method="post"  id="assignService" name="assignServie" enctype="multipart/form-data">
+   <fieldset>
+      <legend >Ejecución con Excel</legend>    
+    <!-- Text input-->
+    <div class="form-group">
+        <label class="col-md-4 control-label">Elegir Archivo</label>
+          <div class="col-md-6 inputGroupContainer">        
+            <div class="input-group">
+              <span class="input-group-addon"><i class="glyphicon glyphicon-paperclip"></i></span>
+              <input  name="idarchivo" class="form-control"  type="file">
+            </div>
+          </div>     
+    </div> 
+      <center>
+         <button type="submit" class="btn btn-primary" onclick = "enableSelect();this.form.action = 'http://localhost/Datafill_OT/index.php/SpecificService/viewExcel?option=3'">Ejecución  <span class="glyphicon glyphicon-ok"></span></button>
+      </center>  
+   </fieldset>
+  </form>
+</div>
+<!--
+<div class="container">
   <form class="well form-horizontal" action=" " method="post"  id="assignService" name="assignServie">
-    <center>
       <legend >Asignar Actividad</legend>
-    </center>
     <fieldset class="col-md-6 control-label">
-      <!-- Select Basic -->
+      <!-- Select Basic --
       <div class="form-group">
         <label class="col-md-3 control-label">Orden</label>
           <div class="col-md-8 selectContainer">
@@ -206,7 +290,7 @@
           </div>
         </div>
       </div>
-      <!-- Text input-->
+      <!-- Text input--
       <div class="form-group">
         <label class="col-md-3 control-label">ID Actividad</label>
         <div class="col-md-8 inputGroupContainer">
@@ -216,7 +300,7 @@
           </div>
         </div>
       </div>
-      <!-- Select Basic -->
+      <!-- Select Basic --
       <div class="form-group">
         <label class="col-md-3 control-label">Tipo</label>
           <div class="col-md-8 selectContainer">
@@ -235,7 +319,7 @@
           </div>
         </div>
       </div>
-      <!--text informacion-->
+      <!--text informacion--
       <div class="form-group">
         <label class="col-md-3 control-label">Gerencia Tarea</label>
          <div class="col-md-8 inputGroupContainer">
@@ -245,7 +329,7 @@
            </div>
         </div>
       </div>
-      <!--text informacion-->
+      <!--text informacion--
       <div class="form-group">
         <label class="col-md-3 control-label">Descripción Tarea</label>
          <div class="col-md-8 inputGroupContainer">
@@ -255,7 +339,7 @@
            </div>
         </div>
       </div>
-      <!--text informacion-->
+      <!--text informacion--
       <div class="form-group">
         <label class="col-md-3 control-label">Alcance Tarea</label>
          <div class="col-md-8 inputGroupContainer">
@@ -268,9 +352,9 @@
     </fieldset>
     <!--  fin seccion izquierda form---->
 
-    <!--  inicio seccion derecha form---->
+    <!--  inicio seccion derecha form----
       <fieldset >
-        <!-- Input Orden -->
+        <!-- Input Orden --
         <div class="form-group">
           <label class="col-md-3 control-label">ID Orden</label>
             <div class="col-md-8 selectContainer">
@@ -280,7 +364,7 @@
             </div>
           </div>
         </div>
-        <!-- EB input-->
+        <!-- EB input--
         <div class="form-group">
           <label class="col-md-3 control-label">Nombre EB</label>
           <div class="col-md-8 inputGroupContainer">
@@ -290,13 +374,13 @@
             </div>
           </div>
         </div>
-        <!-- Select Basic -->
+        <!-- Select Basic --
         <div class="form-group">
           <label class="col-md-3 control-label">EB</label>
           <div class="col-md-8 selectContainer">
             <div class="input-group">
               <span class="input-group-addon"><i class="glyphicon glyphicon-pushpin"></i></span>
-              <select name="sitio" id="sitio" class="form-control selectpicker" disabled required>
+              <select name="sitio" id="sitio" class="form-control selectpicker" required disabled>
                 <option value="" ></option>
                 <?php
                   if (isset($sites)) {
@@ -307,7 +391,7 @@
             </div>
           </div>
         </div>
-        <!-- Date input-->
+        <!-- Date input--
         <div class="form-group">
           <label class="col-md-3 control-label">Fecha Forecast</label>
             <div class="col-md-8 inputGroupContainer">
@@ -317,7 +401,7 @@
               </div>
           </div>
         </div>
-        <!-- Text area -->
+        <!-- Text area --
         <div class="form-group">
           <label class="col-md-3 control-label">Observaciones Actividad</label>
             <div class="col-md-8 inputGroupContainer">
@@ -327,7 +411,7 @@
               </div>
           </div>
         </div>
-        <!-- Text area -->
+        <!-- Text area --
         <div class="form-group">
           <label class="col-md-3 control-label">Observaciones Coordinador</label>
             <div class="col-md-8 inputGroupContainer">
@@ -337,7 +421,7 @@
               </div>
           </div>
         </div>
-        <!-- Select Basic -->
+        <!-- Select Basic --
         <div class="form-group">
           <label class="col-md-3 control-label">Ingeniero</label>
             <div class="col-md-8 selectContainer">
@@ -349,7 +433,7 @@
              </div>
             </div>
         </div>
-        <!-- Select Basic -->
+        <!-- Select Basic --
         <div class="form-group">
           <label class="col-md-3 control-label">Ingeniero Solicitante</label>
             <div class="col-md-8 selectContainer">
@@ -359,7 +443,7 @@
               </div>
             </div>
         </div>
-        <!-- Select Basic -->
+        <!-- Select Basic --
         <div class="form-group">
           <label class="col-md-3 control-label">Proyecto</label>
             <div class="col-md-8 selectContainer">
@@ -369,7 +453,7 @@
               </div>
             </div>
         </div>
-        <!-- Date Plan-->
+        <!-- Date Plan--
         <div class="form-group">
           <label class="col-md-3 control-label">Fecha Asignación</label>
             <div class="col-md-8 inputGroupContainer">
@@ -380,9 +464,9 @@
           </div>
         </div>
       </fieldset>
-      <!--   fin seccion derecha---->
+      <!--   fin seccion derecha----
 
-        <!-- Button -->
+        <!-- Button --
         <center>
             <div class="form-group">
                 <label class="col-md-12 control-label"></label>
@@ -391,35 +475,8 @@
                 </div>
             </div>
         </center>
-
     </form>
-</div>
-
-<!--          container ------------>
-
-
-<div class="container">
-  <form class="well form-horizontal" action=" " method="post"  id="assignService" name="assignServie" enctype="multipart/form-data">
-          <center>
-            <legend >Agendar con Excel</legend>
-          </center>
-    <div class="form-group">
-        <label class="col-md-4 control-label">Elegir Archivo</label>
-          <div class="col-md-4 inputGroupContainer">        
-            <div class="input-group">
-              <span class="input-group-addon"><i class="glyphicon glyphicon-paperclip"></i></span>
-              <input  name="idarchivo" class="form-control"  type="file">
-            </div>
-          </div>
-     
-           <div class="col-md-4">
-               <button type="submit" class="btn btn-primary" onclick = "enableSelect();this.form.action = 'http://localhost/Datafill_OT/index.php/SpecificService/upExcel'">Crear <span class="glyphicon glyphicon-ok"></span></button>
-          </div>
-    </div> 
-  </form>
-</div>
-
-
+</div>-->
   <!--calendar-->
   <div id='calendarDiv'>
     <div id='calendar'></div><br><br><br>
