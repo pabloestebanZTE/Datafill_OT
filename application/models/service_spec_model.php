@@ -12,6 +12,7 @@
     public $dateFinishR;
     public $dateCreation;
     public $dateForecast;
+    public $dateFinishClaro;
     public $order;
     public $site;
     public $service;
@@ -20,7 +21,8 @@
 		public $proyecto;
 		public $estado;
         public $CRQ;
-        
+        public $quantity;
+        public $region;
 
 		public function __construct(){
 
@@ -37,6 +39,14 @@
     public function getIdClaro(){return $this->idClaro;}
 
     public function setIdClaro($idClaro){$this->idClaro = $idClaro;}
+
+    public function getQuantity(){return $this->quantity;}
+
+    public function setQuantity($quantity){$this->quantity = $quantity;}
+
+    public function getRegion(){return $this->region;}
+
+    public function setRegion($region){$this->region = $region;}
 
     public function getDescription(){return $this->description;}
 
@@ -65,6 +75,10 @@
     public function getDateFinishR(){return $this->dateFinishR;}
 
     public function setDateFinishR($dateFinishR){$this->dateFinishR = $dateFinishR;}
+
+    public function getDateFinishClaro(){return $this->dateFinishClaro;}
+
+    public function setDateFinishClaro($dateFinishClaro){$this->dateFinishClaro = $dateFinishClaro;}
 
     public function getDateCreation(){return $this->dateCreation;}
 
@@ -124,7 +138,7 @@
 			$this->setProyecto($proyecto);
 			$this->setEstado($estado);
 			$this->setCRQ($CRQ);
-        }
+    }
 //camilo--------------------------------------------------------------------------------------
         public function closeService($dateStartR, $dateFinishR, $CRQ, $estado, $cierreDescription){
             $this->setDateStartR($dateStartR);

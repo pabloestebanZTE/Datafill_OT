@@ -19,13 +19,23 @@
 
     <script type="text/javascript" charset="utf-8" async defer>
       //Funcion para mostrar mensaje de error de validacion de datos
-      function showMessage(){
-        swal({
-          title: "Bien hecho!",
-          text: "Actividad creada satisfactoriamente",
-          type: "success",
-          confirmButtonText: "Ok"
-        });
+      function showMessage(mensaje){
+        console.log(mensaje);
+         if(mensaje == "ok"){
+          swal({
+            title: "Bien hecho!",
+            text: "Actividad creada satisfactoriamente",
+            type: "success",
+            confirmButtonText: "Ok"
+          });
+        } else {
+          swal({
+            title: "error!",
+            text: "Actividades ya existentes ",
+            type: "error",
+            confirmButtonText: "Ok"
+          });
+        } 
       }
     </script>
     <style>
@@ -157,7 +167,11 @@
 
     <?php
       if (isset($message)) {
-        echo '<script type="text/javascript">showMessage();</script>';
+        if($message == "ok"){
+          echo '<script type="text/javascript">showMessage("ok");</script>';
+        } else {
+           echo '<script type="text/javascript">showMessage("error");</script>';
+        }
       }
     ?>
 </body>
