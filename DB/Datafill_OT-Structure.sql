@@ -137,6 +137,37 @@ create table USER_SKILL
    primary key (K_IDUSER, K_IDSKILL)
 );
 
+
+/*==============================================================*/
+/* Table: RF                                            */
+/*==============================================================*/
+create table rf
+(
+   K_ID_RF              int not null AUTO_INCREMENT,
+   D_DATE_S             date,
+   N_REQUESTED_BY       varchar(100),
+   N_STATUS             varchar(50),
+   N_TYPE               varchar(50),
+   N_ELEMENT            varchar(100),
+   D_DATE_ASSGINED      date,
+   K_ASSIGNED_TO        varchar(20) not null,
+   D_DATE_SENT          date,
+   N_FILE               varchar(100),
+   N_OBSERVATIONS       varchar(200),
+   N_MODULE             varchar(50),
+   N_ID                 varchar(10),
+   N_REMEDY             varchar(50),
+   N_ORDER_W            varchar(50),
+   D_BILL               date,
+   N_MONTH_B            varchar(20),
+   D_RAW                date,
+   D_REVIEW             date,
+   D_OTGDRT             date,
+   N_idBSS              varchar(30),
+   N_CODE              varchar(30),
+   primary key (K_ID_RF)
+);
+
 alter table SPECIFIC_SERVICE add constraint FK_ORDER_SPSERVICE foreign key (K_IDORDER)
       references OT (K_IDORDER) on delete restrict on update restrict;
 
@@ -163,6 +194,9 @@ alter table USER_SKILL add constraint FK_USER_SKILL foreign key (K_IDUSER)
 
 alter table USER_SKILL add constraint FK_USER_SKILL2 foreign key (K_IDSKILL)
       references SKILL (K_IDSKILL) on delete restrict on update restrict;
+
+alter table rf add constraint FK_USER_RF foreign key (K_ASSIGNED_TO)
+      references USER (k_iduser) on delete restrict on update restrict;
 
 alter table specific_service add n_region varchar(20);
 alter table specific_service add n_cantidad varchar(3);

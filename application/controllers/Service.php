@@ -30,6 +30,10 @@
         $answer['service']=$this->dao_service_model->getServiceById($_GET['K_ID_SP_SERVICE']);
         $this->load->view('orderDetail',$answer);
       }
+
+      public function RF(){
+        $this->load->view('updateRF');
+      }
   }
 
 ?>

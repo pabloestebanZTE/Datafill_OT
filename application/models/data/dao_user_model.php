@@ -69,8 +69,6 @@
             return $answer;
         }
 
-
-
         public function getUserByUsername($username){
           $dbConnection = new configdb_model();
           $session = $dbConnection->openSession();

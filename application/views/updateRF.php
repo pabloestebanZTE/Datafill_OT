@@ -1,4 +1,4 @@
-  <!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <title>Ejecutar con Excel</title>
@@ -13,6 +13,8 @@
         <link href="/Datafill_OT/assets/css/bootstrap.min.css" rel="stylesheet">
         <!--   HEADER CSS    -->
         <link href="/Datafill_OT/assets/css/styleHeader.css" rel="stylesheet" />
+        <!--   INPUTFILE CSS    -->
+        <link href="/Datafill_OT/assets/css/inputFile.css" rel="stylesheet" />
 
 
 </head>
@@ -57,93 +59,23 @@
         </nav>
      </header><br><br><br><br>
 <!--      fin header         -->
+<form method="post" enctype="multipart/form-data" action="http://localhost/Datafill_OT/index.php/SpecificService/upLoadRF">
+  <input type="file" name="idarchivo">
+  <p>Arrastra tu archivo aquí o haz clic en esta área.</p>
+<button type="submit" class="btn btn-primary" onclick = "enableSelect();this.form.action = 'http://localhost/Datafill_OT/index.php/SpecificService/upLoadRF'">UpLoad  <span class="glyphicon glyphicon-ok"></span></button>
+</form>
 
- <a id="bt_enviar" class="btn btn-primary col-xs-4" href="/Datafill_OT/index.php/SpecificService/saveExecuteExcel" style="background-color: green; margin-left: 55%" >Cambiar Estado<span class="glyphicon glyphicon-send" aria-hidden="true"></span></a>
-<section class="content">
-  <div class="row">
-    <div class="col-xs-10 col-xs-offset-1">
-      <div class="box">
-
-<section class="content">
-  <div class="row">
-    <div class="col-xs-10 col-xs-offset-1">
-      <div class="box">
-  <?php
-       echo "<div class='box-header'>";
-         echo "<h5>OT: ".$excel[0][0][1]."</h5><h5>Solicitante: ".$excel[0][1][1]."a</h5><h5>Fecha de Creacion: ".$excel[0][3][1]."</h5>";
-         echo "<h5>Descripción: ".$excel[0][2][1]."</h5>";
-       echo "</div>";
-       echo "<!-- /.box-header -->";
-       echo "<div class='box-body'>";
-         echo "<table id='example1' class='table table-bordered table-striped'>";
-           echo "<thead>";
-           echo "<tr>";
-             echo "<th>ID Actividad</th>";
-             echo "<th>Tipo Actividad</th>";
-             echo "<th>Cantidad</th>";
-             echo "<th>Descripcion</th>";
-             echo "<th>Estado</th>";
-             echo "<th>Fecha Ejecución</th>";
-             echo "<th>Ejecutada en inst. proveedor</th>";
-           echo "</tr>";
-           echo "</thead>";
-           echo "<tbody>";
-           for ($i=12; $i < count($excel[0]) ; $i++) { 
-             
-           echo "<tr>";
-             echo "<td>".$excel[0][$i][0]."</td>";
-             echo "<td>".$excel[0][$i][1]."</td>";
-             echo "<td>".$excel[0][$i][2]."</td>";
-             echo "<td>".$excel[0][$i][3]."</td>";
-             echo "<td>".$excel[0][$i][4]."</td>";
-             echo "<td>".$excel[0][$i][5]."</td>";
-             echo "<td>".$excel[0][$i][6]."</td>";
-           echo "</tr>";
-           }
-
-           echo "<tfoot>";
-           echo "<tr>";
-             echo "<th>ID Actividad</th>";
-             echo "<th>Tipo Actividad</th>";
-             echo "<th>Cantidad</th>";
-             echo "<th>Descripcion</th>";
-             echo "<th>Estado</th>";
-             echo "<th>Fecha Ejecución</th>";
-             echo "<th>Ejecutada en inst. proveedor</th>";
-           echo "</tr>";
-           echo "</tfoot>";
-         echo "</table>";
-       echo "</div>";
-  ?>   <!-- /.box-body -->
-      </div>
-      <!-- /.box -->
-    </div>
-    <!-- /.col -->
-  </div>
-  <!-- /.row -->
-</section>
-
-  <!--footer-->
-  <div class="for-full-back " id="footer">
-      Zolid By ZTE Colombia | All Right Reserved
-  </div>
 <script src="/Datafill_OT/assets/plugins/jQuery/jquery-2.2.3.min.js"></script>
 <!-- DataTables -->
 <script src="/Datafill_OT/assets/plugins/datatables/jquery.dataTables.min.js"></script>
 <script src="/Datafill_OT/assets/plugins/datatables/dataTables.bootstrap.min.js"></script>
 
 <script>
-  $(function () {
-    $("#example1").DataTable();
-    $('#example2').DataTable({
-      "paging": true,
-      "lengthChange": false,
-      "searching": false,
-      "ordering": true,
-      "info": true,
-      "autoWidth": false
-    });
+  $(document).ready(function(){
+  $('form input').change(function () {
+    $('form p').text(this.files.length + " file(s) selected");
   });
+});
 </script>
 
 </body>

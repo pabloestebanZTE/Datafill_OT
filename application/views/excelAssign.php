@@ -69,7 +69,6 @@
     var user = '<?php echo json_encode($eng); ?>';
         var users = JSON.parse(user);
 
-        console.log(users);
 cont++;
     var fila='<tr class="selected" id="fila'+cont+'" onclick="seleccionar(this.id);">';
  fila = fila + '<td>'+cont+'</td>';
@@ -187,7 +186,7 @@ $('#tabla tbody tr').each(function(){
                             <li><a href="#">Ver Ingenieros</a></li>
                         </ul>
                         </li>
-                        <li class="cam"><a href="#price-sec">Reportes</a>
+                        <li class="cam"><a href="/Datafill_OT/index.php/Service/RF">RF</a>
                         </li>
                          <li class="cam"><a href="#contact-sec">Contactos</a>
                         </li>
