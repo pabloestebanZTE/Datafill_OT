@@ -20,9 +20,11 @@
 		public $ingSol;
 		public $proyecto;
 		public $estado;
-        public $CRQ;
-        public $quantity;
-        public $region;
+	  public $CRQ;
+	  public $quantity;
+	  public $region;
+		public $dateStartOrder;
+		public $dateFinishZTE;
 
 		public function __construct(){
 
@@ -119,6 +121,14 @@
 		public function getCRQ(){return $this->CRQ;}
 
     public function setCRQ($CRQ){$this->CRQ = $CRQ;}
+
+		public function getDateStartOrder(){return $this->dateStartOrder;}
+
+    public function setDateStartOrder($dateStartOrder){$this->dateStartOrder = $dateStartOrder;}
+
+		public function getDateFinishZTE(){return $this->dateFinishZTE;}
+
+    public function setDateFinishZTE($dateFinishZTE){$this->dateFinishZTE = $dateFinishZTE;}
 
 		public function createServiceS($id, $duration, $idClaro, $description, $dateStartP, $dateFinishP, $dateCreation, $dateForecast, $order, $site, $service, $user, $claroDescription, $ingSol, $proyecto, $estado, $CRQ){
 			$this->setId($id);

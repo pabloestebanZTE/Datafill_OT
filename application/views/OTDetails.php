@@ -16,6 +16,8 @@
     <!--   SWEET ALERT    -->
     <link rel="stylesheet" href="/Datafill_OT/assets/plugins/sweetalert-master/dist/sweetalert.css" />
     <script type="text/javascript" src="/Datafill_OT/assets/plugins/sweetalert-master/dist/sweetalert.min.js"></script>
+    <!--  TABLA DE PRECIOS -->
+    <link rel="stylesheet" href="/Datafill_OT/assets/css/multiTable.css">
 
     <script type="text/javascript" charset="utf-8" async defer>
       //Funcion para mostrar mensaje de error de validacion de datos
@@ -101,44 +103,79 @@
       <legend >Lista de Actividades</legend>
     </center>
 
-    <table id="demo" cellpadding="0" cellspacing="0">
-        <tbody>
-            <tr>
-                <th>Id actividad</th>
-                <th>Id orden</th>
-                <th>Tipo</th>
-                <th>Estación base</th>
-                <th>Ingeniero Asignado</th>
-                <th>F. Forecast</th>
-                <th>F. Asignación</th>
-                <th>Ingeniero Solicitante</th>
-                <th>Proyecto</th>
-                <th>estado</th>
-            </tr>
-
             <?php
-              if(isset($services)){
-                  for($i = 0; $i < count($services); $i++){
-                      if ($services[$i]->getUser() != "") {
-                        echo "<tr>";
-                        echo "<td><a href='/Datafill_OT/index.php/service/serviceDetails?K_ID_SP_SERVICE=".$services[$i]->getId()."'>".$services[$i]->getIdClaro()."</a></td>";
-                        echo "<td><a href='/Datafill_OT/index.php/service/orderDetails?K_ID_ORDER=".$services[$i]->getOrder()->getId()."'>".$services[$i]->getOrder()->getId()."</a></td>";
-                    //    echo "<td>".$services[$i]->getOrder()->getId()."</td>";
-                        echo "<td>".$services[$i]->getService()->getType()."</td>";
-                        echo "<td>".$services[$i]->getSite()->getName()."</td>";
-                        echo "<td>".$services[$i]->getUser()->getName()." ".$services[$i]->getUser()->getLastname()."</td>";
-                        echo "<td>".$services[$i]->getDateForecast()."</td>";
-                        echo "<td>".$services[$i]->getDateStartP()."</td>";
-                        echo "<td>".$services[$i]->getIngSol()."</td>";
-                        echo "<td>".$services[$i]->getProyecto()."</td>";
-                        echo "<td>".$services[$i]->getEstado()."</td>";
-                        echo "</tr>";
+            echo "<div id='pricing-table' class='clear'>";
+              echo "<div class='plan' id='most-popular'>";
+                  echo "<h3>Información Orden<span><img src='/Datafill_OT/assets/img/rsz_actividades.png'/></span></h3>";
+                  echo "<ul>";
+                      echo "<li><b>Id: </b>".$order->getId()."</li>";
+                      echo "<li><b>Fecha Creación: </b>".$order->getCreationDate()."</li>";
+                      echo "<li><b></b></li>";
+
+                  echo "</ul>";
+              echo "</div>";
+              echo "<div class='plan' id='most-popular'>";
+                  echo "<h3>Información Orden<span><img src='/Datafill_OT/assets/img/rsz_actividades.png'/></span></h3>";
+                  echo "<ul>";
+                      echo "<li><b>Fecha Ejecución: </b><input type='date' name='FE' required></li>";
+                      echo "<li><b>Fecha Cierre ZTE: </b><input type='date' name='FCZ' required></li>";
+                      echo "<li><b>Fecha Cierre Claro: </b><input type='date' name='FCC' required></li>";
+                      echo "<li><b>Fecha Inicio Orden: </b><input type='date' name='FIO' required></li>";
+                      echo "<li><b>Estado: </b><select name='Estado'>
+                                              <option value = 'Cancelada'>Cancelado</option>
+                                              <option value = 'Finalizada'>Finalizado</option>
+                                            </select></li>";
+                      echo "<li><input type='submit' class='btn btn-info' value='Actualizar Actividades' onclick =\"this.form.action = 'http://localhost/Datafill_OT/index.php/Service/updateState/?K_ID_ORDER='\"".$order->getId()."></li>";
+                  echo "</ul>";
+              echo "</div>";
+            echo "</div>";
+
+            echo "<table id='demo' cellpadding='0' cellspacing='0'>";
+                echo "<tbody>";
+                    echo "<tr>";
+                        echo "<th></th>";
+                        echo "<th>Id actividad</th>";
+                        echo "<th>Tipo</th>";
+                        echo "<th>Estación base</th>";
+                        echo "<th>Ingeniero Asignado</th>";
+                        echo "<th>Ingeniero Solicitante</th>";
+                        echo "<th>Proyecto</th>";
+                        echo "<th>F. Forecast</th>";
+                        echo "<th>F. Asignación</th>";
+                        echo "<th>F. Ejecución</th>";
+                        echo "<th>F. Cierre ZTE</th>";
+                        echo "<th>F. Cierre Claro</th>";
+                        echo "<th>F. Inicio orden</th>";
+                        echo "<th>Estado</th>";
+                    echo "</tr>";
+                  if(isset($services)){
+                      for($i = 0; $i < count($services); $i++){
+                          if ($services[$i]->getUser() != "") {
+                            echo "<tr>";
+                            echo "<td>";
+                              echo "<input type='checkbox' name='check".$i."' value='".$services[$i]->getIdClaro()."' >";
+                            echo "</td>";
+                            echo "<td>".$services[$i]->getIdClaro()."</td>";
+                        //    echo "<td>".$services[$i]->getOrder()->getId()."</td>";
+                            echo "<td>".$services[$i]->getService()->getType()."</td>";
+                            echo "<td>".$services[$i]->getSite()->getName()."</td>";
+                            echo "<td>".$services[$i]->getUser()->getName()." ".$services[$i]->getUser()->getLastname()."</td>";
+                            echo "<td>".$services[$i]->getIngSol()."</td>";
+                            echo "<td>".$services[$i]->getProyecto()."</td>";
+                            echo "<td>".$services[$i]->getDateForecast()."</td>";
+                            echo "<td>".$services[$i]->getDateStartP()."</td>";
+                            echo "<td>".$services[$i]->getDateFinishR()."</td>";
+                            echo "<td>".$services[$i]->getDateFinishZTE()."</td>";
+                            echo "<td>".$services[$i]->getDateFinishClaro()."</td>";
+                            echo "<td>".$services[$i]->getDateStartOrder()."</td>";
+                            echo "<td>".$services[$i]->getEstado()."</td>";
+                            echo "</tr>";
+                          }
                       }
                   }
-              }
+                  echo "</tbody>";
+              echo "</table>";
              ?>
-        </tbody>
-    </table>
   </form>
 </div>
 
@@ -155,6 +192,8 @@
   <script data-config>
     var filtersConfig = {
       base_path: '/Datafill_OT/assets/plugins/tableFilter/',
+      base_path: 'tablefilter/',
+      col_widths: ['10px','10px','10px'],
       filters_row_index: 1,
       alternate_rows: true,
       grid_cont_css_class: 'grd-main-cont',

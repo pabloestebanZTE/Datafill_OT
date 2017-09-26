@@ -83,14 +83,14 @@
                 $this->dao_order_model->insertOrder($newOrder);
               }
               $sql2 = "INSERT INTO specific_service (K_IDUSER, K_IDSERVICE, K_IDSITE, K_IDORDER, D_DATE_START_P, D_DATE_FINISH_P, D_FORECAST, K_IDCLARO, N_DESCRIPTION, D_DATE_CREATION, N_ING_SOL, N_ESTADO, N_PROYECTO, N_CRQ, N_CLARO_DESCRIPTION)
-                values (".$service->getUser().", ".$service->getService().", ".$service->getSite()." , '".$service->getOrder()."', STR_TO_DATE('".$service->getDateStartP()."', '%Y-%m-%d'), STR_TO_DATE('".$service->getDateFinishP()."', '%Y-%m-%d'), STR_TO_DATE('".$service->getDateForecast()."', '%Y-%m-%d'), '".$service->getIdClaro()."', '".$service->getDescription()."', STR_TO_DATE('".$service->getDateCreation()."', '%Y-%m-%d'), '".$service->getIngSol()."', '".$service->getEstado()."', '".$service->getProyecto()."', '".$service->getCRQ()."', '".$service->getClaroDescription()."');";               
+                values (".$service->getUser().", ".$service->getService().", ".$service->getSite()." , '".$service->getOrder()."', STR_TO_DATE('".$service->getDateStartP()."', '%Y-%m-%d'), STR_TO_DATE('".$service->getDateFinishP()."', '%Y-%m-%d'), STR_TO_DATE('".$service->getDateForecast()."', '%Y-%m-%d'), '".$service->getIdClaro()."', '".$service->getDescription()."', STR_TO_DATE('".$service->getDateCreation()."', '%Y-%m-%d'), '".$service->getIngSol()."', '".$service->getEstado()."', '".$service->getProyecto()."', '".$service->getCRQ()."', '".$service->getClaroDescription()."');";
               $result = $session->query($sql2);
             } else {
               $answer = "Error de informacion";
             }
           }
 
- //CAMILO-------------------------------------------------INSERTA DATOS DE EXCEL  
+ //CAMILO-------------------------------------------------INSERTA DATOS DE EXCEL
 
           public function insertFromExcel($activity){
             $dbConnection = new configdb_model();
@@ -116,7 +116,7 @@
                   $sql2 = "INSERT INTO specific_service (K_IDUSER, K_IDCLARO, N_DESCRIPTION, N_CLARO_DESCRIPTION, D_DATE_CREATION, D_FORECAST, K_IDORDER, K_IDSITE, K_IDSERVICE, N_ING_SOL, N_PROYECTO, N_ESTADO, N_CANTIDAD, N_REGION, D_DATE_START_P) values (".$activity->getId().", ".$activity->getIdClaro().",'$activity->getDescription(), en el sao service_model no deja entrar la descripcion por alguna razon', '$activity->getClaroDescription(), otra descrtipcion, dao_service_model insertFromExcel', STR_TO_DATE('".$activity->getDateCreation()."','%d-%m-%Y'), STR_TO_DATE('".$activity->getDateForecast()."','%m-%d-%Y'),".$activity->getOrder().",".$activity->getSite().",".$activity->getService().",'".$activity->getIngSol()."','".$activity->getProyecto()."','".$activity->getEstado()."' ,".$activity->getQuantity().", '".$activity->getRegion()."',STR_TO_DATE('".$date."','%m-%d-%Y'));";
                     $result = $session->query($sql2);
                     $count++;
-               } 
+               }
             } else {
               $answer = "Error de informacion";
             }
@@ -127,10 +127,10 @@
             $dbConnection = new configdb_model();
             $session = $dbConnection->openSession();
             if ($session != "false"){
-                if ($cancel->getIdClaro() != "") {                 
+                if ($cancel->getIdClaro() != "") {
                   $sql = "UPDATE specific_service SET N_ESTADO = '".$cancel->getEstado()."' WHERE K_IDCLARO = '".$cancel->getIdClaro()."';";
                    $session->query($sql);
-                }   
+                }
 
             } else {
               $answer = "Error de informacion";
@@ -142,15 +142,15 @@
             $dbConnection = new configdb_model();
             $session = $dbConnection->openSession();
             if ($session != "false"){
-                if ($executed->getIdClaro() != "") {                 
+                if ($executed->getIdClaro() != "") {
                   $sql = "UPDATE specific_service SET N_ESTADO = '".$executed->getEstado()."' WHERE K_IDCLARO = '".$executed->getIdClaro()."';";
                    $session->query($sql);
-                }   
+                }
 
             } else {
               $answer = "Error de informacion";
              }
-          }          
+          }
 //CAMILO-------------------------------------------------INSERTA DATOS DE CIERRE
           public function updateClose($close){
            $dbConnection = new configdb_model();
@@ -196,12 +196,50 @@
                    $sService->createServiceS($row['K_ID_SP_SERVICE'], $row['N_DURATION'], $row['K_IDCLARO'], $row['N_DESCRIPTION'], $row['D_DATE_START_P'], $row['D_DATE_FINISH_P'], $row['D_DATE_CREATION'], $row['D_FORECAST'], $this->dao_order_model->getOrderById($row['K_IDORDER']), $this->dao_site_model->getSitePerId($row['K_IDSITE']), $this->getServicePerId($row['K_IDSERVICE']), $this->dao_user_model->getUserById($row['K_IDUSER']), $row['N_CLARO_DESCRIPTION'], $row['N_ING_SOL'], $row['N_PROYECTO'], $row['N_ESTADO'], $row['N_CRQ']);
                      $sService->setDateFinishR($row['D_DATE_FINISH_R']);
                      $sService->setDateStartR($row['D_DATE_START_R']);
-                     $sService->setCierreDescription($row['N_CIERRE_DESCRIPTION']); 
+                     $sService->setCierreDescription($row['N_CIERRE_DESCRIPTION']);
                   }
               } else{
                   $sService = "Error de informacion";
               }
             return $sService;
+          }
+
+          public function getServicesPerOrder($id){
+            $dbConnection = new configdb_model();
+            $session = $dbConnection->openSession();
+            $sql = "SELECT * FROM specific_service WHERE K_IDORDER = ".$id.";";
+            if ($session != "false"){
+              $result = $session->query($sql);
+              if ($result->num_rows > 0) {
+                $i = 0;
+                while($row = $result->fetch_assoc()) {
+                  $sService = new service_spec_model();
+                   $sService->createServiceS($row['K_ID_SP_SERVICE'], $row['N_DURATION'], $row['K_IDCLARO'], $row['N_DESCRIPTION'], $row['D_DATE_START_P'], $row['D_DATE_FINISH_P'], $row['D_DATE_CREATION'], $row['D_FORECAST'], $this->dao_order_model->getOrderById($row['K_IDORDER']), $this->dao_site_model->getSitePerId($row['K_IDSITE']), $this->getServicePerId($row['K_IDSERVICE']), $this->dao_user_model->getUserById($row['K_IDUSER']), $row['N_CLARO_DESCRIPTION'], $row['N_ING_SOL'], $row['N_PROYECTO'], $row['N_ESTADO'], $row['N_CRQ']);
+                   $sService->setDateFinishR($row['D_DATE_FINISH_R']);
+                   $sService->setDateStartR($row['D_DATE_START_R']);
+                   $sService->setDateFinishZTE($row['D_DATE_FINISH_ZTE']);
+                   $sService->setDateStartOrder($row['D_DATE_START_O']);
+                   $sService->setDateFinishClaro($row['D_CLARO_F']);
+                   $sService->setCierreDescription($row['N_CIERRE_DESCRIPTION']);
+                  $answer[$i] = $sService;
+                  $i++;
+                }
+              } else{
+                  $sService = "Error de informacion";
+              }
+            }
+            else{
+                $sService = "Error de informacion";
+            }
+            return $answer;
+          }
+
+
+          function updateService($service){
+            $dbConnection = new configdb_model();
+            $session = $dbConnection->openSession();
+            $sql = "UPDATE specific_service SET D_DATE_FINISH_ZTE = STR_TO_DATE('".$service->getDateFinishZTE()."', '%Y-%m-%d'), D_DATE_START_O = STR_TO_DATE('".$service->getDateStartOrder()."', '%Y-%m-%d'), D_CLARO_F = STR_TO_DATE('".$service->getDateFinishClaro()."', '%Y-%m-%d'), D_DATE_FINISH_R = STR_TO_DATE('".$service->getDateFinishR()."', '%Y-%m-%d'), N_ESTADO = '".$service->getEstado()."' WHERE K_IDCLARO = '".$service->getId()."';";
+            $result = $session->query($sql);
           }
       }
 ?>

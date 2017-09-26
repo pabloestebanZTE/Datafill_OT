@@ -65,7 +65,7 @@
                 </a>
               </div>
               <h1 class="head-main">ZTE</h1>
-              <span class="head-sub-main">Proyecto Datafill OT - Claro</span>
+              <span class="head-sub-main">Proyecto ATM</span>
               <div class="head-last"><!--texto aca--> </div>
             </div>
         </div>
@@ -77,7 +77,7 @@
         <div class="container">
             <div class="row text-center">
                 <div class="col-md-8 col-md-offset-2">
-                    <h2>Proyecto Datafill OT - Claro</h2>
+                    <h2>Proyecto ATM</h2>
                 </div>
             </div>
             <div class="row text-center space-pad">

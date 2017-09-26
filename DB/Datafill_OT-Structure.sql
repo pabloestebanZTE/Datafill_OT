@@ -97,6 +97,9 @@ create table SPECIFIC_SERVICE
    N_CANTIDAD           varchar(3);
    N_CRQ                varchar(50),
    N_CIERRE_DESCRIPTION varchar(500),
+   D_DATE_START_O       date,
+   D_DATE_FINISH_ZTE    date,
+
    primary key (K_ID_SP_SERVICE)
 );
 
