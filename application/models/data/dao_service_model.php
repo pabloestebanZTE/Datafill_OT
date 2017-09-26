@@ -9,6 +9,7 @@
             $this->load->model('data/dao_order_model');
             $this->load->model('data/dao_site_model');
             $this->load->model('data/dao_user_model');
+            $this->load->model('data/dao_rf_model');
             $this->load->model('service_model');
             $this->load->model('order_model');
             $this->load->model('service_spec_model');
@@ -137,7 +138,7 @@
              }
           }
 
-//CAMILO--------------------------------------------Cancela con excel
+//CAMILO--------------------------------------------ejecuta con excel
           public function executeFromExcel($executed){
             $dbConnection = new configdb_model();
             $session = $dbConnection->openSession();
@@ -159,7 +160,6 @@
            $session->query($sql);
           }
 //---------------------------------------------------------------------------------------
-
 
           public function getAllServicesS(){
             $dbConnection = new configdb_model();
@@ -197,7 +197,7 @@
                      $sService->setDateFinishR($row['D_DATE_FINISH_R']);
                      $sService->setDateStartR($row['D_DATE_START_R']);
                      $sService->setCierreDescription($row['N_CIERRE_DESCRIPTION']); 
-                  }
+                }
               } else{
                   $sService = "Error de informacion";
               }

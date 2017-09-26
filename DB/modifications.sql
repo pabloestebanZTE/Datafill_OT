@@ -18,4 +18,4 @@ alter table specific_service add D_CLARO_F DATE;
 
 INSERT INTO `datafill_ot`.`role` (`K_IDROLE`, `N_NAME`) VALUES ('5', 'Ingeniero Claro');
 
-           
+alter table rf add N_COLOR varchar(10);          
