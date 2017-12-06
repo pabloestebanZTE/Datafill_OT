@@ -1,0 +1,30 @@
+/* Getting the new tags to behave */
+
+/* Left & Right alignment */
+
+.wrapper {width:100%;
+  overflow:hidden;}
+/* Global properties ======================================================== */
+
+/* ============================= main layout ====================== */
+
+
+/* ============================= header ====================== */
+header{padding-top:34px; min-height: 50px;}
+
+.tabs ul.nav {margin-left: 5%; float:left; padding-bottom:14px; padding-left: 10px;}
+.tabs ul.nav li{padding-right:2px;float:left}
+.tabs ul.nav li a{display:inline-block;position:relative;margin-left: auto;
+  margin-right: auto;
+  width:120px;
+  height:22px;
+  font-size:14px;
+  color:#fff;
+  line-height:0px;
+  background:#207BE5;
+  text-decoration:none;
+  text-align:center}
+.tabs ul.nav .selected a, .tabs ul.nav  a:hover{background: white; color: #207BE5; border: 1px double #5EADE9; border-radius: 5px; margin-left: auto; margin-right: auto;}
+
+.tabs .tab-content {display:none}
+.tab-content{margin : 10px;}

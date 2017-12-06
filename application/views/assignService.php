@@ -13,13 +13,20 @@
         <link href="/Datafill_OT/assets/plugins/datatables/dataTables.bootstrap.css" rel="stylesheet">
         <!--   HEADER CSS    -->
         <link href="/Datafill_OT/assets/css/styleHeader.css" rel="stylesheet" />
+        <!--   botones tabla    -->
+        <link rel="stylesheet" href="/Datafill_OT/assets/css/botonesStyle2.css" type="text/css" media="all">
         <!--   FORMULARIO CSS    -->
-        <link href="/Datafill_OT/assets/css/formStyle.css" rel="stylesheet" />        
+        <link href="/Datafill_OT/assets/css/formStyle.css" rel="stylesheet" />
         <!--   CALENDAR JS    -->
         <link rel='stylesheet' href='/Datafill_OT/assets/plugins/fullcalendar/fullcalendar.css' />
         <script src='/Datafill_OT/assets/plugins/fullcalendar/lib/jquery.min.js'></script>
         <script src='/Datafill_OT/assets/plugins/fullcalendar/lib/moment.min.js'></script>
         <script src='/Datafill_OT/assets/plugins/fullcalendar/fullcalendar.js'></script>
+        <script type="text/javascript" src="/Datafill_OT/assets/js/tabs.js"></script>
+        <!--   SWEET ALERT    -->
+        <link rel="stylesheet" href="/Datafill_OT/assets/plugins/sweetalert-master/dist/sweetalert.css" />
+        <script type="text/javascript" src="/Datafill_OT/assets/plugins/sweetalert-master/dist/sweetalert.min.js"></script>
+
         <link href='http://fonts.googleapis.com/css?family=Open+Sans' rel='stylesheet' type='text/css' />
 
        <script>
@@ -88,7 +95,7 @@
                 }
               }
             }
-          }         
+          }
 
           function loadCalendar() {
             $("#calendar").remove();
@@ -123,6 +130,17 @@
           function editIdOrder(){
             var idOrder = $("#orden option:selected").attr('value');
             document.getElementById("idOrden").value = idOrder;
+          }
+
+          function showMessage(mensaje){
+           if(mensaje == "error"){
+            swal({
+              title: "error!",
+              text: "Verifique la información",
+              type: "error",
+              confirmButtonText: "Ok"
+            });
+           } 
           }
 
        </script>
@@ -168,7 +186,11 @@
                             <li><a href="#">Ver Ingenieros</a></li>
                         </ul>
                         </li>
-                        <li class="cam"><a href="/Datafill_OT/index.php/Service/RF">RF</a>
+                        <li class="cam"><a href="#services">RF</a>
+                            <ul>
+                                <li class="cam"><a href="/Datafill_OT/index.php/Service/RF">Actualizar RF</a></li>
+                                <li class="cam"><a href="/Datafill_OT/index.php/SpecificService/viewRF">Ver RF</a></li>
+                            </ul>
                         </li>
                          <li class="cam"><a href="#contact-sec">Contactos</a>
                         </li>
@@ -181,97 +203,123 @@
         </nav>
      </header>
 <!--      fin header         -->
-     <br> 
+     <br>
 
-<div class="container">
-  <form class="well form-horizontal" action=" " method="post"  id="assignService" name="assignServie" enctype="multipart/form-data">
-   <fieldset>
-      <legend >Asignacion con Excel</legend>    
-    <!-- Text input-->
-    <div class="form-group">
-        <label class="col-md-4 control-label">Elegir Archivo</label>
-          <div class="col-md-6 inputGroupContainer">        
-            <div class="input-group">
-              <span class="input-group-addon"><i class="glyphicon glyphicon-paperclip"></i></span>
-              <input  name="idarchivo" class="form-control"  type="file">
-            </div>
-          </div>     
-    </div> 
-      <center>
-         <button type="submit" class="btn btn-primary" onclick = "enableSelect();this.form.action = 'http://localhost/Datafill_OT/index.php/SpecificService/viewExcel?option=1'">Asignacion  <span class="glyphicon glyphicon-ok"></span></button>
-      </center>  
+<?php
+    
+      echo "<div class='wrapper tabs'>";
+             $meses[1] = 'Asignación';
+             $meses[2] = 'Cancelación';
+             $meses[3] = 'Ejecución';
+             echo "<center>";
+         echo "<ul class='nav'>";
+           for ($p = 1; $p <= count($meses); $p++){
+             if ($p == 1){
+               echo "<li class='selected'><a href='#tab".$p."'><center>".$meses[$p]."</center></a></li>";
+             } else {
+               echo "<li><a href='#tab".$p."'><center>".$meses[$p]."</center></a></li>";
+             }
+           }
+         echo "</ul>";
+         echo "</center>";
+         //--------asignacion
+          echo "<div class='tab-content' id='tab1'><br>";
 
-  
-      <!-- Select Basic 
-                <a class="btn btn-primary" onclick = "cloneEng()" id="clonar" >
-        <span class="glyphicon glyphicon-plus" aria-hidden="true"></span></a>
-         
-      <div class="form-group" id="inge"> 
-        <label class="col-md-4 control-label">Ingeniero</label>
-          <div class="col-md-6 selectContainer">
-            <div class="input-group">
-               <span class="input-group-addon"><i class="glyphicon glyphicon-user"></i></span>
-                <select name="inge" class="form-control selectpicker" >
-                  <option value=" " >Seleccione Ingeniero</option>
-                  <option>ingeniero</option>
-                  <option>ingeniero</option>
-                </select>
+              echo "<div class='container'>";
+                  echo "<form class= 'well form-horizontal' action='' method='post'  id='assignService' name='assignServie' enctype= 'multipart/form-data'>";
+                      echo "<fieldset>";
+                          echo "<legend >Asignación</legend>";
+                          //-------- Text input------
+                          echo "<div class='form-group'>";
+                            echo "<label class='col-md-1 control-label'></label>";
+                              echo "<div class='col-md-9 inputGroupContainer'>";
+                                echo "<div class='input-group'>";
+                                  echo "<span class='input-group-addon'><i class='glyphicon glyphicon-file'></i></span>";
+                                  echo "<textarea class='form-control' name='actividades' placeholder='Copiar asignación'></textarea>";
+                                echo "</div>";
+                          echo "</div><br><br><br><br>";
+                            echo "<center>";
+                                echo "<button type= 'submit' class= 'btn btn-primary' onclick = \"enableSelect();this.form.action = 'http://localhost/Datafill_OT/index.php/SpecificService/assignByMail' \">Asignacion  <span class= 'glyphicon glyphicon-ok'></span></button>";
+                              echo "</center>";
+                            // echo "// <!-- Select Basic";
+                            // echo "// <a class="btn btn-primary" onclick = "cloneEng()" id="clonar" >";
+                            // echo "// <span class="glyphicon glyphicon-plus" aria-hidden="true"></span></a>";
+                            // echo "// ";
+                            // echo "// <div class="form-group" id="inge">";
+                            // echo "// <label class="col-md-4 control-label">Ingeniero</label>";
+                            // echo "// <div class="col-md-6 selectContainer">";
+                            // echo "// <div class="input-group">";
+                            // echo "// <span class="input-group-addon"><i class="glyphicon glyphicon-user"></i></span>";
+                            // echo "// <select name="inge" class="form-control selectpicker" >";
+                            // echo "// <option value=" " >Seleccione Ingeniero</option>";
+                            // echo "// <option>ingeniero</option>";
+                            // echo "// <option>ingeniero</option>";
+                            // echo "// </select>";
+                            // echo "// ";
+                            // echo "// </div>";
+                            // echo "// </div>";
+                            // echo "// </div>";
+                            // echo "// /.row -->";
+                        echo "</fieldset>";
+                    echo "</form>";
+                echo "</div>";
+          echo "</div>";
 
-            </div>
-          </div>          
-      </div>
-             /.row -->
-   </fieldset>
-  </form>
-</div>
+  echo "<div class='tab-content' id='tab2'><br>";
+      echo "<div class= 'container'>";
+        echo "<form class= 'well form-horizontal' action='' method='post'  id='assignService' name='assignServie' enctype= 'multipart/form-data'>";
+         echo "<fieldset>";
+         //-------------------------text area---------------------------------
+            echo "<legend >Cancelación</legend>";
+          echo "<div class='form-group'>";
+              echo "<label class='col-md-1 control-label'></label>";
+                echo "<div class='col-md-9 inputGroupContainer'>";
+                  echo "<div class='input-group'>";
+                    echo "<span class='input-group-addon'><i class='glyphicon glyphicon-file'></i></span>";
+                    echo "<textarea class='form-control' name='cancelacion' placeholder='Copiar Cancelación'></textarea>";
+                  echo "</div>";
+                echo "</div>";
+          echo "</div>";
+            echo "<center>";
+               echo "<button type='submit' class='btn btn-primary' onclick = \"enableSelect();this.form.action = 'http://localhost/Datafill_OT/index.php/SpecificService/cancelByMail' \">Cancelación <span class='glyphicon glyphicon-ok'></span></button>";
+            echo "</center>";
+         echo "</fieldset>";
+        echo "</form>";
+      echo "</div>";
+echo "</div>";
 
-<div class="container">
-  <form class="well form-horizontal" action=" " method="post"  id="assignService" name="assignServie" enctype="multipart/form-data">
-   <fieldset>
-      <legend >Cancelación con Excel</legend>    
-    <!-- Text input-->
-    <div class="form-group">
-        <label class="col-md-4 control-label">Elegir Archivo</label>
-          <div class="col-md-6 inputGroupContainer">        
-            <div class="input-group">
-              <span class="input-group-addon"><i class="glyphicon glyphicon-paperclip"></i></span>
-              <input  name="idarchivo" class="form-control"  type="file">
-            </div>
-          </div>     
-    </div> 
-      <center>
-         <button type="submit" class="btn btn-primary" onclick = "enableSelect();this.form.action = 'http://localhost/Datafill_OT/index.php/SpecificService/viewExcel?option=2'">Cancelación <span class="glyphicon glyphicon-ok"></span></button>
-      </center>  
-   </fieldset>
-  </form>
-</div>
 
-<div class="container">
-  <form class="well form-horizontal" action=" " method="post"  id="assignService" name="assignServie" enctype="multipart/form-data">
-   <fieldset>
-      <legend >Ejecución con Excel</legend>    
-    <!-- Text input-->
-    <div class="form-group">
-        <label class="col-md-4 control-label">Elegir Archivo</label>
-          <div class="col-md-6 inputGroupContainer">        
-            <div class="input-group">
-              <span class="input-group-addon"><i class="glyphicon glyphicon-paperclip"></i></span>
-              <input  name="idarchivo" class="form-control"  type="file">
-            </div>
-          </div>     
-    </div> 
-      <center>
-         <button type="submit" class="btn btn-primary" onclick = "enableSelect();this.form.action = 'http://localhost/Datafill_OT/index.php/SpecificService/viewExcel?option=3'">Ejecución  <span class="glyphicon glyphicon-ok"></span></button>
-      </center>  
-   </fieldset>
-  </form>
-</div>
-<!--
-<div class="container">
+ echo "<div class='tab-content' id='tab3'><br>";
+    echo "<div class='container'>";
+      echo "<form class='well form-horizontal' action='' method='post'  id='assignService' name='assignServie' enctype='multipart/form-data'>";
+       echo "<fieldset>";
+          echo "<legend >Ejecución</legend>";
+        // -------------------<!-- Text input-->-----------------------------
+        echo "<div class='form-group'>";
+            echo "<label class='col-md-1 control-label'></label>";
+              echo "<div class='col-md-9 inputGroupContainer'>";
+                echo "<div class='input-group'>";
+                  echo "<span class='input-group-addon'><i class='glyphicon glyphicon-file'></i></span>";
+                  echo "<textarea class='form-control' name='ejecucion' placeholder='Copiar Ejecución'></textarea>";
+                echo "</div>";
+              echo "</div>";
+        echo "</div>";
+          echo "<center>";
+             echo "<button type='submit' class='btn btn-primary' onclick = \"enableSelect();this.form.action = 'http://localhost/Datafill_OT/index.php/SpecificService/executeByExcel' \">Ejecución  <span class='glyphicon glyphicon-ok'></span></button>";
+          echo "</center>";
+       echo "</fieldset>";
+      echo "</form>";
+    echo "</div>";
+echo "</div>";
+
+?>
+
+
+<!-- <div class="container">
   <form class="well form-horizontal" action=" " method="post"  id="assignService" name="assignServie">
       <legend >Asignar Actividad</legend>
     <fieldset class="col-md-6 control-label">
-      <!-- Select Basic --
+      Select Basic
       <div class="form-group">
         <label class="col-md-3 control-label">Orden</label>
           <div class="col-md-8 selectContainer">
@@ -290,7 +338,7 @@
           </div>
         </div>
       </div>
-      <!-- Text input--
+      Text input
       <div class="form-group">
         <label class="col-md-3 control-label">ID Actividad</label>
         <div class="col-md-8 inputGroupContainer">
@@ -300,7 +348,7 @@
           </div>
         </div>
       </div>
-      <!-- Select Basic --
+      Select Basic
       <div class="form-group">
         <label class="col-md-3 control-label">Tipo</label>
           <div class="col-md-8 selectContainer">
@@ -319,7 +367,7 @@
           </div>
         </div>
       </div>
-      <!--text informacion--
+      text informacion
       <div class="form-group">
         <label class="col-md-3 control-label">Gerencia Tarea</label>
          <div class="col-md-8 inputGroupContainer">
@@ -329,7 +377,7 @@
            </div>
         </div>
       </div>
-      <!--text informacion--
+      text informacion
       <div class="form-group">
         <label class="col-md-3 control-label">Descripción Tarea</label>
          <div class="col-md-8 inputGroupContainer">
@@ -339,7 +387,7 @@
            </div>
         </div>
       </div>
-      <!--text informacion--
+      text informacion
       <div class="form-group">
         <label class="col-md-3 control-label">Alcance Tarea</label>
          <div class="col-md-8 inputGroupContainer">
@@ -350,11 +398,11 @@
         </div>
       </div>
     </fieldset>
-    <!--  fin seccion izquierda form---->
+    fin seccion izquierda form--
 
-    <!--  inicio seccion derecha form----
+    inicio seccion derecha form--
       <fieldset >
-        <!-- Input Orden --
+        Input Orden
         <div class="form-group">
           <label class="col-md-3 control-label">ID Orden</label>
             <div class="col-md-8 selectContainer">
@@ -364,7 +412,7 @@
             </div>
           </div>
         </div>
-        <!-- EB input--
+        EB input
         <div class="form-group">
           <label class="col-md-3 control-label">Nombre EB</label>
           <div class="col-md-8 inputGroupContainer">
@@ -374,7 +422,7 @@
             </div>
           </div>
         </div>
-        <!-- Select Basic --
+        Select Basic
         <div class="form-group">
           <label class="col-md-3 control-label">EB</label>
           <div class="col-md-8 selectContainer">
@@ -391,7 +439,7 @@
             </div>
           </div>
         </div>
-        <!-- Date input--
+        Date input
         <div class="form-group">
           <label class="col-md-3 control-label">Fecha Forecast</label>
             <div class="col-md-8 inputGroupContainer">
@@ -401,7 +449,7 @@
               </div>
           </div>
         </div>
-        <!-- Text area --
+        Text area
         <div class="form-group">
           <label class="col-md-3 control-label">Observaciones Actividad</label>
             <div class="col-md-8 inputGroupContainer">
@@ -411,7 +459,7 @@
               </div>
           </div>
         </div>
-        <!-- Text area --
+        Text area
         <div class="form-group">
           <label class="col-md-3 control-label">Observaciones Coordinador</label>
             <div class="col-md-8 inputGroupContainer">
@@ -421,7 +469,7 @@
               </div>
           </div>
         </div>
-        <!-- Select Basic --
+        Select Basic
         <div class="form-group">
           <label class="col-md-3 control-label">Ingeniero</label>
             <div class="col-md-8 selectContainer">
@@ -433,7 +481,7 @@
              </div>
             </div>
         </div>
-        <!-- Select Basic --
+        Select Basic
         <div class="form-group">
           <label class="col-md-3 control-label">Ingeniero Solicitante</label>
             <div class="col-md-8 selectContainer">
@@ -443,7 +491,7 @@
               </div>
             </div>
         </div>
-        <!-- Select Basic --
+        Select Basic
         <div class="form-group">
           <label class="col-md-3 control-label">Proyecto</label>
             <div class="col-md-8 selectContainer">
@@ -453,7 +501,7 @@
               </div>
             </div>
         </div>
-        <!-- Date Plan--
+        Date Plan
         <div class="form-group">
           <label class="col-md-3 control-label">Fecha Asignación</label>
             <div class="col-md-8 inputGroupContainer">
@@ -464,9 +512,9 @@
           </div>
         </div>
       </fieldset>
-      <!--   fin seccion derecha----
+      fin seccion derecha--
 
-        <!-- Button --
+        Button
         <center>
             <div class="form-group">
                 <label class="col-md-12 control-label"></label>
@@ -476,7 +524,7 @@
             </div>
         </center>
     </form>
-</div>-->
+</div> -->
   <!--calendar-->
   <div id='calendarDiv'>
     <div id='calendar'></div><br><br><br>
@@ -485,5 +533,19 @@
   <div class="for-full-back " id="footer">
       Zolid By ZTE Colombia | All Right Reserved
   </div>
+  <script type="text/javascript"> Cufon.now(); </script>
+
+  <script>
+    $(document).ready(function() {
+      tabs.init();
+    })
+  </script>
+  <?php
+      if (isset($error)) {
+        if($error == "error"){
+          echo '<script type="text/javascript">showMessage("error");</script>';
+        }
+      }
+    ?>
 </body>
 </html>

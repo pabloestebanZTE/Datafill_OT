@@ -44,7 +44,11 @@
                             <li><a href="#">Ver Ingenieros</a></li>
                         </ul>
                         </li>
-                        <li class="cam"><a href="/Datafill_OT/index.php/Service/RF">RF</a>
+                        <li class="cam"><a href="#services">RF</a>
+                            <ul>
+                                <li class="cam"><a href="/Datafill_OT/index.php/Service/RF">Actualizar RF</a></li>
+                                <li class="cam"><a href="/Datafill_OT/index.php/SpecificService/viewRF">Ver RF</a></li>
+                            </ul>
                         </li>
                          <li class="cam"><a href="#contact-sec">Contactos</a>
                         </li>
@@ -57,8 +61,17 @@
         </nav>
      </header><br><br><br><br>
 <!--      fin header         -->
+<form class="form-group" action=" " method="post"  id="cancel" name="cancel">
+  <?php
+        for ($r=0; $r < count($ejecutar['idActividad']); $r++) {          
+          echo "<input type='hidden' name='actividades_".$r."' id='actividades_".$r."' value='".$ejecutar['idActividad'][$r]."'>";
+        }
+        echo "<input type='hidden' name='cant' value='".count($ejecutar['idActividad'])."'>";
+  ?>
 
- <a id="bt_enviar" class="btn btn-primary col-xs-4" href="/Datafill_OT/index.php/SpecificService/saveExecuteExcel" style="background-color: green; margin-left: 55%" >Cambiar Estado<span class="glyphicon glyphicon-send" aria-hidden="true"></span></a>
+
+   <input type="submit" name="bt_form" id="bt_form" value="enviar ejecucion" class="btn btn-primary col-xs-4  " style="background-color: orange; margin-left: 55%" onclick = "this.form.action = 'http://localhost/Datafill_OT/index.php/SpecificService/saveExecuteExcel'">
+</form>
 <section class="content">
   <div class="row">
     <div class="col-xs-10 col-xs-offset-1">
@@ -70,8 +83,8 @@
       <div class="box">
   <?php
        echo "<div class='box-header'>";
-         echo "<h5>OT: ".$excel[0][0][1]."</h5><h5>Solicitante: ".$excel[0][1][1]."a</h5><h5>Fecha de Creacion: ".$excel[0][3][1]."</h5>";
-         echo "<h5>Descripción: ".$excel[0][2][1]."</h5>";
+         echo "<h5>OT: ".$ejecutar['ot']."</h5><h5>Solicitante: ".$ejecutar['solicitante']."a</h5><h5>Fecha de Creacion: ".$ejecutar['fCreacion']."</h5>";
+         echo "<h5>Descripción: ".$ejecutar['descripcion']."</h5>";
        echo "</div>";
        echo "<!-- /.box-header -->";
        echo "<div class='box-body'>";
@@ -88,16 +101,16 @@
            echo "</tr>";
            echo "</thead>";
            echo "<tbody>";
-           for ($i=12; $i < count($excel[0]) ; $i++) { 
+           for ($i=0; $i < count($ejecutar['idActividad']) ; $i++) { 
              
            echo "<tr>";
-             echo "<td>".$excel[0][$i][0]."</td>";
-             echo "<td>".$excel[0][$i][1]."</td>";
-             echo "<td>".$excel[0][$i][2]."</td>";
-             echo "<td>".$excel[0][$i][3]."</td>";
-             echo "<td>".$excel[0][$i][4]."</td>";
-             echo "<td>".$excel[0][$i][5]."</td>";
-             echo "<td>".$excel[0][$i][6]."</td>";
+             echo "<td>".$ejecutar['idActividad'][$i]."</td>";
+             echo "<td>".$ejecutar['tipo'][$i]."</td>";
+             echo "<td>".$ejecutar['cantidad'][$i]."</td>";
+             echo "<td>".$ejecutar['descripcionActividad'][$i]."</td>";
+             echo "<td>".$ejecutar['estado'][$i]."</td>";
+             echo "<td>".$ejecutar['fEjecucion'][$i]."</td>";
+             echo "<td>".$ejecutar['ejecProveedor'][$i]."</td>";
            echo "</tr>";
            }
 

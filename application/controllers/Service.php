@@ -22,7 +22,8 @@
       }
 
       public function listServices(){
-        $answer['services'] = $this->dao_service_model->getAllServicesS();
+/*        header('Content-Type: text/plain');
+*/        $answer['services'] = $this->dao_order_model->getAllOrders();
         $this->load->view('listServices', $answer);
       }
 

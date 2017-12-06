@@ -35,13 +35,17 @@
                         <li class="cam"><a href="#home">Home</a>
                         </li>
                         <li class="cam"><a href="#services">Servicios</a>
-                        <ul>
-                            <li><a href="/Datafill_OT/index.php/Service/assignService">Agendar Actividad</a></li>
-                            <li><a href="/Datafill_OT/index.php/Service/listServices">Ver Actividades</a></li>
-                            <li><a href="/Datafill_OT/index.php/SendMail/send_mail">Ver Ingenieros</a></li>
-                        </ul>
+                            <ul>
+                                <li><a href="/Datafill_OT/index.php/Service/assignService">Agendar Actividad</a></li>
+                                <li><a href="/Datafill_OT/index.php/Service/listServices">Ver Actividades</a></li>
+                                <li><a href="/Datafill_OT/index.php/SendMail/send_mail">Ver Ingenieros</a></li>
+                            </ul>
                         </li>
-                        <li class="cam"><a href="/Datafill_OT/index.php/Service/RF">RF</a>
+                        <li class="cam"><a href="#services">RF</a>
+                            <ul>
+                                <li class="cam"><a href="/Datafill_OT/index.php/Service/RF">Actualizar RF</a></li>
+                                <li class="cam"><a href="/Datafill_OT/index.php/SpecificService/viewRF">Ver RF</a></li>
+                            </ul>
                         </li>
                          <li class="cam"><a href="#contact-sec">Contactos</a>
                         </li>

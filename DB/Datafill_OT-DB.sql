@@ -1,2 +1,2 @@
-create database DATAFILL_OT;
-use DATAFILL_OT;
+create database datafill_ot;
+use datafill_ot;

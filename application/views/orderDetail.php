@@ -49,7 +49,11 @@
                             <li><a href="#">Ver Ingenieros</a></li>
                         </ul>
                         </li>
-                        <li class="cam"><a href="/Datafill_OT/index.php/Service/RF">RF</a>
+                        <li class="cam"><a href="#services">RF</a>
+                            <ul>
+                                <li class="cam"><a href="/Datafill_OT/index.php/Service/RF">Actualizar RF</a></li>
+                                <li class="cam"><a href="/Datafill_OT/index.php/SpecificService/viewRF">Ver RF</a></li>
+                            </ul>
                         </li>
                          <li class="cam"><a href="#contact-sec">Contactos</a>
                         </li>
@@ -66,6 +70,8 @@
   <div id="container">
     <form action=" " method="post"  id="assignService" name="assignServie">
     <?php
+
+    //------------------ORDEN---------------------
       echo "<div class='whole' style='margin: 8px'>";
         echo "<div class='type'>";
           echo "<p>Orden</p>";
@@ -78,18 +84,18 @@
 
       echo "<div class='content'>";
         echo "<ul>";
-          echo "<div class='header'>Ing solicitante: ".$service->getIngSol()."</div>";
-          echo "<div class='header'>Proyecto: ".$service->getProyecto()."</div>";
-          echo "<div class='header'>Ing Asignado: ".$service->getUser()->getName()." ".$service->getUser()->getLastname()."</div>";
-          echo "<li>Orden:    ".$service->getOrder()->getId()."</li>";
-          echo "<li>ID Actividad:    ".$service->getIdClaro()."</li>";
-          echo "<li>Estación Base:    ".$service->getSite()->getName()."</li>";
-          echo "<li>Duración:    ".$service->getDuration()."</li>";
+          echo "<div class='header'><b>Ing solicitante: </b>".$service->getIngSol()."</div>";
+          echo "<div class='header'><b>Proyecto: </b>".$service->getProyecto()."</div>";
+          echo "<div class='header'><b>Ing Asignado: </b>".$service->getUser()->getName()." ".$service->getUser()->getLastname()."</div>";
+          echo "<li><b>Orden:    </b>".$service->getOrder()->getId()."</li>";
+          echo "<li><b>ID Actividad:    </b>".$service->getIdClaro()."</li>";
+          echo "<li><b>Estación Base:    </b>".$service->getSite()->getName()."</li>";
+          echo "<li><b>Duración:    </b>".$service->getDuration()."</li>";
         echo "</ul>";
         echo "</div>";
         echo "</div>";
       echo "</div>";
-      //------------------------------------------------------------------------------
+      //---------------------------------TIPO ACTIVIDAD---------------------------------------------
       echo "<div class='whole' style='margin: 8px'>";
         echo "<div class='type'>";
           echo "<p>Tipo Actividad</p>";
@@ -101,15 +107,15 @@
           echo "</div>";
           echo "<div class='content'>";
             echo "<ul>";
-              echo "<li>Tipo:    ".$service->getService()->getType()."</li>";
-              echo "<div class='header'>Gerencia Tarea:    ".$service->getService()->getGerency()."</div>";
-              echo "<div class='header'>Descripción Tarea:    ".$service->getService()->getDescription()."</div>";
-              echo "<div class='header'>Alcance:    ".$service->getService()->getScope()."</div>";
+              echo "<li><b>Tipo:    </b>".$service->getService()->getType()."</li>";
+              echo "<div class='header'><b>Gerencia Tarea:    </b>".$service->getService()->getGerency()."</div>";
+              echo "<div class='header'><b>Descripción Tarea:    </b>".$service->getService()->getDescription()."</div>";
+              echo "<div class='header'><b>Alcance:    </b>".$service->getService()->getScope()."</div>";
             echo "</ul>";
           echo "</div>";
         echo "</div>";
       echo "</div>";
-          //<!--____________________________________________-->
+          //<!--___________________FECHAS_________________________-->
 
       echo "<div class='whole' style='margin: 8px'>";
         echo "<div class='type'>";
@@ -122,17 +128,16 @@
           echo "</div>";
           echo "<div class='content'>";
             echo "<ul>";
-              echo "<li>Fecha Creacion:    ".$service->getDateCreation()."</li>";
-              echo "<li>Fecha Inicio:    ".$service->getDateStartP()."</li>";
-              echo "<li>Fecha Fin:     ".$service->getDateFinishP()."</li>";
-              echo "<li>Fecha Inicio Real:     ".$service->getDateStartR()."</li>";
-              echo "<li>Fecha Fin Real:     ".$service->getDateFinishR()."</li>";
-              echo "<li>Fecha Forecast:     ".$service->getDateForecast()."</li>";
+              echo "<li><b>Fecha Forecast:</b>     ".$service->getDateForecast()."</li>";
+              echo "<li><b>Fecha Creación:</b>    ".$service->getDateCreation()."</li>";
+              echo "<li><b>Fecha Asignación:</b>    ".$service->getDateStartP()."</li>";
+              echo "<li><b>Fecha Inicio Real:</b>     ".$service->getDateStartR()."</li>";
+              echo "<li><b>Fecha Fin Real:</b>     ".$service->getDateFinishR()."</li>";
             echo "</ul>";
           echo "</div>";
         echo "</div>";
       echo "</div>";
-//-----------------------------------------------------------------------------
+//---------------------OBSERVACIONES--------------------------------------------------------
 
       echo "<div class='whole' style='margin: 8px'>";
         echo "<div class='type'>";
@@ -145,9 +150,9 @@
           echo "</div>";
           echo "<div class='content'>";
             echo "<ul>";
-              echo "<div class='header'>Observaciones Actividad: ".$service->getClaroDescription()."</div>";
-              echo "<div class='header'>Observaciones Coordinador: ".$service->getDescription()."</div>";
-              echo "<div class='header'>Observaciones de Cierre: ".$service->getCierreDescription()."</div>";
+              echo "<div class='header'><b>Descripción Orden: </b>".$service->getClaroDescription()."</div>";
+              echo "<div class='header'><b>Descripción Actividad: </b>".$service->getDescription()."</div>";
+              echo "<div class='header'><b>Observaciones de Cierre: </b>".$service->getCierreDescription()."</div>";
             echo "</ul>";
           echo "</div>";
           echo "<div class='content'>";   
@@ -155,7 +160,7 @@
         echo "</div>";
       echo "</div>";
 
-      //---------------------------------------------
+      //------------------CIERRE---------------------------
 
       if ($service->getCRQ() == "" ) {
       echo "<div class='whole' style='margin: 8px'>";
@@ -190,7 +195,7 @@
             echo "<ul>";
               echo "<select name='state' id='state' class='form-control' required style='display: center; color: white; background-color: #333;'>";
                 echo "<option value=''>Seleccione Estado</option>";
-                echo "<option value='Cerrado'>Cerrado</option>";
+                echo "<option value='Ejecutado'>Ejecutado</option>";
                 echo "<option value='Cancelado'>Cancelado</option>";
               echo "</select>";
             echo "</ul>";

@@ -152,7 +152,7 @@ line-height: 52px;
   text-shadow: 6px 6px 5px #292929;
 }
 
-#Cerrado{
+#Ejecutado{
   width: 300px;
   border-radius: 0px 0px 15px 15px;
   background-color: green;
@@ -161,7 +161,7 @@ line-height: 52px;
   box-shadow: 7px 7px 15px black;
   margin-bottom: 15px;
 }
-#Cerrado p{
+#Ejecutado p{
   font-family:'Open Sans';
     font-weight: 900;
   font-size: 22px;
