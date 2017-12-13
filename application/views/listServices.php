@@ -9,32 +9,95 @@
     <!--   BOOTSTRAP    -->
     <link href="/Datafill_OT/assets/css/bootstrap.css" rel="stylesheet" />
     <link href="/Datafill_OT/assets/css/font-awesome.min.css" rel="stylesheet" />
+    <link href="/Datafill_OT/assets/plugins/datatables/dataTables.bootstrap.css" rel="stylesheet">
+    <script type="text/javascript" src="/Datafill_OT/assets/plugins/jQuery/jquery-3.1.1.js"></script>
+    <script type="text/javascript" src="/Datafill_OT/assets/plugins/bootstrap.js"></script>
+    <!-- modal stilo -->
+    <link rel="stylesheet" href="/Datafill_OT/assets/css/emergente.min.css">
+    <!-- datatables-->
+    <link href="/Datafill_OT/assets/plugins/datatables/dataTables.bootstrap.css" rel="stylesheet">
+    <link href="/Datafill_OT/assets/css/bootstrap.min.css" rel="stylesheet">
     <!--   HEADER CSS    -->
     <link href="/Datafill_OT/assets/css/styleHeader.css" rel="stylesheet" />
-    <!--   FORMULARIO CSS    -->
-    <link href="/Datafill_OT/assets/css/formStyle.css" rel="stylesheet" />
     <!--   SWEET ALERT    -->
     <link rel="stylesheet" href="/Datafill_OT/assets/plugins/sweetalert-master/dist/sweetalert.css" />
     <script type="text/javascript" src="/Datafill_OT/assets/plugins/sweetalert-master/dist/sweetalert.min.js"></script>
 
     <script type="text/javascript" charset="utf-8" async defer>
       //Funcion para mostrar mensaje de error de validacion de datos
+
+      function modalEditar(servicio, orden, idIng, role){
+        console.log(servicio);
+         $('#orden').html("Orden: "+orden);
+         var body = "";
+          for (var i = 0; i < servicio.services.length; i++) {
+            if (servicio.services[i].user.id == idIng || role == 0 || role == 4 || role == 5) {
+               $('#body').html("<td id='idActividad"+i+"'></td>");           
+               body += "<tr>";
+               body += "<td><a href='/Datafill_OT/index.php/service/serviceDetails?K_ID_SP_SERVICE="+servicio.services[i].id+"'>"+servicio.services[i].idClaro+"</td>";
+               body += "<td>"+servicio.services[i].service.type+"</td>";
+               body += "<td>"+servicio.services[i].quantity+"</td>";
+               body += "<td>"+servicio.services[i].site.name+"</td>";
+               body += "<td>"+servicio.services[i].user.name+" "+servicio.services[i].user.lastname+"</td>";
+               body += "<td>"+servicio.services[i].dateForecast+"</td>";
+               body += "<td>"+servicio.services[i].dateStartP+"</td>";
+               body += "<td>"+servicio.services[i].proyecto+"</td>";
+               body += "<td>"+servicio.services[i].estado+"</td>";
+               body += "</tr>";
+            }else{
+              $('#body').html("<td id='idActividad"+i+"'></td>");           
+               body += "<tr>";
+               body += "<td>"+servicio.services[i].idClaro+"</td>";
+               body += "<td>"+servicio.services[i].service.type+"</td>";
+               body += "<td>"+servicio.services[i].quantity+"</td>";
+               body += "<td>"+servicio.services[i].site.name+"</td>";
+               body += "<td>"+servicio.services[i].user.name+" "+servicio.services[i].user.lastname+"</td>";
+               body += "<td>"+servicio.services[i].dateForecast+"</td>";
+               body += "<td>"+servicio.services[i].dateStartP+"</td>";
+               body += "<td>"+servicio.services[i].proyecto+"</td>";
+               body += "<td>"+servicio.services[i].estado+"</td>";
+               body += "</tr>";
+            }
+          }
+
+           $('#body').html(body);
+        $('#modalEvento').modal('show');
+      }
+
+
       function showMessage(mensaje){
-         if(mensaje == "ok"){
+        if(mensaje == "ok"){
           swal({
             title: "Bien hecho!",
             text: "Actividad creada satisfactoriamente\nCorreos enviados",
             type: "success",
             confirmButtonText: "Ok"
           });
-        } else {
+        } 
+        if(mensaje == "error") {
           swal({
             title: "error!",
             text: "Actividades ya existentes ",
             type: "error",
             confirmButtonText: "Ok"
           });
-        } 
+        }
+        if(mensaje == "no existe") {
+          swal({
+            title: "error!",
+            text: "Actividades no existen ",
+            type: "error",
+            confirmButtonText: "Ok"
+          });
+        }
+        if(mensaje == "actualizado") {
+          swal({
+            title: "Bien hecho!",
+            text: "Actividades actualizadas satisfactoriamente",
+            type: "success",
+            confirmButtonText: "Ok"
+          });
+        }
       }
     </script>
     <style>
@@ -79,7 +142,11 @@
                             <li><a href="#">Ver Ingenieros</a></li>
                         </ul>
                         </li>
-                        <li class="cam"><a href="/Datafill_OT/index.php/Service/RF">RF</a>
+                        <li class="cam"><a href="#services">RF</a>
+                            <ul>
+                                <li class="cam"><a href="/Datafill_OT/index.php/Service/RF">Actualizar RF</a></li>
+                                <li class="cam"><a href="/Datafill_OT/index.php/SpecificService/viewRF">Ver RF</a></li>
+                            </ul>
                         </li>
                          <li class="cam"><a href="#contact-sec">Contactos</a>
                         </li>
@@ -93,52 +160,186 @@
      </header>
 <!--      fin header         -->
      <br><br>
-
+<!-- tabla transporte -->
 <div class="container">
-  <form class="well form-horizontal" action=" " method="post"  id="assignService" name="assignServie">
     <center>
-      <legend >Lista de Actividades</legend>
+      <legend >Lista de Actividades Transporte</legend>
     </center>
+    <!-- /.box-header -->
+    <div class='box-body'>
+      <table id='example1' class='table table-bordered table-striped'>
+          <thead>
+              <tr>
+                  <th>Id orden</th>
+                  <th>Fecha Creacion</th>
+                  <th>Ingeniero Solicitante</th>
+                  <th>Forecast aprox.</th>
+                  <th>F. Asignación</th>
+                  <th>Proyecto</th>
+                  <th>Regional</th>
+                  <th>Ingenieros Asignado</th>
+                  <th>Descripción de la orden</th>
+                  <th>Cantidad Actividades</th>
+              </tr>
+          </thead>
+          <tbody>
+              <?php
+           /*   print_r($_SESSION["userName"]);
+              echo "<br>";
+              print_r($_SESSION["id"]);
+              echo "<br>";
+              print_r($_SESSION["role"]);*/
 
-    <table id="demo" cellpadding="0" cellspacing="0">
-        <tbody>
-            <tr>
-                <th>Id actividad</th>
-                <th>Id orden</th>
-                <th>Tipo</th>
-                <th>Estación base</th>
-                <th>Ingeniero Asignado</th>
-                <th>F. Forecast</th>
-                <th>F. Asignación</th>
-                <th>Ingeniero Solicitante</th>
-                <th>Proyecto</th>
-                <th>estado</th>
-            </tr>
+             //print_r($services);
+                if(isset($services)){
+                    for($i = 0; $i < count($services); $i++){
+                      $proyecto = str_replace(array("\n", "\r", "\t"), '', $services[$i]->services[0]->proyecto);
+                      if ($proyecto != "GDATOS") {
+                          
+                          $ing[] = "";
+                          $engs = "";
+                          if(count($services[$i]->services) > 0){
+                          for ($k=0; $k <count($services[$i]->services) ; $k++) { 
+                            $ing[$k] = "- ".$services[$i]->services[$k]->user->name." ".$services[$i]->services[$k]->user->lastname."<br>";
+                          }
+                            $ing = array_unique($ing);
+                            $ing = array_values($ing);
+                            for ($k=0; $k <count($ing) ; $k++) { 
+                              $engs = $engs.$ing[$k]."  ";
+                            }
+                          }
 
-            <?php
-              if(isset($services)){
-                  for($i = 0; $i < count($services); $i++){
-                      if ($services[$i]->getUser() != "") {
-                        echo "<tr>";
-                        echo "<td><a href='/Datafill_OT/index.php/service/serviceDetails?K_ID_SP_SERVICE=".$services[$i]->getId()."'>".$services[$i]->getIdClaro()."</a></td>";
-                        echo "<td>".$services[$i]->getOrder()->getId()."</td>";
-                        echo "<td>".$services[$i]->getService()->getType()."</td>";
-                        echo "<td>".$services[$i]->getSite()->getName()."</td>";
-                        echo "<td>".$services[$i]->getUser()->getName()." ".$services[$i]->getUser()->getLastname()."</td>";
-                        echo "<td>".$services[$i]->getDateForecast()."</td>";
-                        echo "<td>".$services[$i]->getDateStartP()."</td>";
-                        echo "<td>".$services[$i]->getIngSol()."</td>";
-                        echo "<td>".$services[$i]->getProyecto()."</td>";
-                        echo "<td>".$services[$i]->getEstado()."</td>";
-                        echo "</tr>";
+
+                              if ($services[$i]->getId() != "") {
+                              echo "<tr>";
+                                  echo "<td><a onclick='modalEditar(".json_encode($services[$i]).", ".$services[$i]->getId().", ".$_SESSION["id"].",".$_SESSION["role"].")'>".$services[$i]->getId()."</td>";
+                                  echo "<td>".$services[$i]->getCreationDate()."</td>";
+                                  echo "<td>".$services[$i]->services[0]->ingSol."</td>";
+                                  echo "<td>".$services[$i]->services[0]->dateForecast."</td>";
+                                  echo "<td>".$services[$i]->services[0]->dateStartP."</td>";
+                                  echo "<td>".$services[$i]->services[0]->proyecto."</td>";
+                                  echo "<td>".$services[$i]->services[0]->region."</td>";
+                                  echo "<td>".$engs."</td>";
+                                  echo "<td>".$services[$i]->services[0]->claroDescription."</td>";
+                                  echo "<td>".count($services[$i]->services)."</td>";
+                              echo "</tr>";
+                              unset($ing);
+                              }
+
+
                       }
-                  }
-              }
-             ?>
-        </tbody>
-    </table>
-  </form>
+                    }
+                }
+               ?>
+          </tbody>
+
+      </table> 
+    </div>
 </div>
+<!-- fin tabla transporte -->
+
+<!-- tabla gdatos-->
+<br><br><br>
+<div class="container">
+    <center>
+      <legend >Lista de Actividades GDATOS</legend>
+    </center>
+    <!-- /.box-header -->
+    <div class='box-body'>
+      <table id='example3' class='table table-bordered table-striped'>
+          <thead>
+              <tr>
+                  <th>Id orden</th>
+                  <th>Fecha Creacion</th>
+                  <th>Ingeniero Solicitante</th>
+                  <th>Forecast aprox.</th>
+                  <th>F. Asignación</th>
+                  <th>Proyecto</th>
+                  <th>Regional</th>
+                  <th>Ingenieros Asignado</th>
+                  <th>Descripción de la orden</th>
+                  <th>Cantidad Actividades</th>
+              </tr>
+          </thead>
+          <tbody>
+              <?php
+            // print_r($services[0]->services[0]);
+                if(isset($services)){
+                    for($i = 0; $i < count($services); $i++){
+                      $proyecto = str_replace(array("\n", "\r", "\t"), '', $services[$i]->services[0]->proyecto);
+                      if ($proyecto == "GDATOS") {
+                          
+                          $ing[] = "";
+                          $engs = "";
+                          if(count($services[$i]->services) > 0){
+                          for ($k=0; $k <count($services[$i]->services) ; $k++) { 
+                            $ing[$k] = "- ".$services[$i]->services[$k]->user->name." ".$services[$i]->services[$k]->user->lastname."<br>";
+                          }
+                            $ing = array_unique($ing);
+                            $ing = array_values($ing);
+                            for ($k=0; $k <count($ing) ; $k++) { 
+                              $engs = $engs.$ing[$k]."  ";
+                            }
+                          }
+                             if ($services[$i]->getId() != "") {
+                              echo "<tr>";
+                             echo "<td><a onclick='modalEditar(".json_encode($services[$i]).", ".$services[$i]->getId().", ".$_SESSION["id"].",".$_SESSION["role"].")'>".$services[$i]->getId()."</td>";
+                              echo "<td>".$services[$i]->getCreationDate()."</td>";
+                              echo "<td>".$services[$i]->services[0]->ingSol."</td>";
+                              echo "<td>".$services[$i]->services[0]->dateForecast."</td>";
+                              echo "<td>".$services[$i]->services[0]->dateStartP."</td>";
+                              echo "<td>".$services[$i]->services[0]->proyecto."</td>";
+                              echo "<td>".$services[$i]->services[0]->region."</td>";
+                              echo "<td>".$engs."</td>";
+                              echo "<td>".$services[$i]->services[0]->claroDescription."</td>";
+                              echo "<td>".count($services[$i]->services)."</td>";
+                              echo "</tr>";
+                              unset($ing);
+                            }
+                      }
+                    }
+                }
+               ?>
+          </tbody>
+
+      </table> 
+    </div>
+</div>
+<!-- Modal -->
+<div class="modal fade" id="modalEvento" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+    <div class="modal-dialog modal-lg" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+          <h1 class="modal-title">Detalles del Evento</h1>
+          <h4 id="orden"></h4>
+        </div>
+        <div class="modal-body">
+          <table id='example5' class='table table-bordered table-striped'>
+            <thead>
+                <tr>
+                  <th>Id actividad</th>
+                  <th>Tipo</th>
+                  <th>Cant.</th>
+                  <th>Estación base</th>
+                  <th>Ingeniero Asignado</th>
+                  <th>F. Forecast</th>
+                  <th>F. Asignación</th>
+                  <th>Proyecto</th>
+                  <th>estado</th>     
+                </tr>    
+            </thead>
+            <tbody name="body" id="body">
+            </tbody>
+          </table>
+        </div>
+
+        <div class="modal-footer">
+          <button type="button" class="btn btn-defauld btn-block" id="btnCerrarModal" data-dismiss="modal">CERRAR</button>
+        </div>
+      </div>
+    </div>
+  </div>
 
 <!--          container ------------>
 
@@ -166,12 +367,45 @@
 
     <?php
       if (isset($message)) {
-        if($message == "ok"){
-          echo '<script type="text/javascript">showMessage("ok");</script>';
-        } else {
-           echo '<script type="text/javascript">showMessage("error");</script>';
-        }
+          echo '<script type="text/javascript">showMessage("'.$message.'");</script>';        
       }
     ?>
+    <!-- DataTables -->
+<script src="/Datafill_OT/assets/plugins/datatables/jquery.dataTables.min.js"></script>
+<script src="/Datafill_OT/assets/plugins/datatables/dataTables.bootstrap.min.js"></script>
+
+<script>
+  $(function () {
+    $("#example1").DataTable({
+       "language": {
+            "url": "//cdn.datatables.net/plug-ins/9dcbecd42ad/i18n/Spanish.json"
+        },
+      "paging": true,
+      "lengthChange": true,
+      "searching": true,
+      "ordering": true,
+      "info": true,
+      "autoWidth": true,
+      "order": [[ 3, "desc" ]],
+
+    });   
+  });
+</script>
+<script>
+  $(function () {
+    $("#example3").DataTable({
+      "language": {
+            "url": "//cdn.datatables.net/plug-ins/9dcbecd42ad/i18n/Spanish.json"
+        },
+      "paging": true,
+      "lengthChange": true,
+      "searching": true,
+      "ordering": true,
+      "info": true,
+      "autoWidth": false,
+      "order": [[ 3, "desc" ]]
+    });    
+  });
+</script>
 </body>
 </html>

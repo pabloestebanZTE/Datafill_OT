@@ -14,13 +14,194 @@
         $this->load->model('rf_model');
        // $this->load->model('mail/mail_manager_model');
         $this->load->model('data/configdb_model');
-        $this->load->library('session');
+      //  $this->load->library('session');
         $this->load->helper('form');
       }
 
       public function assignService(){
         $answer['services'] = $this->dao_service_model->getAllServices();
       }
+
+      //=================
+      public function assignByMail(){
+/*        header('Content-Type: text/plain');
+*/       /* print_r(explode("\n", $_POST['actividades']));*/
+        //validacion si viene de correo de asignacion
+        $_POST['actividades'] = str_replace("\t", "\n", $_POST['actividades']);
+        $clave = explode("\n", $_POST['actividades'])[8];
+        $clave = str_replace(array("\n", "\r", "\t"), '', $clave);
+        if ($clave == "Proyecto:") {           
+          //creacion orden          
+          $orden = explode("Detalle de servicios", $_POST['actividades']);       
+          $asignar['ot'] = str_replace(array("\n", "\r", "\t", " "), '', explode("\n", $orden[0])[3]);
+          $asignar['solicitante'] =  explode("\n", $orden[0])[7];
+          $asignar['proyecto'] = explode("\n", $orden[0])[9];
+          $asignar['descripcion'] = explode("\n", $orden[0])[11];
+          $asignar['fCreacion'] = str_replace("/", "-", substr(explode("\n", $orden[0])[13], 0, -9));
+          //separacion  actividades
+          $tareas = explode("Forecast", $_POST['actividades']);
+          $id = explode("\n", $tareas[1]);
+            $plus = 0;
+          $value = count($id);
+          for($x = 1; $x < $value; $x=$x+6){
+             
+            if($id[$x] != ""){
+
+              //creacion actividades
+              $asignar['actividades'][$plus] = str_replace(array("\n", "\r", "\t", " "), '', $id[$x]);
+              //fin actividades
+
+              //creacion tipo
+              //funciones para comparar el tipo extraido text area, y convertirlo en el id del tipo q esta en bd
+              $service = (explode("-",$id[$x+1])[0]);// funcion para dividir una cadena de caracteres dependiendo la llave, en este caso se usa para tomar la primera parte, antes del guion (-)
+
+              if ((explode("-",$id[$x+1])[0][2]) == "0"){//los T10 T11 Y T12 hay q convertirlos en C1 C2 Y C3 respectivamente
+                $service = "C1";
+              }
+              if ((explode("-",$id[$x+1])[0][2]) == "1"){
+                $service = "C2";
+              }
+              if ((explode("-",$id[$x+1])[0][2]) == "2"){
+                $service = "C3";
+              }
+              //traer todos los servicios
+              $allService = $this->dao_service_model->getAllServices();//trae todos los servicios
+                for ($i=0; $i <count($allService) ; $i++){//comparacion de tipo excel y bd y con a id
+                  if ($service == $allService[$i]->getType()) {
+                      $typeId = $allService[$i]->getId();//id del tipo de db
+                      $typeName = $allService[$i]->getType();//id del tipo de db
+
+                  }
+                }          
+                $asignar['tipo']['idTipo'][$plus] = $typeId;
+                $asignar['tipo']['name'][$plus] = $typeName;
+
+              // fin creacion tipo
+
+              //creacion regional
+              $asignar['regional'][$plus] = $id[$x+2];
+              //fin creacion regional
+
+              //creacion cantidad
+              $asignar['cantidad'][$plus] = $id[$x+3];
+              //fin creacion cantidad
+
+              //creacion descripcionActividad
+              $asignar['descripcionActividad'][$plus] = $id[$x+4];
+              //fin creacion descripcionActividad
+
+              //creacion forecast
+              $asignar['forecast'][$plus] = str_replace("/", "-", $id[$x+5]);
+              //fin creacion  forecast
+
+              //creacion site
+              //funcion para traer solo el sitio especifico de una cadena larga de caracteres con la funcion substr_count(x,y), la cual cuenta cuantas veces esta el string(y) en el string(x)
+              $allSites = $this->dao_site_model->getAllSites();//llama todos los sitios de la db
+              $site = $id[$x+4];//celda del excel o arreglo donde esta el sitio
+              $flag2 = 0;
+              for ($i=0; $i < count($allSites); $i++) {
+                $flag = substr_count($site, $allSites[$i]->getName());//cuenta cuantas veces esta allsites en site
+                if ($flag == 1){
+                  //nombre del sitio (BD)
+                  $asignar['sitio']['name'][$plus] = $allSites[$i]->getName();
+                  //ID del sitio (BD)
+                  $asignar['sitio']['id'][$plus]= $allSites[$i]->getId();
+                  $flag2 = 1;
+                }
+              }
+              //si no existe el sitio, lo añade a bd con id
+              if($flag2 == 0){
+                    $asignar['sitio']['name'][$plus]= (explode("staciones:", $site)[1]);
+                    $asignar['sitio']['id'][$plus]= count($allSites)+1;//añade id nuevo
+                    $newSite = new site_model;
+                    $newSite->createSite($asignar['sitio']['id'][$plus], $asignar['sitio']['name'][$plus]);
+                     $this->dao_site_model->insertNewSite($newSite);
+                    $allSites[count($allSites)] = $newSite;
+              }
+              //fin creacion site
+
+              $plus++;
+            }
+          }
+            $asignar['eng'] = $this->dao_user_model->getAllEngineers();//llama todos los ing para pintar en select
+            /*print_r($asignar);*/
+            $array['asignar'] = $asignar;
+            $this->load->view('excelAssign', $array);
+        }else{
+          $answer['error'] = "error";
+          $this->load->view('assignService', $answer);
+        }
+      }
+
+      public function cancelByMail(){
+        /*header('Content-Type: text/plain');*/
+        //verificacion si viene de correo cancelacion
+        $_POST['cancelacion'] = str_replace("\t", "\n", $_POST['cancelacion']);
+        $clav1 = explode("\n", $_POST['cancelacion'])[8];
+        $clave1 = str_replace(array("\n", "\r", "\t"), '', $clav1);
+        $clav2 = explode("\n", $_POST['cancelacion'])[23];
+        $clave2 = str_replace(array("\n", "\r", "\t"), '', $clav2);
+        //si es de cancelacion ejecuta la accion
+        if ($clave1 == "Fecha de creación:" && $clave2 != "Fecha ejecución") {
+          $orden = explode("Servicios unitarios", $_POST['cancelacion']); 
+          $cancelar['ot'] = str_replace(array("\n", "\r", "\t", " "), '', explode("\n", $orden[0])[3]);
+          $cancelar['solicitante'] = explode("\n", $orden[0])[5];
+          $cancelar['descripcion'] = explode("\n", $orden[0])[7];
+          $cancelar['fCreacion'] = str_replace("/", "-", substr(explode("\n", $orden[0])[9], 0, -9));
+          $tareas = explode("Descripción", $orden[1]);
+          $id = explode("\n", $tareas[1]);
+          $plus = 0;
+          for ($x=1; $x < count($id) ;  $x=$x+4) { 
+            if ($id[$x] != "") {
+              $cancelar['idActividad'][$plus] = str_replace(array("\n", "\r", "\t", " "), '',$id[$x]);
+              $cancelar['tipo'][$plus] = (explode("-",$id[$x+1])[0]);
+              $cancelar['cantidad'][$plus] = $id[$x+2];
+              $cancelar['descripcionActividad'][$plus] = $id[$x+3];
+              $plus++;
+            }
+          }
+          $array['cancelar'] = $cancelar;
+          $this->load->view('excelCancel', $array);
+        }else{
+          $answer['error'] = "error";
+          $this->load->view('assignService', $answer);
+        }
+      }
+
+      public function executeByExcel(){
+        /*header('Content-Type: text/plain');*/
+        $_POST['ejecucion'] = str_replace("\t", "\n", $_POST['ejecucion']);
+        $clave = str_replace(array("\n", "\r", "\t"), '',explode("\n", $_POST['ejecucion'])[23]);
+        if ($clave == "Fecha ejecución") {          
+          $orden = explode("Servicios unitarios", $_POST['ejecucion']);
+          $ejecutar['ot'] = str_replace(array("\n", "\r", "\t", " "), '', explode("\n", $orden[0])[3]);
+          $ejecutar['solicitante'] = explode("\n", $orden[0])[5];
+          $ejecutar['descripcion'] = explode("\n", $orden[0])[7];
+          $ejecutar['fCreacion'] = str_replace("/", "-", substr(explode("\n", $orden[0])[9], 0, -9));
+          $tareas = explode("Ejecutada en inst. proveedor", $orden[1]);
+          $id = explode("\n", $tareas[1]);
+          $plus = 0;
+          for ($x=1; $x < count($id) ; $x=$x+7) { 
+            if ($id[$x] != "") {
+              $ejecutar['idActividad'][$plus] = str_replace(array("\n", "\r", "\t", " "), '', $id[$x]);
+              $ejecutar['tipo'][$plus] = (explode("-",$id[$x+1])[0]);
+              $ejecutar['cantidad'][$plus] = $id[$x+2];
+              $ejecutar['descripcionActividad'][$plus] = $id[$x+3];
+              $ejecutar['estado'][$plus] = $id[$x+4];
+              $ejecutar['fEjecucion'][$plus] = $id[$x+5];
+              $ejecutar['ejecProveedor'][$plus] = $id[$x+6];
+              $plus++;
+            }
+          }
+          $array['ejecutar'] = $ejecutar;
+          $this->load->view('excelExecute', $array);
+        }else{
+          $answer['error'] = "error";
+          $this->load->view('assignService', $answer);
+        }
+
+      }
+
 
       public function saveServiceS(){
         date_default_timezone_set("America/Bogota");
@@ -35,6 +216,7 @@
         $answer['services'] = $this->dao_service_model->getAllServicesS();
         $answer['message'] = $_SESSION['mensaje'];
         $this->load->view('listServices', $answer);
+        
       }
 //CAMILO-------------------------------------------------------------------------------------
       public function updateSpectService(){
@@ -43,7 +225,9 @@
         $close->setIdClaro($_POST['idService']);
         $close->setId($_POST['keyId']);
         $this->dao_service_model->updateClose($close);
-
+       // header("".$_POST['keyId']);
+         $answer['service']=$this->dao_service_model->getServiceById($_POST['keyId']);
+        $this->load->view('orderDetail',$answer);
       }
 //CAMILO-----------------------------------------------------------------para leer excel
 
@@ -76,7 +260,7 @@
 
       //----------funcion para convertir excel en arreglo.
        //header('Content-Type: text/plain');//convierte a texto plano
-        $argv[1] = $destino;// a esta variable $argv[1] le asignamos la ruta del documento, se usan backslash(\)
+          $argv[1] = $destino;// a esta variable $argv[1] le asignamos la ruta del documento, se usan backslash(\)
         if (isset($argv[1]))
         {
           $Filepath = $argv[1];
@@ -113,7 +297,11 @@
                 $Time = microtime(true);
                 $Spreadsheet -> ChangeSheet($Index);
                 foreach ($Spreadsheet as $Key => $Row){
+                  for($x = 0; $x < count($Row); $x++){
+                    $Row[$x] = utf8_decode($Row[$x]);
+                  }
                   $arreglo[$i][$j] = $Row;
+
                   if ($Row){
                     //print_r($Row);
                   } else{
@@ -131,8 +319,6 @@
             {
               echo $E -> getMessage();
             }
-            //echo "\n\n";
-            //echo "\n\n";
          $array['excel'] = $arreglo;
          $_SESSION['excel'] = $arreglo;
          //print_r($_SESSION['excel']);
@@ -151,12 +337,11 @@
          return $array['excel'];
       }
 
-//------------------------------RF-----------------------
+//------------------------------RF------------------------------------------------------------------------
       public function upLoadRF(){
-        header('Content-Type: text/plain');//convierte a texto plano
+       //  header('Content-Type: text/plain');//convierte a texto plano
         $rf['excel'] = $this->viewExcel();
         $users = $this->dao_user_model->getAllEngineers();//llama los ingenieros para comparar con el excel
-        //print_r($rf['excel']);
         for ($i=1; $i < count($rf['excel'][0]) ; $i++) {
           //cambio fechas de formato / por -
           $dateReq = str_replace("/", "-", $rf['excel'][0][$i][0]);
@@ -166,7 +351,44 @@
           $dateRev = str_replace("/", "-", $rf['excel'][0][$i][16]);
           $dateRa = str_replace("/", "-", $rf['excel'][0][$i][17]);
           $dateOT = str_replace("/", "-", $rf['excel'][0][$i][18]);
-          //rellenar campo code(codigo) vacio
+          //modificacion excel para hacer la comparacion con la info de la bd
+          if ($dateReq != "") {
+            $dateReq = "20".explode("-", $dateReq)[2]."-".explode("-", $dateReq)[0]."-".explode("-", $dateReq)[1];
+          }else{
+            $dateReq = "0000-00-00";
+          }
+          if ($dateA != "") {
+            $dateA = "20".explode("-", $dateA)[2]."-".explode("-", $dateA)[0]."-".explode("-", $dateA)[1];
+          }else{
+            $dateA = "0000-00-00";
+          }
+          if ($dateS != "") {
+            $dateS = "20".explode("-", $dateS)[2]."-".explode("-", $dateS)[0]."-".explode("-", $dateS)[1];
+          }else {
+            $dateS = "0000-00-00";
+          }
+          if ($dateB != "") {
+            $dateB = "20".explode("-", $dateB)[2]."-".explode("-", $dateB)[0]."-".explode("-", $dateB)[1];
+          }else {
+            $dateB = "0000-00-00";
+          }
+          if ($dateRev != "") {
+            $dateRev = "20".explode("-", $dateRev)[2]."-".explode("-", $dateRev)[0]."-".explode("-", $dateRev)[1];
+          }else {
+            $dateRev = "0000-00-00";
+          }
+          if ($dateRa != "") {
+            $dateRa = "20".explode("-", $dateRa)[2]."-".explode("-", $dateRa)[0]."-".explode("-", $dateRa)[1];
+          }else {
+            $dateRa = "0000-00-00";
+          }
+          if ($dateOT != "") {
+            $dateOT = "20".explode("-", $dateOT)[2]."-".explode("-", $dateOT)[0]."-".explode("-", $dateOT)[1];
+          }else {
+            $dateOT = "0000-00-00";
+          }
+        //-------------------------------fin modificacion-------------------------------
+          //----------completar campo code(codigo) vacio-------------------------
           $cod = $rf['excel'][0][$i][21];
 
           if ($rf['excel'][0][$i][21] == "") {
@@ -177,117 +399,106 @@
                $cod = "D4";
             }
           }
-
-          //print_r($users);
+          //------------------------------fin completar----------------------------
+          //---------comparacion nombre excel con  nombre base de datos en rf
           $engA = $rf['excel'][0][$i][6];
-            print_r(similar_text((explode(" ", $engA))[0], explode(" ", $users[2]->getName())[0], $porc));
+          $engAname = "";
+          $idEngA = "";
           for ($j=0; $j <count($users) ; $j++) {
-            if ((explode(" ", $engA))[0] == explode(" ", $users[$j]->getName())[0]) {
-              if (explode(" ", $users[$j]->getLastname())[0] == explode(" ", $engA)[1] || explode(" ", $users[$j]->getLastname())[0] == explode(" ", $engA)[2] || explode(" ", $users[$j]->getLastname())[0] == explode(" ", $engA)[3]) {
-                $EngA = $users[$j]->getId();
-                $engName = $users[$j]->getName();
+
+            similar_text((explode(" ", $engA))[0], explode(" ", $users[$j]->getName())[0], $pName);//porcentaje de similar entre primer nombre de db y primera palabra (nombre) de rf
+            similar_text(explode(" ", $users[$j]->getLastname())[0], explode(" ", $engA)[1], $pLastname1);//porcentaje de similar entre primer apellido de db y segunda palabra (apellido) de rf
+            similar_text(explode(" ", $users[$j]->getLastname())[0], explode(" ", $engA)[2], $pLastname2);//porcentaje de similar entre primer apellido de db y tercera (apellido) de rf
+            similar_text(explode(" ", $users[$j]->getLastname())[0], explode(" ", $engA)[3], $pLastname3);//porcentaje de similar entre primer apellido de db y cuarta (apellido) de rf
+            if ($pName > 70) {
+              if ($pLastname1 > 69 || $pLastname2 > 69 || $pLastname3 > 69) {
+                $idEngA = $users[$j]->getId();
+                $engAname = $users[$j]->getName();
               }
             }
           }
-
-          //print_r($engName);
-
+          /*print_r($rf);*/
+          //-------------------------fin comparacion----------
+          //-------------------------creacion de objeto rf-----------------
           $up = new rf_model;
-          $up->createRF("", $dateReq, $rf['excel'][0][$i][1], $rf['excel'][0][$i][2], $rf['excel'][0][$i][3], $rf['excel'][0][$i][4], $dateA, $rf['excel'][0][$i][6], $dateS, $rf['excel'][0][$i][8], $rf['excel'][0][$i][9], $rf['excel'][0][$i][10], $rf['excel'][0][$i][11], $rf['excel'][0][$i][12], $rf['excel'][0][$i][13], $dateB, $rf['excel'][0][$i][15], $dateRev, $dateRa, $dateOT, $rf['excel'][0][$i][20], $cod);
-
-          echo "<br><br>";
-          //print_r($up);
-          $this->dao_rf_model->updateRF($up);
-
-
-
+          $up->createRF("", $dateReq, $rf['excel'][0][$i][1], $rf['excel'][0][$i][2], $rf['excel'][0][$i][3], $rf['excel'][0][$i][4], $dateA, $idEngA, $dateS, $rf['excel'][0][$i][8], $rf['excel'][0][$i][9], $rf['excel'][0][$i][10], $rf['excel'][0][$i][11], $rf['excel'][0][$i][12], $rf['excel'][0][$i][13], $dateB, $rf['excel'][0][$i][15], $dateRev, $dateRa, $dateOT, $rf['excel'][0][$i][20], $cod);
+         $this->dao_rf_model->updateRF($up);
         }
-          $this->load->view('viewRF', $rf);
-
+          $rf = $this->dao_rf_model->getAllRF();
+          for ($k=0; $k < count($rf); $k++) { 
+            if ($rf[$k]->assignedTo) {
+              $rf[$k]->assignedTo = $this->dao_user_model->getUserById($rf[$k]->assignedTo);
+              $rf[$k]->assignedTo = $rf[$k]->assignedTo->name." ".$rf[$k]->assignedTo = $rf[$k]->assignedTo->lastname;
+            }
+          }
+          $AllRF['rf'] = $rf;
+          $this->load->view('viewRF', $AllRF);
       }
-     //--------------------guardar en bd asignar con excel
-      public function saveServicesExcel(){
-       $order = new order_model;
-       $order->createOrder($_SESSION['excel'][0][0][1],"",str_replace("/", "-", substr($_SESSION['excel'][0][5][1], 0, -5)));//fnc str_replace() para remplazar algun caracter o string por otro, fnc substr()borra caracteres
-        $this->dao_order_model->insertOrder($order);
-       $activity = new service_spec_model;
-       $count2 = 0;
-          for ($g=12; $g < count($_SESSION['excel'][0]); $g++) {
-            if ($_SESSION['excel'][0][$g][0]!="") {
 
-  //------------ funcion para traer solo el sitio especifico de una cadena larga de caracteres con la funcion substr_count(x,y), la cual cuenta cuantas veces esta el string(y) en el string(x)
-                  $allSites = $this->dao_site_model->getAllSites();//llama todos los sitios de la db
-                  $site = $_SESSION['excel'][0][$g][4];//celda del excel o arreglo donde esta el sitio
-                  $flag2 = 0;
-                  for ($i=0; $i < count($allSites); $i++) {
-                    $flag = substr_count($site, $allSites[$i]->getName());//cuenta cuantas veces esta allsites en site
-                    if ($flag == 1){
-                      //nombre del sitio (BD)
-                      $siteName= $allSites[$i]->getName();
-                      //ID del sitio (BD)
-                      $siteId= $allSites[$i]->getId();
-                      $flag2 = 1;
-                    }
-                  }
-                  //si no existe el sitio, lo añade a bd con id
-                  if($flag2 == 0){
-                        $siteName= (explode("staciones:", $site)[1]);
-                        $siteId= count($allSites)+1;//añade id nuevo
-                        $newSite = new site_model;
-                        $newSite->createSite($siteId,  $siteName);
-                         $this->dao_site_model->insertNewSite($newSite);
-                        $allSites[count($allSites)] = $newSite;
-                  }
-    //funcion para quitar caracteres de una cadena con substr(x,desde donde comienza, caracteres a suprimir) en este caso la uso para quitarle la hora al campo date creation
-                  $dateCreation = str_replace("/", "-", substr($_SESSION['excel'][0][5][1], 0, -5));
-                  $dateForecast = str_replace("/", "-", $_SESSION['excel'][0][$g][5]);
-
-//funciones para comparar el tipo(type) extraido del excel, y convertirlo en el id del tipo(type) q esta en bd
-                $service = (explode("-",$_SESSION['excel'][0][$g][1])[0]);// funcion para dividir una cadena de caracteres dependiendo la llave, en este caso se usa para tomar la primera parte, antes del guion (-)
-
-                if ((explode("-",$_SESSION['excel'][0][$g][1])[0][2]) == "0"){//los T10 T11 Y T12 hay q convertirlos en C1 C2 Y C3 respectivamente
-                  $service = "C1";
-                }
-                if ((explode("-",$_SESSION['excel'][0][$g][1])[0][2]) == "1"){
-                  $service = "C2";
-                }
-                if ((explode("-",$_SESSION['excel'][0][$g][1])[0][2]) == "2"){
-                  $service = "C3";
-                }
-                $allService = $this->dao_service_model->getAllServices();//trae todos los servicios
-                  for ($i=0; $i <count($allService) ; $i++){//comparacion de tipo excel y bd y con a id
-                    if ($service == $allService[$i]->getType()) {
-                        $typeId = $allService[$i]->getId();//id del tipo de db
-                    }
-                  }
-                 $cant1 = $_POST['cantidad1'] + 11;
-                 $cant2 = $_POST['cantidad2'] + $cant1;
-                 $cant3 = $_POST['cantidad3'] + $cant2;
-                 $eng = $_POST['inge1'];
-                 if ($cant1 < $g) {
-                   $eng = $_POST['inge2'];
-                 }
-                 if ($cant2 < $g) {
-                   $eng = $_POST['inge3'];
-                 }
-                //-----------creacion del objeto---------------------------
-                $activity->createServiceS($eng, "", $_SESSION['excel'][0][$g][0], $_SESSION['excel'][0][$g][4], "", "", $dateCreation, $dateForecast, $_SESSION['excel'][0][0][1], $siteId, $typeId, "",  $_SESSION['excel'][0][4][1], $_SESSION['excel'][0][2][1], $_SESSION['excel'][0][3][1], "Creada","");
-                $activity->setQuantity($_SESSION['excel'][0][$g][3]);
-                $activity->setRegion($_SESSION['excel'][0][$g][2]);
-              // print_r($activity);
-                $countActivities = $this->dao_service_model->insertFromExcel($activity);
-                $count2+=$countActivities;
+      public function viewRF(){
+        $rf = $this->dao_rf_model->getAllRF();
+        for ($k=0; $k < count($rf); $k++) { 
+          if ($rf[$k]->assignedTo) {
+            $rf[$k]->assignedTo = $this->dao_user_model->getUserById($rf[$k]->assignedTo);
+            $rf[$k]->assignedTo = $rf[$k]->assignedTo->name." ".$rf[$k]->assignedTo = $rf[$k]->assignedTo->lastname;
           }
         }
-        if ($count2 > 0){
+        $AllRF['rf'] = $rf;
+          $this->load->view('viewRF', $AllRF);
+      }
+
+
+//--------------------guardar en bd asignar con mail---------------------------------------------
+      public function saveServicesExcel(){
+       $order = new order_model;
+       $order->createOrder(str_replace(array("\n", "\r", "\t", " "), '',$_POST['OT']),"",$_POST['fCreacion']);
+       $this->dao_order_model->insertOrder($order);
+       $activity = new service_spec_model;
+       $count2 = 0; 
+       $flag = 0;
+        for ($g=0; $g < $_POST['contador'] ; $g++) {
+          $existe = $this->dao_service_model->getServiceByIdActivity($_POST['actividades_'.$g]);
+          if ($existe) {
+            $flag = 1;            
+          }else{
+            if ($_POST['actividades_'.$g] !="") {
+              
+               $cant1 = $_POST['cantidad1'];
+               $cant2 = $_POST['cantidad2'] + $cant1;
+               $cant3 = $_POST['cantidad3'] + $cant2;
+               $eng = $_POST['inge1'];
+               if ($cant1 < $g) {
+                 $eng = $_POST['inge2'];
+               }
+               if ($cant2 < $g) {
+                 $eng = $_POST['inge3'];
+               }
+              //-----------creacion del objeto---------------------------
+              $activity->createServiceS($eng, "", $_POST['actividades_'.$g], $_POST['descripcionActividad_'.$g], "", "", $_POST['fCreacion'], $_POST['forecast_'.$g], $_POST['OT'], $_POST['sitio_'.$g], $_POST['tipo_'.$g], "", $_POST['descripcion'], $_POST['solicitante'], $_POST['proyecto'], "Creada","");
+              $activity->setQuantity($_POST['cantidadActiv_'.$g]);
+              $activity->setRegion($_POST['regional_'.$g]);
+              // print_r($activity);
+              $countActivities = $this->dao_service_model->insertFromExcel($activity);
+              $count2+=$countActivities;
+            }
+          }
+        }
+        //si flag es 1 es porque la actividad ya existe
+        //*-***************************************************************************************************************
+         /* if ($count2 > 0){
           $engs = $this->dao_user_model->getAllEngineersClaro();
           $asig = $this->dao_user_model->getUserById($eng);
           $engC = $_SESSION['excel'][0][2][1];
 
           for ($i=0; $i <count($engs) ; $i++) {
 
-            if ((explode(" ", $engC))[0] == explode(" ", $engs[$i]->getName())[0]) {
-              if (explode(" ", $engs[$i]->getLastname())[0] == explode(" ", $engC)[1] || explode(" ", $engs[$i]->getLastname())[0] == explode(" ", $engC)[2] || explode(" ", $engs[$i]->getLastname())[0] == explode(" ", $engC)[3]) {
+            similar_text((explode(" ", $engC))[0], explode(" ", $engs[$i]->getName())[0], $pName);//porcentaje de similar entre primer nombre de db y primera palabra (nombre) de excel
+            similar_text(explode(" ", $engs[$i]->getLastname())[0], explode(" ", $engC)[1], $pLastname1);//porcentaje de similar entre primer apellido de db y segunda palabra (apellido) de excel
+            similar_text(explode(" ", $engs[$i]->getLastname())[0], explode(" ", $engC)[2], $pLastname2);//porcentaje de similar entre primer apellido de db y tercera (apellido) de excel
+            similar_text(explode(" ", $engs[$i]->getLastname())[0], explode(" ", $engC)[3], $pLastname3);//porcentaje de similar entre primer apellido de db y cuarta (apellido) de excel
+
+            if ($pName > 70) {
+              if ($pLastname1 > 69 || $pLastname2 > 69 || $pLastname3 > 69) {
                 $mailEngC = $engs[$i]->getMail();
                 $engName = $engs[$i]->getName();
               }
@@ -385,52 +596,260 @@
 
           $this->email->from('zolid@zte.com', 'ZOLID_ZTE');
 
-          $this->email->to(strtolower($mailEngC).', '.strtolower($asig->getMail()));
+        //  $this->email->to(strtolower($mailEngC).', '.strtolower($asig->getMail()));
+          $this->email->to('bredybuitrago@outlook.com, yuyupa14@gmail.com');
 
           //$this->email->to('yuyupa14@gmail.com, andrea.rosero.ext@claro.com.co, andrea.lorenaroserochasoy@zte.com.cn, pablo.esteban@zte.com.cn, bredybuitrago@gmail.com');
-          $this->email->cc(' andrea.rosero.ext@claro.com.co, cesar.rios.ext@claro.com.co');
+          $this->email->cc('andrea.rosero.ext@claro.com.co, andrea.lorenaroserochasoy@zte.com.cn');//, cesar.rios.ext@claro.com.co
+
           $this->email->bcc('bredybuitrago@gmail.com ,bredi.buitrago@zte.com.cn, pablo.esteban@zte.com.cn');
 
           $this->email->subject("Notificación de asignación de orden de servicio. Orden: ".$_SESSION['excel'][0][0][1].". Proyecto: ".$_SESSION['excel'][0][3][1].".");
+
           $this->email->message($cuerpo);
 
           $this->email->send();
-
-
-          if($this->email->send())
-          $this->session->set_flashdata("email_sent","Email sent successfully.");
-          else
-          $this->session->set_flashdata("email_sent","Error in sending Email.");
-
 
           $_SESSION['mensaje'] = "ok";
         } else {
           $_SESSION['mensaje'] = "error";
         }
-        $this->listServices();
+        $_SESSION['excel']= null;*/
+        if ($flag == 0) {
+          $answer['message'] = "ok";
+          $answer['services'] = $this->dao_order_model->getAllOrders();
+          $this->load->view('listServices', $answer);
+        }else{
+          $answer['message'] = "error";
+          $answer['services'] = $this->dao_order_model->getAllOrders();
+          $this->load->view('listServices', $answer);
+        }
       }
 
       public function saveCancelExcel(){
-        $cancel = new service_spec_model;
-        for ($g=12; $g < count($_SESSION['excel'][0]); $g++) {
-          if ($_SESSION['excel'][0][$g][0]!="") {
-            $cancel->createServiceS("", "", $_SESSION['excel'][0][$g][0], $_SESSION['excel'][0][$g][3], "", "", "", "", $_SESSION['excel'][0][0][1], "", "", "", $_SESSION['excel'][0][2][1], $_SESSION['excel'][0][1][1], "", "cancelada", "");
+        header('Content-Type: text/plain');
+        $flag = 0;  
+        for ($i=0; $i < $_POST['cant']; $i++) { 
+          if ($_POST['actividades_'.$i] != "") {
+            $existe[$i] = $this->dao_service_model->getServiceByIdActivity($_POST['actividades_'.$i]);
+            if ($existe[$i]) {
+              $this->dao_service_model->CancelFromExcel($_POST['actividades_'.$i]);
+            }else{
+              $flag = 1;
+            }
           }
-          $this->dao_service_model->CancelFromExcel($cancel);
+        }       
+
+        if($flag == 0){
+           $cuerpo = "<html>
+                          <head>
+                          <title>asignacion</title>
+                          <link rel= 'stylesheet' href='//netdna.bootstrapcdn.com/bootstrap/3.1.0/css/bootstrap.min.css'>
+                          <link rel= 'stylesheet' href='//netdna.bootstrapcdn.com/bootstrap/3.1.0/css/bootstrap-theme.min.css'>
+                          <script src='//netdna.bootstrapcdn.com/bootstrap/3.1.0/js/bootstrap.min.js'></script>
+                          </head>
+                          <body>
+                            <h4 style= 'color: red'>Buen Día ".$existe[0]->user->name.", las siguientes actividades de la orden ".$existe[0]->order->getId()." han sido Canceladas:</h4><br>
+                            <div class='box-header'>
+                              <h5><b>OT: </b>".$existe[0]->order->getId()."</h5>
+                              <h5><b>Solicitante: </b>".$existe[0]->ingSol."</h5>
+                              <h5><b>Fecha de Creacion: </b>".$existe[0]->dateCreation."</h5>
+                              <h5><b>Proyecto: </b>".$existe[0]->proyecto."</h5>
+                              <h5><b>Descripción: </b>".$existe[0]->claroDescription."</h5>
+                            </div>
+                            <div class='box-body'>
+                              <table id='example1' class='table table-bordered table-striped' border = '1'>
+                                  <thead>
+                                    <tr>
+                                      <th>ID Actividad</th>
+                                      <th>Tipo Actividad</th>
+                                      <th>Regional</th>
+                                      <th>Descripcion</th>
+                                      <th>Fecha Cancel</th>
+                                      <th>Forecast</th>
+                                    </tr>
+                                  </thead>
+                                  <tbody>";
+                      for ($j=0; $j < $_POST['cant'] ; $j++) {
+                  $cuerpo = $cuerpo."<tr>
+                                        <td>".$existe[$j]->idClaro."</td>
+                                        <td>".$existe[$j]->service->type."</td>
+                                        <td>".$existe[$j]->region."</td>
+                                        <td>".$existe[$j]->description."</td>
+                                        <td>".$existe[$j]->dateStartP."</td>
+                                        <td>".$existe[$j]->dateForecast."</td>
+                                      </tr>
+                                  </tbody>";
+                      }
+               $cuerpo = $cuerpo."<tfoot>
+                                      <tr>
+                                        <th>ID Actividad</th>
+                                        <th>Tipo Actividad</th>
+                                        <th>Regional</th>
+                                        <th>Cantidad</th>
+                                        <th>Descripción</th>
+                                        <th>Fecha Ejecución</th>
+                                        <th>Forecast</th>
+                                       </tr>
+                                    </tfoot>
+                              </table>
+                                 </div><br><br>
+                              <p style= 'color: blue'> Este es un correo automático. Por favor, no responda este mensaje. </p>
+                          </body>
+                     </html>";
+          for ($k=0; $k < $_POST['cant']; $k++) { 
+            $a[$k] = $existe[$k]->user->mail;            
+          }
+          $to = array_values(array_unique ($a));
+          $mails  = "";
+          for ($h=0; $h < count($to); $h++) {
+            if($h<count($to) -1){
+              $mails = $mails.$to[$h].", ";  
+            } else {
+              $mails = $mails.$to[$h];  
+            }
+          }
+
+          $this->load->library('email');
+          $config['mailtype'] = 'html'; // o text
+          $this->email->initialize($config);
+          $this->email->from('zolid@zte.com', 'ZOLID_ZTE');
+
+         // $this->email->to(strtolower($mails));
+          $this->email->to('bredybuitrago@outlook.com, yuyupa14@gmail.com');
+          
+          //$this->email->to('yuyupa14@gmail.com, andrea.rosero.ext@claro.com.co, andrea.lorenaroserochasoy@zte.com.cn, pablo.esteban@zte.com.cn, bredybuitrago@gmail.com');
+          //$this->email->cc('andrea.rosero.ext@claro.com.co, andrea.lorenaroserochasoy@zte.com.cn');//, cesar.rios.ext@claro.com.co
+          //$this->email->bcc('bredybuitrago@gmail.com ,bredi.buitrago@zte.com.cn, pablo.esteban@zte.com.cn');
+          $this->email->subject("Notificación de Cancelación de orden de servicio. Orden: ".$existe[0]->order->getId().". Proyecto: ".$existe[0]->proyecto.".");
+          $this->email->message($cuerpo);
+          $this->email->send();
+
+
+
+
+          $answer['message'] = "actualizado";
+          $answer['services'] = $this->dao_order_model->getAllOrders();
+          $this->load->view('listServices', $answer);        
+        } else {
+          $answer['message'] = "no existe";
+          $answer['services'] = $this->dao_order_model->getAllOrders();
+          $this->load->view('listServices', $answer);
         }
-        $this->listServices();
       }
 
       public function saveExecuteExcel(){
-        $executed = new service_spec_model;
-        for ($g=12; $g < count($_SESSION['excel'][0]); $g++) {
-          if ($_SESSION['excel'][0][$g][0]!="") {
-            $executed->createServiceS("", "", $_SESSION['excel'][0][$g][0], $_SESSION['excel'][0][$g][3], "", "", "", "", $_SESSION['excel'][0][0][1], "", "", "", $_SESSION['excel'][0][2][1], $_SESSION['excel'][0][1][1], "", "ejecutada", "");
+        header('Content-Type: text/plain');
+        //print_r($_POST);
+        $flag = 0;
+        for ($i=0; $i < $_POST['cant']; $i++) { 
+          if ($_POST['actividades_'.$i] != "") {
+            $existe[$i] = $this->dao_service_model->getServiceByIdActivity($_POST['actividades_'.$i]);
+            $existe[$i]->fechaEjecucion = str_replace(array("\n", "\r", "\t", " "), '', $_POST['fechaEjecucion_'.$i]); 
+            if ($existe[$i]) {
+              $this->dao_service_model->executeFromExcel($_POST['actividades_'.$i]);
+            }else{
+              $flag = 1;
+            }
           }
-             $this->dao_service_model->executeFromExcel($executed);
-        }
-             $this->listServices();
+        }   
+        if ($flag ==0) {
+          $cuerpo = "<html>
+                          <head>
+                          <title>asignacion</title>
+                          <link rel= 'stylesheet' href='//netdna.bootstrapcdn.com/bootstrap/3.1.0/css/bootstrap.min.css'>
+                          <link rel= 'stylesheet' href='//netdna.bootstrapcdn.com/bootstrap/3.1.0/css/bootstrap-theme.min.css'>
+                          <script src='//netdna.bootstrapcdn.com/bootstrap/3.1.0/js/bootstrap.min.js'></script>
+                          </head>
+                          <body>
+                            <h4 style= 'color: green'>Buen Día ".$existe[0]->user->name.", las siguientes actividades de la orden ".$existe[0]->order->getId()." han sido ejecutadas:</h4><br>
+                            <div class='box-header'>
+                              <h5><b>OT: </b>".$existe[0]->order->getId()."</h5>
+                              <h5><b>Solicitante: </b>".$existe[0]->ingSol."</h5>
+                              <h5><b>Fecha de Creacion: </b>".$existe[0]->dateCreation."</h5>
+                              <h5><b>Proyecto: </b>".$existe[0]->proyecto."</h5>
+                              <h5><b>Descripción: </b>".$existe[0]->claroDescription."</h5>
+                            </div>
+                            <div class='box-body'>
+                              <table id='example1' class='table table-bordered table-striped' border = '1'>
+                                  <thead>
+                                    <tr>
+                                      <th>ID Actividad</th>
+                                      <th>Tipo Actividad</th>
+                                      <th>Regional</th>
+                                      <th>Cantidad</th>
+                                      <th>Descripcion</th>
+                                      <th>Fecha Ejecución</th>
+                                      <th>Forecast</th>
+                                    </tr>
+                                  </thead>
+                                  <tbody>";
+                      for ($j=0; $j < $_POST['cant'] ; $j++) {
+                  $cuerpo = $cuerpo."<tr>
+                                        <td>".$existe[$j]->idClaro."</td>
+                                        <td>".$existe[$j]->service->type."</td>
+                                        <td>".$existe[$j]->region."</td>
+                                        <td>".$existe[$j]->quantity."</td>
+                                        <td>".$existe[$j]->description."</td>
+                                        <td>".$existe[$j]->fechaEjecucion."</td>
+                                        <td>".$existe[$j]->dateForecast."</td>
+                                      </tr>
+                                  </tbody>";
+                      }
+               $cuerpo = $cuerpo."<tfoot>
+                                      <tr>
+                                        <th>ID Actividad</th>
+                                        <th>Tipo Actividad</th>
+                                        <th>Regional</th>
+                                        <th>Cantidad</th>
+                                        <th>Descripción</th>
+                                        <th>Fecha Ejecución</th>
+                                        <th>Forecast</th>
+                                       </tr>
+                                    </tfoot>
+                              </table>
+                                 </div><br><br>
+                              <p style= 'color: blue'> Este es un correo automático. Por favor, no responda este mensaje. </p>
+                          </body>
+                     </html>";
+          for ($k=0; $k < $_POST['cant']; $k++) { 
+            $a[$k] = $existe[$k]->user->mail;            
+          }
+          $to = array_values(array_unique ($a));
+          $mails  = "";
+          for ($h=0; $h < count($to); $h++) {
+            if($h<count($to) -1){
+              $mails = $mails.$to[$h].", ";  
+            } else {
+              $mails = $mails.$to[$h];  
+            }
+          }
+
+          $this->load->library('email');
+          $config['mailtype'] = 'html'; // o text
+          $this->email->initialize($config);
+          $this->email->from('zolid@zte.com', 'ZOLID_ZTE');
+
+         // $this->email->to(strtolower($mails));
+          $this->email->to('bredybuitrago@outlook.com, yuyupa14@gmail.com');
+          
+          //$this->email->to('yuyupa14@gmail.com, andrea.rosero.ext@claro.com.co, andrea.lorenaroserochasoy@zte.com.cn, pablo.esteban@zte.com.cn, bredybuitrago@gmail.com');
+          //$this->email->cc('andrea.rosero.ext@claro.com.co, andrea.lorenaroserochasoy@zte.com.cn');//, cesar.rios.ext@claro.com.co
+          //$this->email->bcc('bredybuitrago@gmail.com ,bredi.buitrago@zte.com.cn, pablo.esteban@zte.com.cn');
+          $this->email->subject("Notificación de Cancelación de orden de servicio. Orden: ".$existe[0]->order->getId().". Proyecto: ".$existe[0]->proyecto.".");
+          $this->email->message($cuerpo);
+          $this->email->send();
+
+          $answer['message'] = "actualizado";
+          $answer['services'] = $this->dao_order_model->getAllOrders();
+          $this->load->view('listServices', $answer);              
+        }else{
+          $answer['message'] = "no existe";
+          $answer['services'] = $this->dao_order_model->getAllOrders();
+          $this->load->view('listServices', $answer);
+        }   
       }
 
   }
+
 ?>

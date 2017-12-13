@@ -13,6 +13,8 @@
 
         public function startSession($user){
              $_SESSION['userName'] = $user->getName();
+             $_SESSION['id'] = $user->getId();
+             $_SESSION['role'] = $user->getRole();
         }
 
         public function openSession(){

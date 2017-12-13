@@ -150,7 +150,7 @@ create table rf
    N_TYPE               varchar(50),
    N_ELEMENT            varchar(100),
    D_DATE_ASSGINED      date,
-   K_ASSIGNED_TO        varchar(20) not null,
+   K_ASSIGNED_TO        varchar(20) not null,/*dejarlo null*/
    D_DATE_SENT          date,
    N_FILE               varchar(100),
    N_OBSERVATIONS       varchar(200),

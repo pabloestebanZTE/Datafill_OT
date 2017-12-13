@@ -598,3 +598,10 @@ table.TF.resp .sort-arrow{
         background-color: #ccc;
         border-top: 1px solid #999;
     }
+
+.TF tr th{
+  background: #207BE5 !important;
+  text-align: center;
+  border-right: 1px solid #ccc;
+  padding: 5px;
+}

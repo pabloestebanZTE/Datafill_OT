@@ -66,7 +66,7 @@
   });
   var id_fila_selected=[];
   function agregar(){
-    var user = '<?php echo json_encode($eng); ?>';
+    var user = '<?php echo json_encode($asignar['eng']); ?>';
         var users = JSON.parse(user);
 
 cont++;
@@ -87,13 +87,11 @@ cont++;
    if(cont>1){
      fila = fila + '<input type="text" class="form-control selectpicker" name="cantidad'+cont+'" id="cantidad'+cont+'" value = "0" onkeyup="validateValuesCant()">';
    } else {
-    var cantidadExcel = '<?php echo count($excel[0]) - 12?>'
+    var cantidadExcel = '<?php echo count($asignar['actividades']) ?>'
      fila = fila + '<input type="text" class="form-control selectpicker" name="cantidad'+cont+'" id="cantidad'+cont+'" value ="'+0+'" onkeyup="validateValuesCant()">';
    }
    fila = fila + '</td>';
-   fila = fila + '<td>';
-     fila = fila + '<input type="text" class="form-control selectpicker" name="project">';
-   fila = fila + '</td>';
+   
 fila = fila + '</tr>';
 
           $('#tabla').append(fila);
@@ -101,7 +99,7 @@ fila = fila + '</tr>';
   }
 
   function validateValuesCant(){
-     var cantidadExcel = '<?php echo count($excel[0]) - 12?>'
+     var cantidadExcel = '<?php echo count($asignar['actividades'])?>'
      var sumados = 0; 
     for(var i = 1; i<=cont; i++){
       var s = document.getElementById("cantidad"+i);  
@@ -186,7 +184,11 @@ $('#tabla tbody tr').each(function(){
                             <li><a href="#">Ver Ingenieros</a></li>
                         </ul>
                         </li>
-                        <li class="cam"><a href="/Datafill_OT/index.php/Service/RF">RF</a>
+                        <li class="cam"><a href="#services">RF</a>
+                            <ul>
+                                <li class="cam"><a href="/Datafill_OT/index.php/Service/RF">Actualizar RF</a></li>
+                                <li class="cam"><a href="/Datafill_OT/index.php/SpecificService/viewRF">Ver RF</a></li>
+                            </ul>
                         </li>
                          <li class="cam"><a href="#contact-sec">Contactos</a>
                         </li>
@@ -198,12 +200,30 @@ $('#tabla tbody tr').each(function(){
             </div>
         </nav>
      </header><br><br><br><br>
-<?php// print_r($eng); ?>
+
 <form class="form-group" action=" " method="post"  id="assignEng" name="assignEng"> 
   <div id="content">
     <div class="btn-group col-xs-8" id="botones">
         <a id="bt_add" class="btn btn-primary"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span></a>
         <a id="bt_delall" class="btn btn-primary"><span class="glyphicon glyphicon-minus" aria-hidden="true"></span></a>
+<?php
+        echo "<input type='hidden' name='OT' id='OT' value='".$asignar['ot']."'>";
+        echo "<input type='hidden' name='solicitante' id='solicitante' value='".$asignar['solicitante']."'>";
+        echo "<input type='hidden' name='fCreacion' id='fCreacion' value='".$asignar['fCreacion']."'>";
+        echo "<input type='hidden' name='proyecto' id='proyecto' value='".$asignar['proyecto']."'>";
+        echo "<input type='hidden' name='descripcion' id='descripcion' value='".$asignar['descripcion']."'>";
+        echo "<input type='hidden' name='contador' id='contador' value='".count($asignar['actividades'])."'>";
+        for ($r=0; $r < count($asignar['actividades']); $r++) {          
+          echo "<input type='hidden' name='actividades_".$r."' id='actividades_".$r."' value='".$asignar['actividades'][$r]."'>";
+          echo "<input type='hidden' name='tipo_".$r."' id='tipo_".$r."' value='".$asignar['tipo']['idTipo'][$r]."'>";
+          echo "<input type='hidden' name='regional_".$r."' id='regional_".$r."' value='".$asignar['regional'][$r]."'>";
+          echo "<input type='hidden' name='cantidadActiv_".$r."' id='cantidadActiv_".$r."' value='".$asignar['cantidad'][$r]."'>";
+          echo "<input type='hidden' name='descripcionActividad_".$r."' id='descripcionActividad_".$r."' value='".$asignar['descripcionActividad'][$r]."'>";
+          echo "<input type='hidden' name='forecast_".$r."' id='forecast".$r."' value='".$asignar['forecast'][$r]."'>";
+          echo "<input type='hidden' name='sitio_".$r."' id='sitio".$r."' value='".$asignar['sitio']['id'][$r]."'>";
+        }
+  
+ ?>
     </div>
       <input type="submit" name="bt_form" id="bt_form" value="enviar Asignacion " class="btn btn-primary col-xs-4  " style="background-color: green; display: none" onclick = "this.form.action = 'http://localhost/Datafill_OT/index.php/SpecificService/saveServicesExcel'">
         <table id="tabla" class="table table-bordered">
@@ -213,7 +233,6 @@ $('#tabla tbody tr').each(function(){
             <td>Asignacion de Ingeniero</td>
             <td>porcentaje(%)</td>
             <td>cantidad</td>
-            <td>proyecto</td>
           </tr>
         </thead>
   </table>
@@ -225,9 +244,11 @@ $('#tabla tbody tr').each(function(){
     <div class="col-xs-10 col-xs-offset-1">
       <div class="box">
   <?php
+  /*header('Content-Type: text/plain');
+    print_r($asignar);*/
        echo "<div class='box-header'>";
-         echo "<h5>OT: ".$excel[0][0][1]."</h5><h5>Solicitante: ".$excel[0][2][1]."a</h5><h5>Fecha de Creacion: ".$excel[0][5][1]."</h5>";
-         echo "<h5>Proyecto: ".$excel[0][3][1]."</h5><h5>Descripción: ".$excel[0][4][1]."</h5>";
+         echo "<h5><b>OT : </b>".$asignar['ot']."</h5><h5><b>Solicitante : </b>".$asignar['solicitante']."</h5><h5><b>Fecha de Creacion : </b>".$asignar['fCreacion']."</h5>";
+         echo "<h5><b>Proyecto : </b>".$asignar['proyecto']."</h5><h5><b>Descripción : </b>".$asignar['descripcion']."</h5>";
        echo "</div>";
        echo "<!-- /.box-header -->";
        echo "<div class='box-body'>";
@@ -243,15 +264,15 @@ $('#tabla tbody tr').each(function(){
            echo "</tr>";
            echo "</thead>";
            echo "<tbody>";
-           for ($i=12; $i < count($excel[0]) ; $i++) { 
+           for ($i=0; $i < count($asignar['actividades']) ; $i++) { 
              
            echo "<tr>";
-             echo "<td>".$excel[0][$i][0]."</td>";
-             echo "<td>".$excel[0][$i][1]."</td>";
-             echo "<td>".$excel[0][$i][2]."</td>";
-             echo "<td>".$excel[0][$i][3]."</td>";
-             echo "<td>".$excel[0][$i][4]."</td>";
-             echo "<td>".$excel[0][$i][5]."</td>";
+             echo "<td>".$asignar['actividades'][$i]."</td>";//id actividad
+             echo "<td>".$asignar['tipo']['name'][$i]."</td>";//tipo actividad
+             echo "<td>".$asignar['regional'][$i]."</td>";//regional
+             echo "<td>".$asignar['cantidad'][$i]."</td>";//cantidad
+             echo "<td>".$asignar['descripcionActividad'][$i]."</td>";//descripcion actividad
+             echo "<td>".$asignar['forecast'][$i]."</td>";//forecast
            echo "</tr>";
            }
 

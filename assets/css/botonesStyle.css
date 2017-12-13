@@ -4,7 +4,8 @@ mark, rp, rt, ruby, summary, time{display:inline }
 /* Left & Right alignment */
 .left {float:left}
 .right {float:right}
-.wrapper {width:100%;overflow:hidden}
+.wrapper {width:130%;
+  overflow:hidden;}
 /* Global properties ======================================================== */
 body{background:#000;border:0;font:14px "Trebuchet MS", Arial, Helvetica, sans-serif;color:#696969;line-height:22px;font-style:italic}
 .ic, .ic a {border:0;float:right;background:#fff;color:#f00;width:50%;line-height:10px;font-size:10px;margin:-220% 0 0 0;overflow:hidden;padding:0}
@@ -90,12 +91,12 @@ header{padding-top:34px; min-height: 150px;}
 .tabs .tab-content {display:none}
 .tab-content{margin : 10px;}
 /*--- tabs end ---*/
-#address span{float:left;width:80px}
-/* ============================= footer ====================== */
+/*#address span{float:left;width:80px}
+/* ============================= footer ======================
 footer {padding:34px 0 38px 0;font-style:normal;color:#696969;text-align:center}
 footer a{color:#fff}
 footer a:hover{}
-/* ============================= forms ============================= */
+/* ============================= forms =============================
 #ContactForm {margin-top:-4px}
 #ContactForm span{width:109px;float:left;line-height:26px}
 #ContactForm .wrapper{min-height:30px}
@@ -114,7 +115,7 @@ footer a:hover{}
 #newsletter a:hover{background:#288AFA;color:#fff}
 #newsletter .button{float : left;}
 
-/*Contact sectiom*/
+/*Contact sectiom
 .content-header{
   font-family: 'Oleo Script', cursive;
   color:#fcc500;
@@ -130,12 +131,12 @@ footer a:hover{}
   width: 50%;
   width: 100vw;
   height: 550px;
-  /* Permalink - use to edit and share this gradient: http://colorzilla.com/gradient-editor/#113c59+0,195684+26,196f84+49,186d9b+78,4f8493+100 */
+  /* Permalink - use to edit and share this gradient: http://colorzilla.com/gradient-editor/#113c59+0,195684+26,196f84+49,186d9b+78,4f8493+100
   background: #113c59; /* Old browsers */
-  background: -moz-linear-gradient(left, #113c59 0%, #195684 26%, #196f84 49%, #186d9b 78%, #4f8493 100%); /* FF3.6-15 */
-  background: -webkit-linear-gradient(left, #113c59 0%,#195684 26%,#196f84 49%,#186d9b 78%,#4f8493 100%); /* Chrome10-25,Safari5.1-6 */
-  background: linear-gradient(to right, #113c59 0%,#195684 26%,#196f84 49%,#186d9b 78%,#4f8493 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
-  filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#113c59', endColorstr='#4f8493',GradientType=1 ); /* IE6-9 */
+  background: -moz-linear-gradient(left, #113c59 0%, #195684 26%, #196f84 49%, #186d9b 78%, #4f8493 100%); /* FF3.6-15
+  background: -webkit-linear-gradient(left, #113c59 0%,#195684 26%,#196f84 49%,#186d9b 78%,#4f8493 100%); /* Chrome10-25,Safari5.1-6
+  background: linear-gradient(to right, #113c59 0%,#195684 26%,#196f84 49%,#186d9b 78%,#4f8493 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+
+  filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#113c59', endColorstr='#4f8493',GradientType=1 );  IE6-9
   color : #fff;
 }
 .contact-section{
@@ -168,7 +169,7 @@ label{
 }
 textarea.form-control {
     height: 135px;
-   /* margin-top: px;*/
+   /* margin-top: px;
 }
 
 .submit{
@@ -178,4 +179,4 @@ textarea.form-control {
   background-color: transparent;
   color: #fff;
 
-}
+}*/

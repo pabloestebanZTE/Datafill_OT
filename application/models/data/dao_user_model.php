@@ -79,6 +79,7 @@
               $row = $result->fetch_assoc();
               $user = new user_model;
               $user->createUser($row['K_IDUSER'], $row['N_NAME'], $row['N_LASTNAME'], $row['N_PHONE'], $row['N_CELPHONE'], $row['N_MAIL']);
+              $user->setRole($row['K_IDROLE']);
               $answer = $user;
             } else {
               $answer = "No users";
@@ -113,6 +114,7 @@
                 $row = $result->fetch_assoc();  
                 $user = new user_model;
                 $user->createUser($row['K_IDUSER'], $row['N_NAME'], $row['N_LASTNAME'], $row['N_PHONE'], $row['N_CELPHONE'], $row['N_MAIL']);
+                $user->setRole($row['K_IDROLE']);
                 $answer = $user;              
              }
           } else {

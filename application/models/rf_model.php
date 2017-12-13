@@ -23,6 +23,7 @@
         public $dateOTGDRT;
         public $idBSS;
         public $code;
+          public $color;
 
 
         public function __construct(){
@@ -56,7 +57,7 @@
 
     public function setDateAssigned($dateAssigned){$this->dateAssigned = $dateAssigned;}
 
-    public function getAssignedTo(){return $this->$assignedTo;}
+    public function getAssignedTo(){return $this->assignedTo;}
 
     public function setAssignedTo($assignedTo){$this->assignedTo = $assignedTo;}
 
@@ -116,7 +117,11 @@
 
     public function setCode($code){$this->code = $code;}
 
-       
+        public function getColor(){return $this->color;}
+
+        public function setColor($color){$this->color = $color;}
+
+
         public function createRF($idRF, $dateRequested, $requestedBy, $status, $type, $element, $dateAssigned, $assignedTo, $dateSent, $file, $obs, $module, $id, $remedy, $weightOrder, $dateBilling, $monthBilling, $dateReview, $dateRaw, $dateOTGDRT, $idBSS, $code){
 
             $this->setIdRF($idRF);

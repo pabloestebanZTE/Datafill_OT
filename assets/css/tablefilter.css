@@ -173,15 +173,22 @@ input.reset:hover{background-color:#f4f4f4}
 div.status{float:left;overflow:hidden;min-width:120px;height:100%;margin:0;padding:.5em;}
 div.status span{font-size:inherit}
 
-table.TF th{height:35px;margin:0;background-color: #207be5 ;border-bottom:1px solid #ccc;border-top:1px solid #f4f4f4;border-left:1px solid #ccc;border-right:1px solid #f4f4f4;padding:.1em .7em;color:white;}
-table.TF th:last-child{border-right:1	px solid #ccc}
-table.TF td{margin:0;padding:.5em .7em;border-bottom:1px solid #c6c6c6}
+table.TF th{height:45px;margin:0;background-color: #2207BE ;border-bottom:1px solid #ccc;border-top:1px solid #f4f4f4;border-left:5px solid #ccc;border-right:5px solid #f4f4f4;padding:.1em .7em;color:white;}
+table.TF th:last-child{border-right:5	px solid #ccc}
+table.TF td{margin:2;padding:.5em .7em;border-bottom:2px solid #c6c6c6}
 table.TF.resp{display:block;overflow-x:auto;}
 table.TF.resp .sort-arrow{position:initial}
 
 .inf{clear:both;width:auto;height:35px;background-color:#fff;font-size:inherit;margin:0;padding:0;border-top:1px solid #ccc;border-bottom:1px solid #ccc;border-left:1px solid #ccc;border-right:1px solid #ccc;overflow:hidden;border-top-left-radius:3px;border-top-right-radius:3px;}
 .inf a{color:#333;text-decoration:none;font-weight:bold;box-sizing:initial;}
 .inf a:hover{text-decoration:underline}
-.ldiv{float:left;width:30%;position:inherit;text-align:left}
+.ldiv{float:left;width:30%;position:inherit;text-align:center;}
 .mdiv{float:left;width:38%;position:inherit;text-align:center;padding:0}
-.rdiv{float:right;width:30%;position:inherit;text-align:right}
+.rdiv{float:right;width:30%;position:inherit;text-align:center}
+
+.TF tr th{
+  background: #207BE5 !important;
+  text-align: center;
+  border-right: 1px solid #ccc;
+  padding: 5px;
+}
