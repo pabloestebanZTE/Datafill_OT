@@ -255,10 +255,32 @@
                 if ($result->num_rows > 0) {                   
                       $row = $result->fetch_assoc();
                       $sService = new service_spec_model();
-                       $sService->createServiceS($row['K_ID_SP_SERVICE'], $row['N_DURATION'], $row['K_IDCLARO'], $row['N_DESCRIPTION'], $row['D_DATE_START_P'], $row['D_DATE_FINISH_P'], $row['D_DATE_CREATION'], $row['D_FORECAST'], $this->dao_order_model->getOrderById($row['K_IDORDER']), $this->dao_site_model->getSitePerId($row['K_IDSITE']), $this->getServicePerId($row['K_IDSERVICE']), $this->dao_user_model->getUserById($row['K_IDUSER']), $row['N_CLARO_DESCRIPTION'], $row['N_ING_SOL'], $row['N_PROYECTO'], $row['N_ESTADO'], $row['N_CRQ']);
+                       $sService->createServiceS(
+                        $row['K_ID_SP_SERVICE'], 
+                        $row['N_DURATION'], 
+                        $row['K_IDCLARO'], 
+                        $row['N_DESCRIPTION'],
+                         $row['D_DATE_START_P'], 
+                         $row['D_DATE_FINISH_P'], 
+                         $row['D_DATE_CREATION'], 
+                         $row['D_FORECAST'], 
+                         $this->dao_order_model->getOrderById($row['K_IDORDER']), 
+                         $this->dao_site_model->getSitePerId($row['K_IDSITE']), 
+                         $this->getServicePerId($row['K_IDSERVICE']), 
+                         $this->dao_user_model->getUserById($row['K_IDUSER']), 
+                         $row['N_CLARO_DESCRIPTION'], 
+                         $row['N_ING_SOL'], 
+                         $row['N_PROYECTO'], 
+                         $row['N_ESTADO'], 
+                         $row['N_CRQ']);
+
                          $sService->setDateFinishR($row['D_DATE_FINISH_R']);
                          $sService->setDateStartR($row['D_DATE_START_R']);
                          $sService->setCierreDescription($row['N_CIERRE_DESCRIPTION']);
+                         
+                         $sService->setRegion($row['n_region']);
+                         $sService->setQuantity($row['n_cantidad']);
+
                 }
               } else{
                   $sService = "Error de informacion";

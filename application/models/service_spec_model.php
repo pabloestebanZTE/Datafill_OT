@@ -124,21 +124,21 @@
 			$this->setId($id);
 			$this->setDuration($duration);
 			$this->setIdClaro($idClaro);
-      $this->setDescription($description);
+            $this->setDescription($description);
 			$this->setClaroDescription($claroDescription);
-      $this->setDateStartP($dateStartP);
-      $this->setDateFinishP($dateFinishP);
-      $this->setDateCreation($dateCreation);
-      $this->setDateForecast($dateForecast);
-      $this->setOrder($order);
-      $this->setSite($site);
-      $this->setService($service);
-      $this->setUser($user);
+            $this->setDateStartP($dateStartP);
+            $this->setDateFinishP($dateFinishP);
+            $this->setDateCreation($dateCreation);
+            $this->setDateForecast($dateForecast);
+            $this->setOrder($order);
+            $this->setSite($site);
+            $this->setService($service);
+            $this->setUser($user);
 			$this->setIngSol($ingSol);
 			$this->setProyecto($proyecto);
 			$this->setEstado($estado);
 			$this->setCRQ($CRQ);
-    }
+        }
 //camilo--------------------------------------------------------------------------------------
         public function closeService($dateStartR, $dateFinishR, $CRQ, $estado, $cierreDescription){
             $this->setDateStartR($dateStartR);

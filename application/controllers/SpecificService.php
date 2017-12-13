@@ -627,11 +627,12 @@
       }
 
       public function saveCancelExcel(){
+        header('Content-Type: text/plain');
         $flag = 0;  
         for ($i=0; $i < $_POST['cant']; $i++) { 
           if ($_POST['actividades_'.$i] != "") {
-            $existe = $this->dao_service_model->getServiceByIdActivity($_POST['actividades_'.$i]);
-            if ($existe) {
+            $existe[$i] = $this->dao_service_model->getServiceByIdActivity($_POST['actividades_'.$i]);
+            if ($existe[$i]) {
               $this->dao_service_model->CancelFromExcel($_POST['actividades_'.$i]);
             }else{
               $flag = 1;
@@ -640,32 +641,7 @@
         }       
 
         if($flag == 0){
-          $answer['message'] = "actualizado";
-          $answer['services'] = $this->dao_order_model->getAllOrders();
-          $this->load->view('listServices', $answer);        
-        } else {
-          $answer['message'] = "no existe";
-          $answer['services'] = $this->dao_order_model->getAllOrders();
-          $this->load->view('listServices', $answer);
-        }
-      }
-
-      public function saveExecuteExcel(){
-        /*header('Content-Type: text/plain');*/
-        $flag = 0;
-        for ($i=0; $i < $_POST['cant']; $i++) { 
-          if ($_POST['actividades_'.$i] != "") {
-            $existe[$i] = $this->dao_service_model->getServiceByIdActivity($_POST['actividades_'.$i]);
-            if ($existe[$i]) {
-              $this->dao_service_model->executeFromExcel($_POST['actividades_'.$i]);
-            }else{
-              $flag = 1;
-            }
-          }
-        }   
-        if ($flag ==0) {
-         // print_r($_POST);
-          $cuerpo = "<html>
+           $cuerpo = "<html>
                           <head>
                           <title>asignacion</title>
                           <link rel= 'stylesheet' href='//netdna.bootstrapcdn.com/bootstrap/3.1.0/css/bootstrap.min.css'>
@@ -673,24 +649,23 @@
                           <script src='//netdna.bootstrapcdn.com/bootstrap/3.1.0/js/bootstrap.min.js'></script>
                           </head>
                           <body>
-                            <h4>Buen Día ".$existe[0]->user->name.", las siguientes actividades de la orden ".$existe[0]->order->getId()." han sido ejecutadas:</h4><br>
+                            <h4 style= 'color: red'>Buen Día ".$existe[0]->user->name.", las siguientes actividades de la orden ".$existe[0]->order->getId()." han sido Canceladas:</h4><br>
                             <div class='box-header'>
-                              <h5>OT: ".$existe[0]->order->getId()."</h5>
-                              <h5>Solicitante: ".$existe[0]->ingSol."</h5>
-                              <h5>Fecha de Creacion: ".$existe[0]->dateCreation."</h5>
-                              <h5>Proyecto: ".$existe[0]->proyecto."</h5>
-                              <h5>Descripción: ".$existe[0]->claroDescription."</h5>
+                              <h5><b>OT: </b>".$existe[0]->order->getId()."</h5>
+                              <h5><b>Solicitante: </b>".$existe[0]->ingSol."</h5>
+                              <h5><b>Fecha de Creacion: </b>".$existe[0]->dateCreation."</h5>
+                              <h5><b>Proyecto: </b>".$existe[0]->proyecto."</h5>
+                              <h5><b>Descripción: </b>".$existe[0]->claroDescription."</h5>
                             </div>
                             <div class='box-body'>
-                              <table id='example1' class='table table-bordered table-striped'>
+                              <table id='example1' class='table table-bordered table-striped' border = '1'>
                                   <thead>
                                     <tr>
                                       <th>ID Actividad</th>
                                       <th>Tipo Actividad</th>
                                       <th>Regional</th>
-                                      <th>Cantidad</th>
                                       <th>Descripcion</th>
-                                      <th>Fecha Ejecución</th>
+                                      <th>Fecha Cancel</th>
                                       <th>Forecast</th>
                                     </tr>
                                   </thead>
@@ -700,9 +675,8 @@
                                         <td>".$existe[$j]->idClaro."</td>
                                         <td>".$existe[$j]->service->type."</td>
                                         <td>".$existe[$j]->region."</td>
-                                        <td>".$existe[$j]->quantity."</td>
                                         <td>".$existe[$j]->description."</td>
-                                        <td>".$_POST['fechaEjecucion_'.$j]."</td>
+                                        <td>".$existe[$j]->dateStartP."</td>
                                         <td>".$existe[$j]->dateForecast."</td>
                                       </tr>
                                   </tbody>";
@@ -741,13 +715,128 @@
           $this->email->initialize($config);
           $this->email->from('zolid@zte.com', 'ZOLID_ZTE');
 
-         // $this->email->to(strtolower($$mails));
+         // $this->email->to(strtolower($mails));
           $this->email->to('bredybuitrago@outlook.com, yuyupa14@gmail.com');
           
           //$this->email->to('yuyupa14@gmail.com, andrea.rosero.ext@claro.com.co, andrea.lorenaroserochasoy@zte.com.cn, pablo.esteban@zte.com.cn, bredybuitrago@gmail.com');
           //$this->email->cc('andrea.rosero.ext@claro.com.co, andrea.lorenaroserochasoy@zte.com.cn');//, cesar.rios.ext@claro.com.co
           //$this->email->bcc('bredybuitrago@gmail.com ,bredi.buitrago@zte.com.cn, pablo.esteban@zte.com.cn');
-          $this->email->subject("Notificación de ejecución de orden de servicio. Orden: ".$existe[0]->order->getId().". Proyecto: ".$existe[0]->proyecto.".");
+          $this->email->subject("Notificación de Cancelación de orden de servicio. Orden: ".$existe[0]->order->getId().". Proyecto: ".$existe[0]->proyecto.".");
+          $this->email->message($cuerpo);
+          $this->email->send();
+
+
+
+
+          $answer['message'] = "actualizado";
+          $answer['services'] = $this->dao_order_model->getAllOrders();
+          $this->load->view('listServices', $answer);        
+        } else {
+          $answer['message'] = "no existe";
+          $answer['services'] = $this->dao_order_model->getAllOrders();
+          $this->load->view('listServices', $answer);
+        }
+      }
+
+      public function saveExecuteExcel(){
+        header('Content-Type: text/plain');
+        //print_r($_POST);
+        $flag = 0;
+        for ($i=0; $i < $_POST['cant']; $i++) { 
+          if ($_POST['actividades_'.$i] != "") {
+            $existe[$i] = $this->dao_service_model->getServiceByIdActivity($_POST['actividades_'.$i]);
+            $existe[$i]->fechaEjecucion = str_replace(array("\n", "\r", "\t", " "), '', $_POST['fechaEjecucion_'.$i]); 
+            if ($existe[$i]) {
+              $this->dao_service_model->executeFromExcel($_POST['actividades_'.$i]);
+            }else{
+              $flag = 1;
+            }
+          }
+        }   
+        if ($flag ==0) {
+          $cuerpo = "<html>
+                          <head>
+                          <title>asignacion</title>
+                          <link rel= 'stylesheet' href='//netdna.bootstrapcdn.com/bootstrap/3.1.0/css/bootstrap.min.css'>
+                          <link rel= 'stylesheet' href='//netdna.bootstrapcdn.com/bootstrap/3.1.0/css/bootstrap-theme.min.css'>
+                          <script src='//netdna.bootstrapcdn.com/bootstrap/3.1.0/js/bootstrap.min.js'></script>
+                          </head>
+                          <body>
+                            <h4 style= 'color: green'>Buen Día ".$existe[0]->user->name.", las siguientes actividades de la orden ".$existe[0]->order->getId()." han sido ejecutadas:</h4><br>
+                            <div class='box-header'>
+                              <h5><b>OT: </b>".$existe[0]->order->getId()."</h5>
+                              <h5><b>Solicitante: </b>".$existe[0]->ingSol."</h5>
+                              <h5><b>Fecha de Creacion: </b>".$existe[0]->dateCreation."</h5>
+                              <h5><b>Proyecto: </b>".$existe[0]->proyecto."</h5>
+                              <h5><b>Descripción: </b>".$existe[0]->claroDescription."</h5>
+                            </div>
+                            <div class='box-body'>
+                              <table id='example1' class='table table-bordered table-striped' border = '1'>
+                                  <thead>
+                                    <tr>
+                                      <th>ID Actividad</th>
+                                      <th>Tipo Actividad</th>
+                                      <th>Regional</th>
+                                      <th>Cantidad</th>
+                                      <th>Descripcion</th>
+                                      <th>Fecha Ejecución</th>
+                                      <th>Forecast</th>
+                                    </tr>
+                                  </thead>
+                                  <tbody>";
+                      for ($j=0; $j < $_POST['cant'] ; $j++) {
+                  $cuerpo = $cuerpo."<tr>
+                                        <td>".$existe[$j]->idClaro."</td>
+                                        <td>".$existe[$j]->service->type."</td>
+                                        <td>".$existe[$j]->region."</td>
+                                        <td>".$existe[$j]->quantity."</td>
+                                        <td>".$existe[$j]->description."</td>
+                                        <td>".$existe[$j]->fechaEjecucion."</td>
+                                        <td>".$existe[$j]->dateForecast."</td>
+                                      </tr>
+                                  </tbody>";
+                      }
+               $cuerpo = $cuerpo."<tfoot>
+                                      <tr>
+                                        <th>ID Actividad</th>
+                                        <th>Tipo Actividad</th>
+                                        <th>Regional</th>
+                                        <th>Cantidad</th>
+                                        <th>Descripción</th>
+                                        <th>Fecha Ejecución</th>
+                                        <th>Forecast</th>
+                                       </tr>
+                                    </tfoot>
+                              </table>
+                                 </div><br><br>
+                              <p style= 'color: blue'> Este es un correo automático. Por favor, no responda este mensaje. </p>
+                          </body>
+                     </html>";
+          for ($k=0; $k < $_POST['cant']; $k++) { 
+            $a[$k] = $existe[$k]->user->mail;            
+          }
+          $to = array_values(array_unique ($a));
+          $mails  = "";
+          for ($h=0; $h < count($to); $h++) {
+            if($h<count($to) -1){
+              $mails = $mails.$to[$h].", ";  
+            } else {
+              $mails = $mails.$to[$h];  
+            }
+          }
+
+          $this->load->library('email');
+          $config['mailtype'] = 'html'; // o text
+          $this->email->initialize($config);
+          $this->email->from('zolid@zte.com', 'ZOLID_ZTE');
+
+         // $this->email->to(strtolower($mails));
+          $this->email->to('bredybuitrago@outlook.com, yuyupa14@gmail.com');
+          
+          //$this->email->to('yuyupa14@gmail.com, andrea.rosero.ext@claro.com.co, andrea.lorenaroserochasoy@zte.com.cn, pablo.esteban@zte.com.cn, bredybuitrago@gmail.com');
+          //$this->email->cc('andrea.rosero.ext@claro.com.co, andrea.lorenaroserochasoy@zte.com.cn');//, cesar.rios.ext@claro.com.co
+          //$this->email->bcc('bredybuitrago@gmail.com ,bredi.buitrago@zte.com.cn, pablo.esteban@zte.com.cn');
+          $this->email->subject("Notificación de Cancelación de orden de servicio. Orden: ".$existe[0]->order->getId().". Proyecto: ".$existe[0]->proyecto.".");
           $this->email->message($cuerpo);
           $this->email->send();
 
