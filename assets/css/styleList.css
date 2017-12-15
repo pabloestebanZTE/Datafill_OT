@@ -112,7 +112,7 @@ line-height: 52px;
 }
 
 /*---------cambio segun el estado-------*/
-#Creada{
+#Asignada{
   width: 300px;
   border-radius: 0px 0px 15px 15px;
   background-color: gray;
@@ -121,7 +121,7 @@ line-height: 52px;
   box-shadow: 7px 7px 15px black;
   margin-bottom: 15px;
 }
-#Creada p{
+#Asignada p{
   font-family:'Open Sans';
     font-weight: 900;
   font-size: 22px;
@@ -172,6 +172,25 @@ line-height: 52px;
   text-shadow: 6px 6px 5px #292929;
 }
 
+#Enviado{
+  width: 300px;
+  border-radius: 0px 0px 15px 15px;
+  background-color: #2043f3;
+  height: 50px;
+  border-bottom: 3px solid black;
+  box-shadow: 7px 7px 15px black;
+  margin-bottom: 15px;
+}
+#Enviado p{
+  font-family:'Open Sans';
+    font-weight: 900;
+  font-size: 22px;
+  text-transform: uppercase;
+  color: white;
+  text-align: center;
+  padding-top: 9px;
+  text-shadow: 6px 6px 5px #292929;
+}
 /*-----------------------fin segun estado---------------*/
 .plan{
 	width: 300px;

@@ -155,12 +155,12 @@
           }
 
 //CAMILO--------------------------------------------ejecuta con excel
-          public function executeFromExcel($executed){
+          public function executeFromExcel($executed, $fEjecucion){
             $dbConnection = new configdb_model();
             $session = $dbConnection->openSession();
             if ($session != "false"){
                 if ($executed != "") {                 
-                  $sql = "UPDATE specific_service SET N_ESTADO = 'Ejecutado' WHERE K_IDCLARO = ".$executed.";";
+                  $sql = "UPDATE specific_service SET N_ESTADO = 'Ejecutado' , D_DATE_FINISH_R = STR_TO_DATE('".$fEjecucion."', '%Y-%m-%d') WHERE K_IDCLARO = ".$executed.";";
                    $session->query($sql);
                 }   
 
@@ -172,7 +172,7 @@
           public function updateClose($close){
            $dbConnection = new configdb_model();
            $session = $dbConnection->openSession();
-           $sql = "UPDATE specific_service SET D_DATE_START_R = STR_TO_DATE('".$close->getDateStartR()."', '%Y-%m-%d'),  D_DATE_FINISH_R = STR_TO_DATE('".$close->getDateStartR()."', '%Y-%m-%d'),  N_ESTADO = '".$close->getEstado()."', N_CRQ = '".$close->getCRQ()."', N_CIERRE_DESCRIPTION = '".$close->getCierreDescription()."' WHERE K_IDCLARO = '".$close->getIdClaro()."'AND K_ID_SP_SERVICE = '".$close->getId()."';";
+           $sql = "UPDATE specific_service SET D_DATE_START_R = STR_TO_DATE('".$close->getDateStartR()."', '%Y-%m-%d'),  D_DATE_FINISH_R = STR_TO_DATE('".$close->getDateFinishR()."', '%Y-%m-%d'),  N_ESTADO = '".$close->getEstado()."', N_CRQ = '".$close->getCRQ()."', N_CIERRE_DESCRIPTION = '".$close->getCierreDescription()."' WHERE K_IDCLARO = '".$close->getIdClaro()."';";
            $session->query($sql);
           }
 //---------------------------------------------------------------------------------------
@@ -288,6 +288,20 @@
             return $sService;
           }
 
+      public function updateEng($activity, $inge){
+         $dbConnection = new configdb_model();
+            $session = $dbConnection->openSession();
+            if ($session != "false"){
+                if ($activity != "") {                 
+                  $sql = "UPDATE specific_service SET K_IDUSER = ".$inge."  WHERE K_IDCLARO = ".$activity.";";
+                   $session->query($sql);
+                }   
 
+            } else {
+              $answer = "Error de informacion";
+             }
       }
+
+
+    }
 ?>

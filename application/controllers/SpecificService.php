@@ -169,7 +169,7 @@
       }
 
       public function executeByExcel(){
-        /*header('Content-Type: text/plain');*/
+       /* header('Content-Type: text/plain');*/
         $_POST['ejecucion'] = str_replace("\t", "\n", $_POST['ejecucion']);
         $clave = str_replace(array("\n", "\r", "\t"), '',explode("\n", $_POST['ejecucion'])[23]);
         if ($clave == "Fecha ejecución") {          
@@ -207,12 +207,13 @@
         date_default_timezone_set("America/Bogota");
         $mysqlDateTime = date('c');
         $service = new service_spec_model;
-        $service->createServiceS( "", "", $_POST['idActividad'], $_POST['observacionesC'], $_POST['fechaA'], $_POST['fechaA'], explode("T", $mysqlDateTime)[0], $_POST['fechafc'], $_POST['idOrden'], explode("@", $_POST['sitio'])[1], $_POST['tipo'], $_POST['ingeniero'], $_POST['observaciones'], $_POST['ingSol'], $_POST['proyecto'], "Creada", "");
+        $service->createServiceS( "", "", $_POST['idActividad'], $_POST['observacionesC'], $_POST['fechaA'], $_POST['fechaA'], explode("T", $mysqlDateTime)[0], $_POST['fechafc'], $_POST['idOrden'], explode("@", $_POST['sitio'])[1], $_POST['tipo'], $_POST['ingeniero'], $_POST['observaciones'], $_POST['ingSol'], $_POST['proyecto'], "Asignado", "");
         $this->dao_service_model->insertServiceS($service);
         $this->listServices();
       }
 
       public function listServices(){
+        $answer['eng'] = $this->dao_user_model->getAllEngineers();//llama todos los ing para pintar en select
         $answer['services'] = $this->dao_service_model->getAllServicesS();
         $answer['message'] = $_SESSION['mensaje'];
         $this->load->view('listServices', $answer);
@@ -220,14 +221,19 @@
       }
 //CAMILO-------------------------------------------------------------------------------------
       public function updateSpectService(){
-        $close = new service_spec_model;
-        $close->closeService($_POST['fInicior'], $_POST['fFinr'], $_POST['crq'], $_POST['state'], $_POST['observacionesCierre']);
-        $close->setIdClaro($_POST['idService']);
-        $close->setId($_POST['keyId']);
-        $this->dao_service_model->updateClose($close);
-       // header("".$_POST['keyId']);
-         $answer['service']=$this->dao_service_model->getServiceById($_POST['keyId']);
-        $this->load->view('orderDetail',$answer);
+        if (!$_POST['checkbox']) {
+          $_POST['checkbox'][0] = $_POST['idService'];  
+        }
+        for ($i=0; $i < count($_POST['checkbox']); $i++) { 
+          $close = new service_spec_model;
+          $close->closeService($_POST['fInicior'], $_POST['fFinr'], $_POST['crq'], $_POST['state'], $_POST['observacionesCierre']);
+          $close->setIdClaro($_POST['checkbox'][$i]);
+          $this->dao_service_model->updateClose($close);
+        }
+        $answer['eng'] = $this->dao_user_model->getAllEngineers();//llama todos los ing para pintar en select
+        $answer['message'] = "actualizado";
+        $answer['services'] = $this->dao_order_model->getAllOrders();
+        $this->load->view('listServices', $answer);
       }
 //CAMILO-----------------------------------------------------------------para leer excel
 
@@ -474,7 +480,7 @@
                  $eng = $_POST['inge3'];
                }
               //-----------creacion del objeto---------------------------
-              $activity->createServiceS($eng, "", $_POST['actividades_'.$g], $_POST['descripcionActividad_'.$g], "", "", $_POST['fCreacion'], $_POST['forecast_'.$g], $_POST['OT'], $_POST['sitio_'.$g], $_POST['tipo_'.$g], "", $_POST['descripcion'], $_POST['solicitante'], $_POST['proyecto'], "Creada","");
+              $activity->createServiceS($eng, "", $_POST['actividades_'.$g], $_POST['descripcionActividad_'.$g], "", "", $_POST['fCreacion'], $_POST['forecast_'.$g], $_POST['OT'], $_POST['sitio_'.$g], $_POST['tipo_'.$g], "", $_POST['descripcion'], $_POST['solicitante'], $_POST['proyecto'], "Asignada","");
               $activity->setQuantity($_POST['cantidadActiv_'.$g]);
               $activity->setRegion($_POST['regional_'.$g]);
               // print_r($activity);
@@ -617,17 +623,19 @@
         $_SESSION['excel']= null;*/
         if ($flag == 0) {
           $answer['message'] = "ok";
+          $answer['eng'] = $this->dao_user_model->getAllEngineers();//llama todos los ing para pintar en select
           $answer['services'] = $this->dao_order_model->getAllOrders();
           $this->load->view('listServices', $answer);
         }else{
           $answer['message'] = "error";
+          $answer['eng'] = $this->dao_user_model->getAllEngineers();//llama todos los ing para pintar en select
           $answer['services'] = $this->dao_order_model->getAllOrders();
           $this->load->view('listServices', $answer);
         }
       }
 
       public function saveCancelExcel(){
-        header('Content-Type: text/plain');
+        //header('Content-Type: text/plain');
         $flag = 0;  
         for ($i=0; $i < $_POST['cant']; $i++) { 
           if ($_POST['actividades_'.$i] != "") {
@@ -686,9 +694,8 @@
                                         <th>ID Actividad</th>
                                         <th>Tipo Actividad</th>
                                         <th>Regional</th>
-                                        <th>Cantidad</th>
-                                        <th>Descripción</th>
-                                        <th>Fecha Ejecución</th>
+                                        <th>Descripcion</th>
+                                        <th>Fecha Cancel</th>
                                         <th>Forecast</th>
                                        </tr>
                                     </tfoot>
@@ -729,25 +736,27 @@
 
 
           $answer['message'] = "actualizado";
+          $array['eng'] = $this->dao_user_model->getAllEngineers();//llama todos los ing para pintar en select
           $answer['services'] = $this->dao_order_model->getAllOrders();
           $this->load->view('listServices', $answer);        
         } else {
           $answer['message'] = "no existe";
+          $answer['eng'] = $this->dao_user_model->getAllEngineers();//llama todos los ing para pintar en select
           $answer['services'] = $this->dao_order_model->getAllOrders();
           $this->load->view('listServices', $answer);
         }
       }
 
       public function saveExecuteExcel(){
-        header('Content-Type: text/plain');
-        //print_r($_POST);
+        /*header('Content-Type: text/plain');
+        print_r($_POST);*/
         $flag = 0;
         for ($i=0; $i < $_POST['cant']; $i++) { 
           if ($_POST['actividades_'.$i] != "") {
             $existe[$i] = $this->dao_service_model->getServiceByIdActivity($_POST['actividades_'.$i]);
             $existe[$i]->fechaEjecucion = str_replace(array("\n", "\r", "\t", " "), '', $_POST['fechaEjecucion_'.$i]); 
             if ($existe[$i]) {
-              $this->dao_service_model->executeFromExcel($_POST['actividades_'.$i]);
+              $this->dao_service_model->executeFromExcel($_POST['actividades_'.$i], $_POST['fechaEjecucion_'.$i]);
             }else{
               $flag = 1;
             }
@@ -841,15 +850,28 @@
           $this->email->send();
 
           $answer['message'] = "actualizado";
+          $answer['eng'] = $this->dao_user_model->getAllEngineers();//llama todos los ing para pintar en select
           $answer['services'] = $this->dao_order_model->getAllOrders();
           $this->load->view('listServices', $answer);              
         }else{
           $answer['message'] = "no existe";
+          $answer['eng'] = $this->dao_user_model->getAllEngineers();//llama todos los ing para pintar en select
           $answer['services'] = $this->dao_order_model->getAllOrders();
           $this->load->view('listServices', $answer);
         }   
       }
 
+      public function reasign(){
+        for ($i=0; $i < count($_POST['checkbox']); $i++) {
+          $this->dao_service_model->updateEng($_POST['checkbox'][$i], $_POST['Ingeniero']);
+        }
+        $answer['eng'] = $this->dao_user_model->getAllEngineers();//llama todos los ing para pintar en select
+        $answer['message'] = "actualizado";
+        $answer['services'] = $this->dao_order_model->getAllOrders();
+        $this->load->view('listServices', $answer);
+      }
+
+     
   }
 
 ?>

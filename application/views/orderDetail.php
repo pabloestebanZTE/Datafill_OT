@@ -195,7 +195,7 @@
             echo "<ul>";
               echo "<select name='state' id='state' class='form-control' required style='display: center; color: white; background-color: #333;'>";
                 echo "<option value=''>Seleccione Estado</option>";
-                echo "<option value='Ejecutado'>Ejecutado</option>";
+                echo "<option value='Enviado'>Enviado</option>";
                 echo "<option value='Cancelado'>Cancelado</option>";
               echo "</select>";
             echo "</ul>";

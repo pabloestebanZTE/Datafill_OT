@@ -12,6 +12,8 @@
     <link href="/Datafill_OT/assets/plugins/datatables/dataTables.bootstrap.css" rel="stylesheet">
     <script type="text/javascript" src="/Datafill_OT/assets/plugins/jQuery/jquery-3.1.1.js"></script>
     <script type="text/javascript" src="/Datafill_OT/assets/plugins/bootstrap.js"></script>
+    <!-- bottstrap select -->
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.6.3/css/bootstrap-select.min.css" />
     <!-- modal stilo -->
     <link rel="stylesheet" href="/Datafill_OT/assets/css/emergente.min.css">
     <!-- datatables-->
@@ -27,35 +29,47 @@
       //Funcion para mostrar mensaje de error de validacion de datos
 
       function modalEditar(servicio, orden, idIng, role){
-        console.log(servicio);
+        //console.log(servicio);
          $('#orden').html("Orden: "+orden);
          var body = "";
           for (var i = 0; i < servicio.services.length; i++) {
             if (servicio.services[i].user.id == idIng || role == 0 || role == 4 || role == 5) {
                $('#body').html("<td id='idActividad"+i+"'></td>");           
                body += "<tr>";
+               body += "<th><input type='checkbox' name='checkbox[]' id= "+i+" value="+servicio.services[i].idClaro+" onclick='mostrarForm("+i+")'></th>";
                body += "<td><a href='/Datafill_OT/index.php/service/serviceDetails?K_ID_SP_SERVICE="+servicio.services[i].id+"'>"+servicio.services[i].idClaro+"</td>";
+               body += "<td>"+servicio.services[i].proyecto+"</td>";
                body += "<td>"+servicio.services[i].service.type+"</td>";
                body += "<td>"+servicio.services[i].quantity+"</td>";
                body += "<td>"+servicio.services[i].site.name+"</td>";
                body += "<td>"+servicio.services[i].user.name+" "+servicio.services[i].user.lastname+"</td>";
-               body += "<td>"+servicio.services[i].dateForecast+"</td>";
                body += "<td>"+servicio.services[i].dateStartP+"</td>";
-               body += "<td>"+servicio.services[i].proyecto+"</td>";
-               body += "<td>"+servicio.services[i].estado+"</td>";
+               if (servicio.services[i].estado == 'Cancelado') {
+                body += "<td>"+servicio.services[i].dateStartP+"</td>";
+               }else{
+                body += "<td>"+servicio.services[i].dateFinishR+"</td>";
+               }
+               body += "<td>"+servicio.services[i].dateForecast+"</td>";
+               body += "<td id='"+servicio.services[i].estado+"'>"+servicio.services[i].estado+"</td>";
                body += "</tr>";
             }else{
               $('#body').html("<td id='idActividad"+i+"'></td>");           
                body += "<tr>";
+               body += "<th> </th>";
                body += "<td>"+servicio.services[i].idClaro+"</td>";
+               body += "<td>"+servicio.services[i].proyecto+"</td>";
                body += "<td>"+servicio.services[i].service.type+"</td>";
                body += "<td>"+servicio.services[i].quantity+"</td>";
                body += "<td>"+servicio.services[i].site.name+"</td>";
                body += "<td>"+servicio.services[i].user.name+" "+servicio.services[i].user.lastname+"</td>";
-               body += "<td>"+servicio.services[i].dateForecast+"</td>";
                body += "<td>"+servicio.services[i].dateStartP+"</td>";
-               body += "<td>"+servicio.services[i].proyecto+"</td>";
-               body += "<td>"+servicio.services[i].estado+"</td>";
+               if (servicio.services[i].estado == 'Cancelado') {
+                body += "<td>"+servicio.services[i].dateStartP+"</td>";
+               }else{
+                body += "<td>"+servicio.services[i].dateFinishR+"</td>";
+               }
+               body += "<td>"+servicio.services[i].dateForecast+"</td>";
+               body += "<td id='"+servicio.services[i].estado+"'>"+servicio.services[i].estado+"</td>";
                body += "</tr>";
             }
           }
@@ -63,13 +77,43 @@
            $('#body').html(body);
         $('#modalEvento').modal('show');
       }
+      
+      var suma = 0;
+      
+      function mostrarForm(h){        
+        div = document.getElementById(h);
+         // alert(div.checked);
+          var sumando = 0;
+          if(div.checked == true){
+            sumando = -1;
+          } else {
+            sumando  = 1;
+          }
+          suma =  suma + sumando;
+          if (suma == 0){
+                  mostrar = document.getElementById('formulario');
+            mostrar.style.display = 'none';
+                        $('#fInicior').removeAttr("required");
 
+          } else {
+                  mostrar = document.getElementById('formulario');
+            mostrar.style.display = 'block';
+            $('#fInicior').prop("required", true);
+
+
+          }
+      }
+
+      function quitarRequired(){
+            $('#fInicior').removeAttr("required");
+
+      }
 
       function showMessage(mensaje){
         if(mensaje == "ok"){
           swal({
             title: "Bien hecho!",
-            text: "Actividad creada satisfactoriamente\nCorreos enviados",
+            text: "Actividad aignada satisfactoriamente",
             type: "success",
             confirmButtonText: "Ok"
           });
@@ -93,7 +137,7 @@
         if(mensaje == "actualizado") {
           swal({
             title: "Bien hecho!",
-            text: "Actividades actualizadas satisfactoriamente",
+            text: "Actividades actualizadas satisfactoriamente\nCorreos enviados",
             type: "success",
             confirmButtonText: "Ok"
           });
@@ -160,59 +204,126 @@
      </header>
 <!--      fin header         -->
      <br><br>
-<!-- tabla transporte -->
-<div class="container">
-    <center>
-      <legend >Lista de Actividades Transporte</legend>
-    </center>
-    <!-- /.box-header -->
-    <div class='box-body'>
-      <table id='example1' class='table table-bordered table-striped'>
-          <thead>
-              <tr>
-                  <th>Id orden</th>
-                  <th>Fecha Creacion</th>
-                  <th>Ingeniero Solicitante</th>
-                  <th>Forecast aprox.</th>
-                  <th>F. Asignación</th>
-                  <th>Proyecto</th>
-                  <th>Regional</th>
-                  <th>Ingenieros Asignado</th>
-                  <th>Descripción de la orden</th>
-                  <th>Cantidad Actividades</th>
-              </tr>
-          </thead>
-          <tbody>
-              <?php
-           /*   print_r($_SESSION["userName"]);
-              echo "<br>";
-              print_r($_SESSION["id"]);
-              echo "<br>";
-              print_r($_SESSION["role"]);*/
 
-             //print_r($services);
-                if(isset($services)){
-                    for($i = 0; $i < count($services); $i++){
-                      $proyecto = str_replace(array("\n", "\r", "\t"), '', $services[$i]->services[0]->proyecto);
-                      if ($proyecto != "GDATOS") {
-                          
-                          $ing[] = "";
-                          $engs = "";
-                          if(count($services[$i]->services) > 0){
-                          for ($k=0; $k <count($services[$i]->services) ; $k++) { 
-                            $ing[$k] = "- ".$services[$i]->services[$k]->user->name." ".$services[$i]->services[$k]->user->lastname."<br>";
+    <!--========================================= tabla transporte =========================================-->
+<?php   
+  if ($_SESSION["role"] == 1 || $_SESSION["role"] == 3 || $_SESSION["role"] == 4) {
+    
+    echo "<div class='container'>";
+        echo "<center>";
+          echo "<legend >Lista de Actividades Transporte</legend>";
+        echo "</center>";
+       // <!-- /.box-header -->
+        echo "<div class='box-body'>";
+          echo "<table id='example1' class='table table-bordered table-striped'>";
+              echo "<thead>";
+                  echo "<tr>";
+                      echo "<th>Id orden</th>";
+                      echo "<th>Fecha Creacion</th>";
+                      echo "<th>Ingeniero Solicitante</th>";
+                      echo "<th>Forecast aprox.</th>";
+                      echo "<th>F. Asignación</th>";
+                      echo "<th>Proyecto</th>";
+                      echo "<th>Regional</th>";
+                      echo "<th>Ingenieros Asignado</th>";
+                      echo "<th>Descripción de la orden</th>";
+                      echo "<th>Cant Acti</th>";
+                  echo "</tr>";
+              echo "</thead>";
+              echo "<tbody>";                  
+               /*   print_r($_SESSION["userName"]);
+                  echo "<br>";
+                  print_r($_SESSION["id"]);
+                  echo "<br>";
+                  print_r($_SESSION["role"]);*/
+                 //print_r($services);
+                    if(isset($services)){
+                        for($i = 0; $i < count($services); $i++){
+                          $proyecto = str_replace(array("\n", "\r", "\t"), '', $services[$i]->services[0]->proyecto);
+                          if ($proyecto != "GDATOS") {
+                              
+                              $ing[] = "";
+                              $engs = "";
+                              if(count($services[$i]->services) > 0){
+                              for ($k=0; $k <count($services[$i]->services) ; $k++) { 
+                                $ing[$k] = "- ".$services[$i]->services[$k]->user->name." ".$services[$i]->services[$k]->user->lastname."<br>";
+                              }
+                                $ing = array_unique($ing);
+                                $ing = array_values($ing);
+                                for ($k=0; $k <count($ing) ; $k++) { 
+                                  $engs = $engs.$ing[$k]."  ";
+                                }
+                              }
+                                  if ($services[$i]->getId() != "") {
+                                  echo "<tr>";
+                                      echo "<td><a onclick='modalEditar(".json_encode($services[$i]).", ".$services[$i]->getId().", ".$_SESSION["id"].",".$_SESSION["role"].")'>".$services[$i]->getId()."</td>";
+                                      echo "<td>".$services[$i]->getCreationDate()."</td>";
+                                      echo "<td>".$services[$i]->services[0]->ingSol."</td>";
+                                      echo "<td>".$services[$i]->services[0]->dateForecast."</td>";
+                                      echo "<td>".$services[$i]->services[0]->dateStartP."</td>";
+                                      echo "<td>".$services[$i]->services[0]->proyecto."</td>";
+                                      echo "<td>".$services[$i]->services[0]->region."</td>";
+                                      echo "<td>".$engs."</td>";
+                                      echo "<td>".$services[$i]->services[0]->claroDescription."</td>";
+                                      echo "<td>".count($services[$i]->services)."</td>";
+                                  echo "</tr>";
+                                  unset($ing);
+                                  }
                           }
-                            $ing = array_unique($ing);
-                            $ing = array_values($ing);
-                            for ($k=0; $k <count($ing) ; $k++) { 
-                              $engs = $engs.$ing[$k]."  ";
-                            }
-                          }
-
-
-                              if ($services[$i]->getId() != "") {
-                              echo "<tr>";
-                                  echo "<td><a onclick='modalEditar(".json_encode($services[$i]).", ".$services[$i]->getId().", ".$_SESSION["id"].",".$_SESSION["role"].")'>".$services[$i]->getId()."</td>";
+                        }
+                    }
+                   
+              echo "</tbody>";
+          echo "</table>";
+        echo "</div>";
+    echo "</div>";
+    //===================================<!-- fin tabla transporte ===================================-->
+  }  
+  if ($_SESSION["role"] == 2 || $_SESSION["role"] == 3 || $_SESSION["role"] == 4) {
+    //========================================<!-- tabla gdatos========================================-->
+    echo "<br><br><br>";
+    echo "<div class='container'>";
+        echo "<center>";
+          echo "<legend >Lista de Actividades GDATOS</legend>";
+        echo "</center>";
+        //<!-- /.box-header -->
+        echo "<div class='box-body'>";
+          echo "<table id='example3' class='table table-bordered table-striped'>";
+              echo "<thead>";
+                  echo "<tr>";
+                      echo "<th>Id orden</th>";
+                      echo "<th>Fecha Creacion</th>";
+                      echo "<th>Ingeniero Solicitante</th>";
+                      echo "<th>Forecast aprox.</th>";
+                      echo "<th>F. Asignación</th>";
+                      echo "<th>Proyecto</th>";
+                      echo "<th>Regional</th>";
+                      echo "<th>Ingenieros Asignado</th>";
+                      echo "<th>Descripción de la orden</th>";
+                      echo "<th>Cant Acti</th>";
+                  echo "</tr>";
+              echo "</thead>";
+              echo "<tbody>";
+                    if(isset($services)){
+                        for($i = 0; $i < count($services); $i++){
+                          $proyecto = str_replace(array("\n", "\r", "\t"), '', $services[$i]->services[0]->proyecto);
+                          if ($proyecto == "GDATOS") {
+                              
+                              $ing[] = "";
+                              $engs = "";
+                              if(count($services[$i]->services) > 0){
+                              for ($k=0; $k <count($services[$i]->services) ; $k++) { 
+                                $ing[$k] = "- ".$services[$i]->services[$k]->user->name." ".$services[$i]->services[$k]->user->lastname."<br>";
+                              }
+                                $ing = array_unique($ing);
+                                $ing = array_values($ing);
+                                for ($k=0; $k <count($ing) ; $k++) { 
+                                  $engs = $engs.$ing[$k]."  ";
+                                }
+                              }
+                                 if ($services[$i]->getId() != "") {
+                                  echo "<tr>";
+                                 echo "<td><a onclick='modalEditar(".json_encode($services[$i]).", ".$services[$i]->getId().", ".$_SESSION["id"].",".$_SESSION["role"].")'>".$services[$i]->getId()."</td>";
                                   echo "<td>".$services[$i]->getCreationDate()."</td>";
                                   echo "<td>".$services[$i]->services[0]->ingSol."</td>";
                                   echo "<td>".$services[$i]->services[0]->dateForecast."</td>";
@@ -222,126 +333,122 @@
                                   echo "<td>".$engs."</td>";
                                   echo "<td>".$services[$i]->services[0]->claroDescription."</td>";
                                   echo "<td>".count($services[$i]->services)."</td>";
-                              echo "</tr>";
-                              unset($ing);
-                              }
-
-
-                      }
-                    }
-                }
-               ?>
-          </tbody>
-
-      </table> 
-    </div>
-</div>
-<!-- fin tabla transporte -->
-
-<!-- tabla gdatos-->
-<br><br><br>
-<div class="container">
-    <center>
-      <legend >Lista de Actividades GDATOS</legend>
-    </center>
-    <!-- /.box-header -->
-    <div class='box-body'>
-      <table id='example3' class='table table-bordered table-striped'>
-          <thead>
-              <tr>
-                  <th>Id orden</th>
-                  <th>Fecha Creacion</th>
-                  <th>Ingeniero Solicitante</th>
-                  <th>Forecast aprox.</th>
-                  <th>F. Asignación</th>
-                  <th>Proyecto</th>
-                  <th>Regional</th>
-                  <th>Ingenieros Asignado</th>
-                  <th>Descripción de la orden</th>
-                  <th>Cantidad Actividades</th>
-              </tr>
-          </thead>
-          <tbody>
-              <?php
-            // print_r($services[0]->services[0]);
-                if(isset($services)){
-                    for($i = 0; $i < count($services); $i++){
-                      $proyecto = str_replace(array("\n", "\r", "\t"), '', $services[$i]->services[0]->proyecto);
-                      if ($proyecto == "GDATOS") {
-                          
-                          $ing[] = "";
-                          $engs = "";
-                          if(count($services[$i]->services) > 0){
-                          for ($k=0; $k <count($services[$i]->services) ; $k++) { 
-                            $ing[$k] = "- ".$services[$i]->services[$k]->user->name." ".$services[$i]->services[$k]->user->lastname."<br>";
+                                  echo "</tr>";
+                                  unset($ing);
+                                }
                           }
-                            $ing = array_unique($ing);
-                            $ing = array_values($ing);
-                            for ($k=0; $k <count($ing) ; $k++) { 
-                              $engs = $engs.$ing[$k]."  ";
-                            }
-                          }
-                             if ($services[$i]->getId() != "") {
-                              echo "<tr>";
-                             echo "<td><a onclick='modalEditar(".json_encode($services[$i]).", ".$services[$i]->getId().", ".$_SESSION["id"].",".$_SESSION["role"].")'>".$services[$i]->getId()."</td>";
-                              echo "<td>".$services[$i]->getCreationDate()."</td>";
-                              echo "<td>".$services[$i]->services[0]->ingSol."</td>";
-                              echo "<td>".$services[$i]->services[0]->dateForecast."</td>";
-                              echo "<td>".$services[$i]->services[0]->dateStartP."</td>";
-                              echo "<td>".$services[$i]->services[0]->proyecto."</td>";
-                              echo "<td>".$services[$i]->services[0]->region."</td>";
-                              echo "<td>".$engs."</td>";
-                              echo "<td>".$services[$i]->services[0]->claroDescription."</td>";
-                              echo "<td>".count($services[$i]->services)."</td>";
-                              echo "</tr>";
-                              unset($ing);
-                            }
-                      }
+                        }
                     }
-                }
-               ?>
-          </tbody>
-
-      </table> 
-    </div>
-</div>
+              echo "</tbody>";
+          echo "</table>";
+        echo "</div>";
+         //===================================<!-- fin tabla GDATOS ===================================-->
+  }
+?>
 <!-- Modal -->
-<div class="modal fade" id="modalEvento" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
-    <div class="modal-dialog modal-lg" role="document">
-      <div class="modal-content">
-        <div class="modal-header">
-          <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-          <h1 class="modal-title">Detalles del Evento</h1>
-          <h4 id="orden"></h4>
-        </div>
-        <div class="modal-body">
-          <table id='example5' class='table table-bordered table-striped'>
-            <thead>
-                <tr>
-                  <th>Id actividad</th>
-                  <th>Tipo</th>
-                  <th>Cant.</th>
-                  <th>Estación base</th>
-                  <th>Ingeniero Asignado</th>
-                  <th>F. Forecast</th>
-                  <th>F. Asignación</th>
-                  <th>Proyecto</th>
-                  <th>estado</th>     
-                </tr>    
-            </thead>
-            <tbody name="body" id="body">
-            </tbody>
-          </table>
-        </div>
+  <form method="post" action="">
+  <form method="post">
+    <div class="modal fade" id="modalEvento" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+      <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+            <h1 class="modal-title">Detalles del Evento</h1>
+            <h4 id="orden"></h4>
+          </div>
+          <div class="modal-body">
+            <table id='example5' class='table table-bordered table-striped'>
+              <thead>
+                  <tr>
+                    <th> </th>
+                    <th>Id actividad</th>
+                    <th>Proyecto</th>
+                    <th>Tipo</th>
+                    <th>Cant.</th>
+                    <th>Estación base</th>
+                    <th>Ingeniero Asignado</th>
+                    <th>F. Asignación</th>
+                    <th>Fecha Cierre </th>     
+                    <th>F. Forecast</th>
+                    <th>estado</th>     
+                  </tr>    
+              </thead>
+              <tbody name="body" id="body">
+              </tbody>
+            </table>
+          </div>
+<?php  
 
-        <div class="modal-footer">
-          <button type="button" class="btn btn-defauld btn-block" id="btnCerrarModal" data-dismiss="modal">CERRAR</button>
+       echo "<div class='container'>";
+        echo "<h2>Reasignar Actividades</h2>";
+        echo "<div class='row-fluid'>";
+          echo "<div class='input-group'>";
+            echo "<span class='input-group-addon'><i class='glyphicon glyphicon-user'></i></span>";
+            echo "<select class='selectpicker' name='Ingeniero' data-show-subtext='true' data-live-search='true' data-style='btn-primary' data-width='80%' >";
+              echo "<option value=''>Seleccione Ingeniero</option>";
+              for ($i=0; $i < count($eng); $i++) { 
+                echo "<option data-subtext=".explode('Ingeniero Datafill ', $eng[$i]->role->name)[1]." value=".$eng[$i]->id.">".$eng[$i]->name." ".$eng[$i]->lastname."</option>";
+              }             
+            echo "</select>";
+            echo "<button style='margin-left: 40px;' type='submit' class='btn btn-success'  onclick=\"quitarRequired(); this.form.action='http://localhost/Datafill_OT/index.php/SpecificService/reasign'\">Reasignar</button>";
+          echo "</div>  ";
+        echo "</div>";
+      echo "</div><br><br>";
+?>      
+ </form> 
+        <div class="container" style="display: none" id="formulario">
+          <h2>Cerrar Actividades</h2>
+            <div class="form-group">
+              <label class="control-label col-sm-2" for="email">Fecha Inicio Real:</label>
+              <div class="col-sm-10">
+                <input type="date" class="form-control m-b-5" id="fInicior" placeholder="Fecha Inicio Real" name="fInicior" >
+              </div>
+            </div><br>
+            <div class="form-group">
+              <label class="control-label col-sm-2" for="email">Fecha Fin Real:</label>
+              <div class="col-sm-10">
+                <input type="date" class="form-control m-b-5" id="fFinr" placeholder="Fecha Fin Real" name="fFinr" >
+              </div>
+            </div><br>
+            <div class="form-group">
+              <label class="control-label col-sm-2" for="pwd">CRQ:</label>
+              <div class="col-sm-10">          
+                <input type="text" class="form-control m-b-5" id="crq" placeholder="CRQ" name="crq">
+              </div>
+            </div><br>
+
+            <div class="form-group m-b-5">
+            <label class="control-label col-sm-2" for="pwd">Estado:</label>
+              <div class="col-sm-10"> 
+                <select class="form-control m-b-5" id="state" name="state" >
+                  <option value="">seleccione estado</option>
+                  <option value="Enviado">Enviado</option>
+                  <option value="Cancelado">Cancelado</option>
+                </select>
+              </div>
+            </div><br>
+
+            <div class="form-group m-b-5">
+              <label class="control-label col-sm-2" for="pwd">Observaciones de Cierrre:</label>
+                <div class="col-sm-10">
+                   <textarea class="form-control m-b-5" rows="2" id="observacionesCierre" name="observacionesCierre" placeholder="Observaciones de Cierre"></textarea>
+                </div>
+            </div><br>
+
+            <div class="form-group m-b-5">        
+              <div class="col-sm-offset-2 col-sm-10">
+                <button type="submit" class="btn btn-success btn-block" onclick="this.form.action='http://localhost/Datafill_OT/index.php/SpecificService/updateSpectService'">Enviar</button>
+              </div>
+            </div>
+        </div>
+  </form>
+          <div class="modal-footer">
+            <!-- <button type="button" class="btn btn-info btn-block" id="btnCerrarModal" data-dismiss="modal">CERRAR</button> -->
+          </div>
         </div>
       </div>
     </div>
-  </div>
-
-<!--          container ------------>
+<!--  container  -->
 
 
   <!--footer-->
@@ -349,6 +456,7 @@
       Zolid By ZTE Colombia | All Right Reserved
   </div>
 
+  <script src="//cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.6.3/js/bootstrap-select.min.js"></script>
   <script src="/Datafill_OT/assets/plugins/tableFilter/tablefilter.js"></script>
   <link rel="stylesheet" type="text/css" href="/Datafill_OT/assets/plugins/tableFilter/style/tablefilter.css">
   <script data-config>

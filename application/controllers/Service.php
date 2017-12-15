@@ -22,8 +22,8 @@
       }
 
       public function listServices(){
-/*        header('Content-Type: text/plain');
-*/        $answer['services'] = $this->dao_order_model->getAllOrders();
+        $answer['eng'] = $this->dao_user_model->getAllEngineers();//llama todos los ing para pintar en select
+        $answer['services'] = $this->dao_order_model->getAllOrders();
         $this->load->view('listServices', $answer);
       }
 
