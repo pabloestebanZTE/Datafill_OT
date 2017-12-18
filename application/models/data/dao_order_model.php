@@ -88,5 +88,12 @@
             $result = $session->query($sql);
           }
         }
+
+        public function link($link, $orden){
+           $dbConnection = new configdb_model();
+           $session = $dbConnection->openSession();
+           $sql = "UPDATE ot SET N_DRIVE = '".$link."' WHERE K_IDORDER = ".$orden.";";
+           $session->query($sql);
+        }
     }
 ?>

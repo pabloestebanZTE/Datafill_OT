@@ -93,3 +93,8 @@ margin-top: 10px;
 .m-l-5 {
     margin-left: 30px;
 }
+
+/*-------------------- display none --------------------*/
+.d-n {
+    display: none !important;
+}

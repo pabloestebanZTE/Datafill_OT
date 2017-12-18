@@ -29,7 +29,7 @@
       //Funcion para mostrar mensaje de error de validacion de datos
 
       function modalEditar(servicio, orden, idIng, role){
-        //console.log(servicio);
+        console.log(servicio);
          $('#orden').html("Orden: "+orden);
          var body = "";
           for (var i = 0; i < servicio.services.length; i++) {
@@ -50,6 +50,7 @@
                 body += "<td>"+servicio.services[i].dateFinishR+"</td>";
                }
                body += "<td>"+servicio.services[i].dateForecast+"</td>";
+               body += "<td>"+servicio.services[i].dateFinishClaro+"</td>";
                body += "<td id='"+servicio.services[i].estado+"'>"+servicio.services[i].estado+"</td>";
                body += "</tr>";
             }else{
@@ -69,6 +70,7 @@
                 body += "<td>"+servicio.services[i].dateFinishR+"</td>";
                }
                body += "<td>"+servicio.services[i].dateForecast+"</td>";
+               body += "<td>"+servicio.services[i].dateFinishClaro+"</td>";
                body += "<td id='"+servicio.services[i].estado+"'>"+servicio.services[i].estado+"</td>";
                body += "</tr>";
             }
@@ -91,22 +93,30 @@
           }
           suma =  suma + sumando;
           if (suma == 0){
-                  mostrar = document.getElementById('formulario');
+            mostrar = document.getElementById('formulario');
             mostrar.style.display = 'none';
-                        $('#fInicior').removeAttr("required");
+            $('#fInicior').removeAttr("required");
+
+            mostrar2 = document.getElementById('reasignar');
+            mostrar2.style.display = 'none';
 
           } else {
-                  mostrar = document.getElementById('formulario');
+            mostrar = document.getElementById('formulario');
             mostrar.style.display = 'block';
+
             $('#fInicior').prop("required", true);
+            $('#fFinr').prop("required", true);
+            $('#state').prop("required", true);            
 
-
+            mostrar2 = document.getElementById('reasignar');
+            mostrar2.style.display = 'block';
           }
       }
 
       function quitarRequired(){
             $('#fInicior').removeAttr("required");
-
+            $('#fFinr').removeAttr("required");
+            $('#state').removeAttr("required");
       }
 
       function showMessage(mensaje){
@@ -131,6 +141,14 @@
             title: "error!",
             text: "Actividades no existen ",
             type: "error",
+            confirmButtonText: "Ok"
+          });
+        }
+        if(mensaje == "no seleccionado") {
+          swal({
+            title: "No seleccionaste un ingeniero!",
+            text: "intenta de nuevo ",
+            type: "info",
             confirmButtonText: "Ok"
           });
         }
@@ -228,6 +246,7 @@
                       echo "<th>Ingenieros Asignado</th>";
                       echo "<th>Descripción de la orden</th>";
                       echo "<th>Cant Acti</th>";
+                      echo "<th>Progress</th>";
                   echo "</tr>";
               echo "</thead>";
               echo "<tbody>";                  
@@ -237,8 +256,14 @@
                   echo "<br>";
                   print_r($_SESSION["role"]);*/
                  //print_r($services);
+                  $cien=0;$porEnviadas=0;$porEjecutadas=0;$porCanceladas=0;
                     if(isset($services)){
-                        for($i = 0; $i < count($services); $i++){
+                        for($i = 0; $i < count($services); $i++){                          
+                          $cien = count($services[$i]->services);
+                          $porEnviadas = (count($services[$i]->enviadas)*100)/$cien;
+                          $porEjecutadas = (count($services[$i]->ejecutadas)*100)/$cien;
+                          $porCanceladas = (count($services[$i]->canceladas)*100)/$cien;
+                          $avance = $porCanceladas+$porEjecutadas+$porEnviadas;
                           $proyecto = str_replace(array("\n", "\r", "\t"), '', $services[$i]->services[0]->proyecto);
                           if ($proyecto != "GDATOS") {
                               
@@ -266,7 +291,51 @@
                                       echo "<td>".$engs."</td>";
                                       echo "<td>".$services[$i]->services[0]->claroDescription."</td>";
                                       echo "<td>".count($services[$i]->services)."</td>";
-                                  echo "</tr>";
+                                      echo "<td>";
+                                        echo "<div class='containerfluid'>";
+
+                                            echo "<div class='row'>";
+                                              echo "<div class='col-md-12'>";
+                                                echo "<div class='progress' style='height: 13px;'>";
+                                                  echo "<div class='progress-bar progress-bar-warning progress-bar-striped active' role='progressbar' style='width: ".$avance."%; min-width: 13%;'>";
+                                                    echo "<div style='font-size: 10px; margin-top: -3px;'>".$avance."%</div>";                         
+                                                  echo "</div>";
+                                                echo "</div>";
+                                              echo "</div>";
+                                            echo "</div><br>";
+
+                                            echo "<div class='row'>";
+                                              echo "<div class='col-md-12'>";
+                                                echo "<div class='progress' style='height: 13px;'>";
+                                                  echo "<div class='progress-bar progress-bar-success progress-bar-striped active' role='progressbar' style='width: ".$porEjecutadas."%; min-width: 13%;'>";
+                                                    echo "<div style='font-size: 10px; margin-top: -3px;'>".$porEjecutadas."%</div>";                         
+                                                  echo "</div>";
+                                                echo "</div>";
+                                              echo "</div>";
+                                            echo "</div>";
+
+                                            echo "<div class='row'>";
+                                              echo "<div class='col-md-12'>";
+                                                echo "<div class='progress' style='height: 13px;'>";
+                                                  echo "<div class='progress-bar progress-bar-info progress-bar-striped active' role='progressbar' style='width: ".$porEnviadas."%; min-width: 13%;'>";
+                                                    echo "<div style='font-size: 10px; margin-top: -3px;'>".$porEnviadas."%</div>";                         
+                                                  echo "</div>";
+                                                echo "</div>";
+                                              echo "</div>";
+                                            echo "</div>";
+
+                                            echo "<div class='row'>";
+                                              echo "<div class='col-md-12'>";
+                                                echo "<div class='progress' style='height: 13px;'>";
+                                                  echo "<div class='progress-bar progress-bar-danger progress-bar-striped active' role='progressbar' style='width: ".$porCanceladas."%; min-width: 13%;'>";
+                                                    echo "<div style='font-size: 10px; margin-top: -3px;'>".$porCanceladas."%</div>";                         
+                                                  echo "</div>";
+                                                echo "</div>";
+                                              echo "</div>";
+                                            echo "</div>";
+                                         echo "</div>";
+                                      echo "</td>";
+                                   echo "</tr>";
                                   unset($ing);
                                   }
                           }
@@ -301,11 +370,18 @@
                       echo "<th>Ingenieros Asignado</th>";
                       echo "<th>Descripción de la orden</th>";
                       echo "<th>Cant Acti</th>";
+                      echo "<th>Progress</th>";
                   echo "</tr>";
               echo "</thead>";
               echo "<tbody>";
+                    $cien=0;$porEnviadas=0;$porEjecutadas=0;$porCanceladas=0;
                     if(isset($services)){
                         for($i = 0; $i < count($services); $i++){
+                          $cien = count($services[$i]->services);
+                          $porEnviadas = (count($services[$i]->enviadas)*100)/$cien;
+                          $porEjecutadas = (count($services[$i]->ejecutadas)*100)/$cien;
+                          $porCanceladas = (count($services[$i]->canceladas)*100)/$cien;
+                          $avance = $porCanceladas+$porEjecutadas+$porEnviadas;
                           $proyecto = str_replace(array("\n", "\r", "\t"), '', $services[$i]->services[0]->proyecto);
                           if ($proyecto == "GDATOS") {
                               
@@ -333,7 +409,53 @@
                                   echo "<td>".$engs."</td>";
                                   echo "<td>".$services[$i]->services[0]->claroDescription."</td>";
                                   echo "<td>".count($services[$i]->services)."</td>";
-                                  echo "</tr>";
+                                  echo "<td>";
+                                        echo "<div class='containerfluid'>";
+                                        
+                                            echo "<div class='row'>";
+                                              echo "<div class='col-md-12'>";
+                                                echo "<div class='progress' style='height: 13px;'>";
+                                                  echo "<div class='progress-bar progress-bar-warning progress-bar-striped active' role='progressbar' style='width: ".$avance."%; min-width: 13%;'>";
+                                                    echo "<div style='font-size: 10px; margin-top: -3px;'>".$avance."%</div>";                         
+                                                  echo "</div>";
+                                                echo "</div>";
+                                              echo "</div>";
+                                            echo "</div><br>";
+
+                                            echo "<div class='row'>";
+                                              echo "<div class='col-md-12'>";
+                                                echo "<div class='progress' style='height: 13px;'>";
+                                                  echo "<div class='progress-bar progress-bar-success progress-bar-striped active' role='progressbar' style='width: ".$porEjecutadas."%; min-width: 13%;'>";
+                                                    echo "<div style='font-size: 10px; margin-top: -3px;'>".$porEjecutadas."%</div>";                         
+                                                  echo "</div>";
+                                                echo "</div>";
+                                              echo "</div>";
+                                            echo "</div>";
+
+                                            echo "<div class='row'>";
+                                              echo "<div class='col-md-12'>";
+                                                echo "<div class='progress' style='height: 13px;'>";
+                                                  echo "<div class='progress-bar progress-bar-info progress-bar-striped active' role='progressbar' style='width: ".$porEnviadas."%; min-width: 13%;'>";
+                                                    echo "<div style='font-size: 10px; margin-top: -3px;'>".$porEnviadas."%</div>";                         
+                                                  echo "</div>";
+                                                echo "</div>";
+                                              echo "</div>";
+                                            echo "</div>";
+
+                                            echo "<div class='row'>";
+                                              echo "<div class='col-md-12'>";
+                                                echo "<div class='progress' style='height: 13px;'>";
+                                                  echo "<div class='progress-bar progress-bar-danger progress-bar-striped active' role='progressbar' style='width: ".$porCanceladas."%; min-width: 13%;'>";
+                                                    echo "<div style='font-size: 10px; margin-top: -3px;'>".$porCanceladas."%</div>";                         
+                                                  echo "</div>";
+                                                echo "</div>";
+                                              echo "</div>";
+                                            echo "</div>";
+
+
+                                         echo "</div>";
+                                      echo "</td>";
+                                   echo "</tr>";
                                   unset($ing);
                                 }
                           }
@@ -370,6 +492,7 @@
                     <th>F. Asignación</th>
                     <th>Fecha Cierre </th>     
                     <th>F. Forecast</th>
+                    <th>F. Ejecución</th>
                     <th>estado</th>     
                   </tr>    
               </thead>
@@ -378,22 +501,32 @@
             </table>
           </div>
 <?php  
-
-       echo "<div class='container'>";
+    if ($_SESSION["role"] == 0 || $_SESSION["role"] == 4) {
+       echo "<div class='container m-l-5' style='display: none' id='reasignar'>";
         echo "<h2>Reasignar Actividades</h2>";
         echo "<div class='row-fluid'>";
           echo "<div class='input-group'>";
             echo "<span class='input-group-addon'><i class='glyphicon glyphicon-user'></i></span>";
-            echo "<select class='selectpicker' name='Ingeniero' data-show-subtext='true' data-live-search='true' data-style='btn-primary' data-width='80%' >";
+            echo "<select class='selectpicker' name='Ingeniero' data-show-subtext='true' data-live-search='true' data-style='btn-primary' data-width='80%'>";
               echo "<option value=''>Seleccione Ingeniero</option>";
               for ($i=0; $i < count($eng); $i++) { 
-                echo "<option data-subtext=".explode('Ingeniero Datafill ', $eng[$i]->role->name)[1]." value=".$eng[$i]->id.">".$eng[$i]->name." ".$eng[$i]->lastname."</option>";
+                if ($eng[$i]->role->name == 'Ingeniero Datafill GDRCD') {
+                  $eng[$i]->role->name = '&nbsp&nbsp-&nbspGDATOS';
+                }
+                if ($eng[$i]->role->name == 'Ingeniero Datafill GDRT') {
+                  $eng[$i]->role->name = '&nbsp&nbsp-&nbspTRANSPORTE';
+                }
+                if ($eng[$i]->role->name == 'Ingeniero Datafill GRF') {
+                  $eng[$i]->role->name = '&nbsp&nbsp-&nbspRF';
+                }
+                echo "<option data-subtext=".$eng[$i]->role->name." value= ".$eng[$i]->id."><b>".$eng[$i]->name." ".$eng[$i]->lastname."</b></option>";
               }             
             echo "</select>";
             echo "<button style='margin-left: 40px;' type='submit' class='btn btn-success'  onclick=\"quitarRequired(); this.form.action='http://localhost/Datafill_OT/index.php/SpecificService/reasign'\">Reasignar</button>";
           echo "</div>  ";
         echo "</div>";
       echo "</div><br><br>";
+    }
 ?>      
  </form> 
         <div class="container" style="display: none" id="formulario">

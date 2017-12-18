@@ -24,6 +24,11 @@
       public function listServices(){
         $answer['eng'] = $this->dao_user_model->getAllEngineers();//llama todos los ing para pintar en select
         $answer['services'] = $this->dao_order_model->getAllOrders();
+        for ($y=0; $y < count($answer['services']); $y++) {
+          $answer['services'][$y]->enviadas = $this->dao_service_model->getEnviadoByOrder($answer['services'][$y]->getId());
+          $answer['services'][$y]->canceladas = $this->dao_service_model->getCanceladoByOrder($answer['services'][$y]->getId());
+          $answer['services'][$y]->ejecutadas = $this->dao_service_model->getEjecutadoByOrder($answer['services'][$y]->getId());
+        }
         $this->load->view('listServices', $answer);
       }
 

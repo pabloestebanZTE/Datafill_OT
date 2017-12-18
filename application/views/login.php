@@ -36,13 +36,13 @@
             <h1>ZOLID</h1>
             <input id="username" type="text" name="username" value="" placeholder="Username" required/><br/>
             <input id="password" type="password" name="password" value="" placeholder="Password" required/>
-            <td>
-              <input id="projectList" type="text" name="projectList" list="project" placeholder="seleccione su proyecto" required>
-            </td>
-            <datalist id="project">
-              <option value="Fonade" />
-              <option value="Datafill OT" />
-            </datalist>
+            <!--  <td>
+             <input id="projectList" type="text" name="projectList" list="project" placeholder="seleccione su proyecto" required>
+                        </td>
+                        <datalist id="project">
+             <option value="Fonade" />
+             <option value="Datafill OT" />
+                        </datalist> -->
           </div>
         </div>
         <div class="cms">

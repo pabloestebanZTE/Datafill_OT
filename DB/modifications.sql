@@ -24,3 +24,5 @@ alter table rf MODIFY COLUMN  K_ASSIGNED_TO varchar(20);
 
 
 alter table rf MODIFY COLUMN  N_ID varchar(10) UNIQUE  ;
+
+ALTER TABLE ot ADD N_DRIVE varchar(200);

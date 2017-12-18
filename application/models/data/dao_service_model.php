@@ -160,7 +160,7 @@
             $session = $dbConnection->openSession();
             if ($session != "false"){
                 if ($executed != "") {                 
-                  $sql = "UPDATE specific_service SET N_ESTADO = 'Ejecutado' , D_DATE_FINISH_R = STR_TO_DATE('".$fEjecucion."', '%Y-%m-%d') WHERE K_IDCLARO = ".$executed.";";
+                  $sql = "UPDATE specific_service SET N_ESTADO = 'Ejecutado' , D_CLARO_F = STR_TO_DATE('".$fEjecucion."', '%Y-%m-%d') WHERE K_IDCLARO = ".$executed.";";
                    $session->query($sql);
                 }   
 
@@ -300,6 +300,69 @@
             } else {
               $answer = "Error de informacion";
              }
+      }
+
+      public function getEnviadoByOrder($order){
+        $dbConnection = new configdb_model();
+              $session = $dbConnection->openSession();
+              $sql = "SELECT * FROM specific_service WHERE K_IDORDER = ".$order." and N_ESTADO = 'Enviado';";
+              if ($session != "false"){
+                $result = $session->query($sql);
+                if ($result->num_rows > 0) {
+                  $i = 0;
+                    while($row = $result->fetch_assoc()) {  
+                    $sService = new service_spec_model();
+                     $sService->createServiceS($row['K_ID_SP_SERVICE'], $row['N_DURATION'], $row['K_IDCLARO'], $row['N_DESCRIPTION'], $row['D_DATE_START_P'], $row['D_DATE_FINISH_P'], $row['D_DATE_CREATION'], $row['D_FORECAST'],$row['K_IDORDER'], $row['K_IDSITE'],$row['K_IDSERVICE'], $row['K_IDUSER'], $row['N_CLARO_DESCRIPTION'], $row['N_ING_SOL'], $row['N_PROYECTO'], $row['N_ESTADO'], $row['N_CRQ']);                      
+                       $answer[$i] = $sService;
+                       $i++;
+                    } 
+                }
+              } else{
+                  $answer = "Error de informacion";
+              }
+            return $answer;
+      }
+
+      public function getEjecutadoByOrder($order){
+        $dbConnection = new configdb_model();
+              $session = $dbConnection->openSession();
+              $sql = "SELECT * FROM specific_service WHERE K_IDORDER = ".$order." and N_ESTADO = 'Ejecutado';";
+              if ($session != "false"){
+                $result = $session->query($sql);
+                if ($result->num_rows > 0) {
+                  $i = 0;
+                    while($row = $result->fetch_assoc()) {  
+                    $sService = new service_spec_model();
+                     $sService->createServiceS($row['K_ID_SP_SERVICE'], $row['N_DURATION'], $row['K_IDCLARO'], $row['N_DESCRIPTION'], $row['D_DATE_START_P'], $row['D_DATE_FINISH_P'], $row['D_DATE_CREATION'], $row['D_FORECAST'],$row['K_IDORDER'], $row['K_IDSITE'],$row['K_IDSERVICE'], $row['K_IDUSER'], $row['N_CLARO_DESCRIPTION'], $row['N_ING_SOL'], $row['N_PROYECTO'], $row['N_ESTADO'], $row['N_CRQ']);                      
+                       $answer[$i] = $sService;
+                       $i++;
+                    } 
+                }
+              } else{
+                  $answer = "Error de informacion";
+              }
+            return $answer;
+      }
+
+      public function getCanceladoByOrder($order){
+        $dbConnection = new configdb_model();
+              $session = $dbConnection->openSession();
+              $sql = "SELECT * FROM specific_service WHERE K_IDORDER = ".$order." and N_ESTADO = 'Cancelado';";
+              if ($session != "false"){
+                $result = $session->query($sql);
+                if ($result->num_rows > 0) {
+                  $i = 0;
+                    while($row = $result->fetch_assoc()) {  
+                    $sService = new service_spec_model();
+                     $sService->createServiceS($row['K_ID_SP_SERVICE'], $row['N_DURATION'], $row['K_IDCLARO'], $row['N_DESCRIPTION'], $row['D_DATE_START_P'], $row['D_DATE_FINISH_P'], $row['D_DATE_CREATION'], $row['D_FORECAST'],$row['K_IDORDER'], $row['K_IDSITE'],$row['K_IDSERVICE'], $row['K_IDUSER'], $row['N_CLARO_DESCRIPTION'], $row['N_ING_SOL'], $row['N_PROYECTO'], $row['N_ESTADO'], $row['N_CRQ']);                      
+                       $answer[$i] = $sService;
+                       $i++;
+                    } 
+                }
+              } else{
+                  $answer = "Error de informacion";
+              }
+            return $answer;
       }
 
 

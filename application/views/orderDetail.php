@@ -172,6 +172,12 @@
             echo "<span></span><img src='/Datafill_OT/assets/img/editar.png'><sup></sup>";
             echo "<p class='month'></p>";
           echo "</div>";
+
+              echo "<div id='ultimate'>";
+                echo "<p>LINK</p>";
+              echo "</div>";
+                echo "<input type='text' name='link' id='link' class='form-control' value='' placeholder='Digite el link' required style='display: center; color: white; background-color: #333;'>";
+              
               echo "<div id='ultimate'>";
                 echo "<p>Fecha inicio real</p>";
               echo "</div>";
@@ -180,14 +186,16 @@
                   echo "<p>Fecha fin real</p>";
                 echo "</div>";
               echo "<input type='date' name='fFinr' id='fFinr' class='form-control' value='' placeholder='Fecha Fin Real' required style='display: center; color: white; background-color: #333;'>";
+
           echo "<div class='content'>";
             echo "<div id='ultimate'>";
               echo "<p>CRQ</p>";
             echo "</div>";
              echo "<ul>";
-              echo "<input type='text' name='crq' id='crq' class='form-control' value='' placeholder='Digite el CRQ' required style='display: center; color: white; background-color: #333;'>";
+              echo "<input type='text' name='crq' id='crq' class='form-control' value='' placeholder='Digite el CRQ' style='display: center; color: white; background-color: #333;'>";
             echo "</ul>";
           echo "</div>";
+
           echo "<div class='content'>";
             echo "<div id='ultimate'>";
               echo "<p>Estado</p>";
@@ -210,7 +218,7 @@
              echo "</ul>";
           echo "</div>";
         echo "</div>";
-        echo "<input name='keyId' value='".$service->getId()."' hidden>";
+        echo "<input name='orden' value='".$service->getOrder()->getId()."' hidden>";
         echo "<input name='idService' value='".$service->getIdClaro()."' hidden>";
         echo "<input class='boton_personalizado' value='cerrar &raquo' type='submit' onclick = \"this.form.action = 'http://localhost/Datafill_OT/index.php/SpecificService/updateSpectService' \">";
       echo "</div>";
