@@ -20,7 +20,7 @@
     <link href="/Datafill_OT/assets/plugins/datatables/dataTables.bootstrap.css" rel="stylesheet">
     <link href="/Datafill_OT/assets/css/bootstrap.min.css" rel="stylesheet">
     <!--   HEADER CSS    -->
-    <link href="/Datafill_OT/assets/css/styleHeader.css" rel="stylesheet" />
+    <link href="/Datafill_OT/assets/css/styleHeader.css?v=1.0" rel="stylesheet" />
     <!--   SWEET ALERT    -->
     <link rel="stylesheet" href="/Datafill_OT/assets/plugins/sweetalert-master/dist/sweetalert.css" />
     <script type="text/javascript" src="/Datafill_OT/assets/plugins/sweetalert-master/dist/sweetalert.min.js"></script>
@@ -229,14 +229,14 @@
     
     echo "<div class='container'>";
         echo "<center>";
-          echo "<legend >Lista de Actividades Transporte</legend>";
+          echo "<legend >Lista de Actividades TRANSPORTE</legend>";
         echo "</center>";
-       // <!-- /.box-header -->
+        //<!-- /.box-header -->
         echo "<div class='box-body'>";
-          echo "<table id='example1' class='table table-bordered table-striped'>";
+          echo "<table id='example1' class='table table-bordered table-striped' width='100%'>";
               echo "<thead>";
                   echo "<tr>";
-                      echo "<th>Id orden</th>";
+                      echo "<th style='width:8px';>Id orden</th>";
                       echo "<th>Fecha Creacion</th>";
                       echo "<th>Ingeniero Solicitante</th>";
                       echo "<th>Forecast aprox.</th>";
@@ -245,11 +245,11 @@
                       echo "<th>Regional</th>";
                       echo "<th>Ingenieros Asignado</th>";
                       echo "<th>Descripción de la orden</th>";
-                      echo "<th>Cant Acti</th>";
+                      echo "<th>#</th>";
                       echo "<th>Progress</th>";
                   echo "</tr>";
               echo "</thead>";
-              echo "<tbody>";                  
+              echo "<tbody>";                 
                /*   print_r($_SESSION["userName"]);
                   echo "<br>";
                   print_r($_SESSION["id"]);
@@ -293,11 +293,11 @@
                                       echo "<td>".count($services[$i]->services)."</td>";
                                       echo "<td>";
                                         echo "<div class='containerfluid'>";
-
+                                        
                                             echo "<div class='row'>";
                                               echo "<div class='col-md-12'>";
                                                 echo "<div class='progress' style='height: 13px;'>";
-                                                  echo "<div class='progress-bar progress-bar-warning progress-bar-striped active' role='progressbar' style='width: ".$avance."%; min-width: 13%;'>";
+                                                  echo "<div class='progress-bar progress-bar-warning progress-bar-striped active' role='progressbar' style='width: ".$avance."%; '>";
                                                     echo "<div style='font-size: 10px; margin-top: -3px;'>".$avance."%</div>";                         
                                                   echo "</div>";
                                                 echo "</div>";
@@ -307,7 +307,7 @@
                                             echo "<div class='row'>";
                                               echo "<div class='col-md-12'>";
                                                 echo "<div class='progress' style='height: 13px;'>";
-                                                  echo "<div class='progress-bar progress-bar-success progress-bar-striped active' role='progressbar' style='width: ".$porEjecutadas."%; min-width: 13%;'>";
+                                                  echo "<div class='progress-bar progress-bar-success progress-bar-striped active' role='progressbar' style='width: ".$porEjecutadas."%; '>";
                                                     echo "<div style='font-size: 10px; margin-top: -3px;'>".$porEjecutadas."%</div>";                         
                                                   echo "</div>";
                                                 echo "</div>";
@@ -317,7 +317,7 @@
                                             echo "<div class='row'>";
                                               echo "<div class='col-md-12'>";
                                                 echo "<div class='progress' style='height: 13px;'>";
-                                                  echo "<div class='progress-bar progress-bar-info progress-bar-striped active' role='progressbar' style='width: ".$porEnviadas."%; min-width: 13%;'>";
+                                                  echo "<div class='progress-bar progress-bar-info progress-bar-striped active' role='progressbar' style='width: ".$porEnviadas."%; '>";
                                                     echo "<div style='font-size: 10px; margin-top: -3px;'>".$porEnviadas."%</div>";                         
                                                   echo "</div>";
                                                 echo "</div>";
@@ -327,12 +327,14 @@
                                             echo "<div class='row'>";
                                               echo "<div class='col-md-12'>";
                                                 echo "<div class='progress' style='height: 13px;'>";
-                                                  echo "<div class='progress-bar progress-bar-danger progress-bar-striped active' role='progressbar' style='width: ".$porCanceladas."%; min-width: 13%;'>";
+                                                  echo "<div class='progress-bar progress-bar-danger progress-bar-striped active' role='progressbar' style='width: ".$porCanceladas."%; '>";
                                                     echo "<div style='font-size: 10px; margin-top: -3px;'>".$porCanceladas."%</div>";                         
                                                   echo "</div>";
                                                 echo "</div>";
                                               echo "</div>";
                                             echo "</div>";
+
+
                                          echo "</div>";
                                       echo "</td>";
                                    echo "</tr>";
@@ -369,7 +371,7 @@
                       echo "<th>Regional</th>";
                       echo "<th>Ingenieros Asignado</th>";
                       echo "<th>Descripción de la orden</th>";
-                      echo "<th>Cant Acti</th>";
+                      echo "<th>#</th>";
                       echo "<th>Progress</th>";
                   echo "</tr>";
               echo "</thead>";
@@ -415,7 +417,7 @@
                                             echo "<div class='row'>";
                                               echo "<div class='col-md-12'>";
                                                 echo "<div class='progress' style='height: 13px;'>";
-                                                  echo "<div class='progress-bar progress-bar-warning progress-bar-striped active' role='progressbar' style='width: ".$avance."%; min-width: 13%;'>";
+                                                  echo "<div class='progress-bar progress-bar-warning progress-bar-striped active' role='progressbar' style='width: ".$avance."%; '>";
                                                     echo "<div style='font-size: 10px; margin-top: -3px;'>".$avance."%</div>";                         
                                                   echo "</div>";
                                                 echo "</div>";
@@ -425,7 +427,7 @@
                                             echo "<div class='row'>";
                                               echo "<div class='col-md-12'>";
                                                 echo "<div class='progress' style='height: 13px;'>";
-                                                  echo "<div class='progress-bar progress-bar-success progress-bar-striped active' role='progressbar' style='width: ".$porEjecutadas."%; min-width: 13%;'>";
+                                                  echo "<div class='progress-bar progress-bar-success progress-bar-striped active' role='progressbar' style='width: ".$porEjecutadas."%; '>";
                                                     echo "<div style='font-size: 10px; margin-top: -3px;'>".$porEjecutadas."%</div>";                         
                                                   echo "</div>";
                                                 echo "</div>";
@@ -435,7 +437,7 @@
                                             echo "<div class='row'>";
                                               echo "<div class='col-md-12'>";
                                                 echo "<div class='progress' style='height: 13px;'>";
-                                                  echo "<div class='progress-bar progress-bar-info progress-bar-striped active' role='progressbar' style='width: ".$porEnviadas."%; min-width: 13%;'>";
+                                                  echo "<div class='progress-bar progress-bar-info progress-bar-striped active' role='progressbar' style='width: ".$porEnviadas."%; '>";
                                                     echo "<div style='font-size: 10px; margin-top: -3px;'>".$porEnviadas."%</div>";                         
                                                   echo "</div>";
                                                 echo "</div>";
@@ -445,7 +447,7 @@
                                             echo "<div class='row'>";
                                               echo "<div class='col-md-12'>";
                                                 echo "<div class='progress' style='height: 13px;'>";
-                                                  echo "<div class='progress-bar progress-bar-danger progress-bar-striped active' role='progressbar' style='width: ".$porCanceladas."%; min-width: 13%;'>";
+                                                  echo "<div class='progress-bar progress-bar-danger progress-bar-striped active' role='progressbar' style='width: ".$porCanceladas."%; '>";
                                                     echo "<div style='font-size: 10px; margin-top: -3px;'>".$porCanceladas."%</div>";                         
                                                   echo "</div>";
                                                 echo "</div>";
@@ -464,6 +466,8 @@
               echo "</tbody>";
           echo "</table>";
         echo "</div>";
+     echo "</div>";
+
          //===================================<!-- fin tabla GDATOS ===================================-->
   }
 ?>
@@ -621,13 +625,16 @@
        "language": {
             "url": "//cdn.datatables.net/plug-ins/9dcbecd42ad/i18n/Spanish.json"
         },
+
       "paging": true,
       "lengthChange": true,
       "searching": true,
       "ordering": true,
       "info": true,
-      "autoWidth": true,
+      "autoWidth": false,
       "order": [[ 3, "desc" ]],
+
+
 
     });   
   });

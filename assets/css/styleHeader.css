@@ -98,3 +98,24 @@ margin-top: 10px;
 .d-n {
     display: none !important;
 }
+table#example1{
+  display: block !important;;
+  width: 100% !important;
+  
+}
+table#example1 th{
+  font-size: 12px;  
+}
+table#example1 td{
+  font-size: 13px;
+}
+table#example1 td:nth-child(1){    
+  max-width: 25px !important;
+}
+table#example1 td:nth-child(2){      
+  max-width: 40px !important;
+}
+table#example1 td:nth-child(9){
+  max-width: 120px !important;
+  word-wrap: break-word;
+}
