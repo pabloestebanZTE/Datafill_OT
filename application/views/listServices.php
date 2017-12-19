@@ -21,6 +21,8 @@
     <link href="/Datafill_OT/assets/css/bootstrap.min.css" rel="stylesheet">
     <!--   HEADER CSS    -->
     <link href="/Datafill_OT/assets/css/styleHeader.css?v=1.0" rel="stylesheet" />
+     <!-- boton -->
+    <link href="/Datafill_OT/assets/css/styleBoton.css" rel="stylesheet" />
     <!--   SWEET ALERT    -->
     <link rel="stylesheet" href="/Datafill_OT/assets/plugins/sweetalert-master/dist/sweetalert.css" />
     <script type="text/javascript" src="/Datafill_OT/assets/plugins/sweetalert-master/dist/sweetalert.min.js"></script>
@@ -34,8 +36,8 @@
          var body = "";
           for (var i = 0; i < servicio.services.length; i++) {
             if (servicio.services[i].user.id == idIng || role == 0 || role == 4 || role == 5) {
-               $('#body').html("<td id='idActividad"+i+"'></td>");           
                body += "<tr>";
+               body += "<input type='hidden' name='ot' id='ot' value='"+orden+"'>";
                body += "<th><input type='checkbox' name='checkbox[]' id= "+i+" value="+servicio.services[i].idClaro+" onclick='mostrarForm("+i+")'></th>";
                body += "<td><a href='/Datafill_OT/index.php/service/serviceDetails?K_ID_SP_SERVICE="+servicio.services[i].id+"'>"+servicio.services[i].idClaro+"</td>";
                body += "<td>"+servicio.services[i].proyecto+"</td>";
@@ -54,7 +56,6 @@
                body += "<td id='"+servicio.services[i].estado+"'>"+servicio.services[i].estado+"</td>";
                body += "</tr>";
             }else{
-              $('#body').html("<td id='idActividad"+i+"'></td>");           
                body += "<tr>";
                body += "<th> </th>";
                body += "<td>"+servicio.services[i].idClaro+"</td>";
@@ -74,7 +75,12 @@
                body += "<td id='"+servicio.services[i].estado+"'>"+servicio.services[i].estado+"</td>";
                body += "</tr>";
             }
-          }
+          } 
+          var boton = "";
+            if (servicio.services[0].order.link) {
+              boton += "<a href='"+servicio.services[0].order.link+"' target='_blank' class='btn boton formaBoton color' role='button'>"+servicio.services[0].order.link+"</a><br><br>";
+              $('#enlace').html(boton);
+            }
 
            $('#body').html(body);
         $('#modalEvento').modal('show');
@@ -84,6 +90,8 @@
       
       function mostrarForm(h){        
         div = document.getElementById(h);
+          var event =  document.getElementById('modalEvento');;
+          //console.log( );
          // alert(div.checked);
           var sumando = 0;
           if(div.checked == true){
@@ -255,7 +263,8 @@
                   print_r($_SESSION["id"]);
                   echo "<br>";
                   print_r($_SESSION["role"]);*/
-                 //print_r($services);
+              //    header('content-type:text/plain');
+                // print_r($services);
                   $cien=0;$porEnviadas=0;$porEjecutadas=0;$porCanceladas=0;
                     if(isset($services)){
                         for($i = 0; $i < count($services); $i++){                          
@@ -511,7 +520,7 @@
         echo "<div class='row-fluid'>";
           echo "<div class='input-group'>";
             echo "<span class='input-group-addon'><i class='glyphicon glyphicon-user'></i></span>";
-            echo "<select class='selectpicker' name='Ingeniero' data-show-subtext='true' data-live-search='true' data-style='btn-primary' data-width='80%'>";
+            echo "<select class='selectpicker' name='Ingeniero' data-show-subtext='true' data-live-search='true'  data-width='80%'>";
               echo "<option value=''>Seleccione Ingeniero</option>";
               for ($i=0; $i < count($eng); $i++) { 
                 if ($eng[$i]->role->name == 'Ingeniero Datafill GDRCD') {
@@ -535,6 +544,12 @@
  </form> 
         <div class="container" style="display: none" id="formulario">
           <h2>Cerrar Actividades</h2>
+            <div class="form-group" >
+              <label class="control-label col-sm-2" for="email">Link Drive OT :</label>
+              <div class="col-sm-10" id="enlace">
+                <input type="input" class="form-control m-b-5" id="link" placeholder="Link Drive" name="link" >
+              </div>
+            </div><br>
             <div class="form-group">
               <label class="control-label col-sm-2" for="email">Fecha Inicio Real:</label>
               <div class="col-sm-10">

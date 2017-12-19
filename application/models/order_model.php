@@ -4,6 +4,7 @@
 		protected $id;
 		protected $name;
 		protected $creationDate;
+		public $link;
 
 		public function __construct(){
 
@@ -20,6 +21,10 @@
     public function getCreationDate(){return $this->creationDate;}
 
     public function setCreationDate($creationDate){$this->creationDate = $creationDate;}
+
+    public function getLink(){return $this->link;}
+
+    public function setLink($link){$this->link = $link;}
 
 		public function createOrder($id, $name, $creationDate){
 			$this->setId($id);

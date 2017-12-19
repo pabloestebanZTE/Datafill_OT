@@ -19,6 +19,7 @@
             if ($result->num_rows > 0) {
               $row = $result->fetch_assoc();
               $order->createOrder($row['K_IDORDER'], $row['N_NAME'], $row['D_DATE_CREATION']);
+              $order->setLink($row['N_DRIVE']);
             } else {
               $order->createOrder("","","");
             }

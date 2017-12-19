@@ -11,6 +11,8 @@
     <link href="/Datafill_OT/assets/css/font-awesome.min.css" rel="stylesheet" />
     <!--   HEADER CSS    -->
     <link href="/Datafill_OT/assets/css/styleHeader.css" rel="stylesheet" />
+    <!-- boton -->
+    <link href="/Datafill_OT/assets/css/styleBoton.css" rel="stylesheet" />
     <!--LIST CSS-->
   <link rel="stylesheet" type="text/css" href="/Datafill_OT/assets/css/styleList.css">
   <link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Open+Sans:Condensed" />
@@ -223,6 +225,20 @@
         echo "<input class='boton_personalizado' value='cerrar &raquo' type='submit' onclick = \"this.form.action = 'http://localhost/Datafill_OT/index.php/SpecificService/updateSpectService' \">";
       echo "</div>";
       }
+      /*header('content-type: text/plain');
+      print_r($service);*/
+      if ($service->order->getLink()!="") {
+        echo "<div class='whole link' style='margin: 8px'><a href='".$service->order->getLink()."' target='_blank' /*class='boton formaBoton color'*/ >";
+          echo "<div class='type ' id='percho'>";
+            echo "<p>LINK DRIVE OT</p>";
+          echo "</div>";
+          echo "<div class='drive' >";
+            echo "<p><i><u>Orden Drive</u></i></p>";
+          echo "</div>";
+          echo "<div class='plan'>";          
+          echo "</div>";
+        echo "</a></div>";
+      }  
 
       echo "<div class='whole' style='margin: 8px'>";
         echo "<div class='type' id='percho'>";
@@ -235,13 +251,15 @@
         echo "</div>";
       echo "</div>";
       
-      echo "<div class='whole' style='margin: 8px'>";
-          echo "<div class='type' style='margin-top: 15px' id='percho'>";
-          echo "<p>CRQ</p>";
-        echo "</div>";         
-        echo "<div id='".$service->getEstado()."'>";
-          echo "<p>".$service->getCRQ()."</p>";
-        echo "</div>";
+      if ($service->getCRQ() !="") {        
+        echo "<div class='whole' style='margin: 8px'>";
+            echo "<div class='type' style='margin-top: 15px' id='percho'>";
+            echo "<p>CRQ</p>";
+          echo "</div>";         
+          echo "<div id='".$service->getEstado()."'>";
+            echo "<p>".$service->getCRQ()."</p>";
+          echo "</div>";
+      }
 
 
     ?>
