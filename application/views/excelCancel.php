@@ -41,7 +41,7 @@
                         <ul>
                             <li><a href="/Datafill_OT/index.php/Service/assignService">Agendar Actividad</a></li>
                             <li><a href="/Datafill_OT/index.php/Service/listServices">Ver Actividades</a></li>
-                            <li><a href="#">Ver Ingenieros</a></li>
+                            <li><a href="https://drive.google.com/drive/u/2/my-drive" target='_blank'>Drive</a></li>
                         </ul>
                         </li>
                         <li class="cam"><a href="#services">RF</a>
@@ -83,7 +83,7 @@
        echo "</div>";
        echo "<!-- /.box-header -->";
        echo "<div class='box-body'>";
-         echo "<table id='example1' class='table table-bordered table-striped'>";
+         echo "<table id='example' class='table table-bordered table-striped'>";
            echo "<thead>";
            echo "<tr>";
              echo "<th>ID Actividad</th>";
@@ -133,7 +133,7 @@
 
 <script>
   $(function () {
-    $("#example1").DataTable();
+    $("#example").DataTable();
     $('#example2').DataTable({
       "paging": true,
       "lengthChange": false,

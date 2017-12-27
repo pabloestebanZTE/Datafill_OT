@@ -17,11 +17,8 @@
         <link rel="stylesheet" href="/Datafill_OT/assets/css/botonesStyle2.css" type="text/css" media="all">
         <!--   FORMULARIO CSS    -->
         <link href="/Datafill_OT/assets/css/formStyle.css" rel="stylesheet" />
-        <!--   CALENDAR JS    -->
-        <link rel='stylesheet' href='/Datafill_OT/assets/plugins/fullcalendar/fullcalendar.css' />
+        <!--    JS    -->
         <script src='/Datafill_OT/assets/plugins/fullcalendar/lib/jquery.min.js'></script>
-        <script src='/Datafill_OT/assets/plugins/fullcalendar/lib/moment.min.js'></script>
-        <script src='/Datafill_OT/assets/plugins/fullcalendar/fullcalendar.js'></script>
         <script type="text/javascript" src="/Datafill_OT/assets/js/tabs.js"></script>
         <!--   SWEET ALERT    -->
         <link rel="stylesheet" href="/Datafill_OT/assets/plugins/sweetalert-master/dist/sweetalert.css" />
@@ -29,108 +26,7 @@
 
         <link href='http://fonts.googleapis.com/css?family=Open+Sans' rel='stylesheet' type='text/css' />
 
-       <script>
-          function enableSelect(){
-            $( "#sitio" ).prop( "disabled", false );
-          }
-
-          function generateOptions(){
-            var js_data = '<?php echo json_encode($sites); ?>';
-            var js_obj_data = JSON.parse(js_data);
-            for (var i=0; i<js_obj_data.length; i++) {
-                var sel = document.getElementById("sitio");
-                sel.options[sel.options.length] = new Option(js_obj_data[i].name, js_obj_data[i].name+"@"+js_obj_data[i].id);
-            }
-          }
-
-          function editText(){
-            var tipo = $("#tipo option:selected").attr('value');
-            var services = '<?php echo json_encode($services); ?>';
-            var js_obj_data = JSON.parse(services);
-            for(var i = 0;i < js_obj_data.length; i++){
-              if(js_obj_data[i].id == tipo){
-                $("#textoGerencia").remove();
-                $("#textoAlcance").remove();
-                $("#textoDescripcion").remove();
-                var newAlacance = "<p align='center' style='border: 2px solid #7cb6d6;' id='textoAlcance'>"+js_obj_data[i].scope+"</p>";
-                var newGerencia = "<p align='center' style='border: 2px solid #7cb6d6;' id='textoGerencia'>"+js_obj_data[i].gerency+"</p>";
-                var newDescripcion = "<p align='center' style='border: 2px solid #7cb6d6;' id='textoDescripcion'>"+js_obj_data[i].description+"</p>";
-                var gerencia = js_obj_data[i].gerency;
-                $("#divGerencia").append(newGerencia);
-                $("#divAlcance").append(newAlacance);
-                $("#divDescripcion").append(newDescripcion);
-              }
-            }
-            replaceOptionsEngineers(gerencia);
-            loadCalendar();
-          }
-
-          function replaceOptionsEngineers(gerencia){
-            $('#ingeniero').empty();
-            gerencia = gerencia.split(" ");
-            var ingenieros =  '<?php echo json_encode($engineers); ?>';
-            var js_obj_data = JSON.parse(ingenieros);
-            for(var i = 0;i < js_obj_data.length; i++){
-              var gerenciaEng = js_obj_data[i].role.name.split(" ");
-              if(gerenciaEng[2] == gerencia[0]){
-                var newOption = "<option value='"+js_obj_data[i].id+"'>"+js_obj_data[i].name+" "+js_obj_data[i].lastname+"</option>";
-                $('#ingeniero').append(newOption);
-              }
-            }
-          }
-
-          function sel(c){
-            formu=document.forms['assignService'];
-            select = formu['sitio'];
-            caracteres=c.length;
-            if(caracteres!=0){
-              for (x=0;x<formu['sitio'].options.length;x++){
-                value = formu['sitio'].options[x].value;
-                if(value.toLowerCase().slice(0,caracteres)==c.toLowerCase()){
-                  formu['sitio'].selectedIndex=x;
-                  formu['sitio'].style.visibility="visible";
-                  break;
-                }else{
-                  formu['sitio'].style.visibility="hidden";
-                }
-              }
-            }
-          }
-
-          function loadCalendar() {
-            $("#calendar").remove();
-            $("#calendarDiv").append("<div id='calendar'></div>");
-
-            var engineers = '<?php echo json_encode($engineers); ?>';
-            var eng = JSON.parse(engineers);
-            var idEng = $("#ingeniero option:selected").attr('value');
-            var ev = [];
-
-            for(var i = 0; i < eng.length; i++){
-              if(eng[i].id == idEng && eng[i].schedule != null){
-                for(var j = 0; j < eng[i].schedule.length; j++){
-                  ev[j] = {title : eng[i].schedule[j].service.type+", "+eng[i].schedule[j].service.duration+" horas", start : eng[i].schedule[j].dateStartP};
-                }
-              }
-            }
-
-            $('#calendar').fullCalendar({
-                header: {
-                    left: 'prev,next today',
-                    center: 'title',
-                    right: 'month,listWeek'
-                },
-                navLinks: true, // can click day/week names to navigate views
-                editable: true,
-                eventLimit: true, // allow "more" link when too many events
-                events: ev
-            });
-          }
-
-          function editIdOrder(){
-            var idOrder = $("#orden option:selected").attr('value');
-            document.getElementById("idOrden").value = idOrder;
-          }
+       <script>         
 
           function showMessage(mensaje){
            if(mensaje == "error"){
@@ -144,19 +40,7 @@
           }
 
        </script>
-    <style>
-        body {
-            margin: 40px 10px;
-            padding: 0;
-            font-family: "Lucida Grande",Helvetica,Arial,Verdana,sans-serif;
-            font-size: 14px;
-        }
-
-        #calendar {
-            width: 50%;
-            margin: 0 auto;
-        }
-    </style>
+    
 </head>
 <body>
     <!-- Navigation -->
@@ -183,7 +67,7 @@
                         <ul>
                             <li><a href="/Datafill_OT/index.php/Service/assignService">Agendar Actividad</a></li>
                             <li><a href="/Datafill_OT/index.php/Service/listServices">Ver Actividades</a></li>
-                            <li><a href="#">Ver Ingenieros</a></li>
+                            <li><a href="https://drive.google.com/drive/u/2/my-drive" target='_blank'>Drive</a></li>
                         </ul>
                         </li>
                         <li class="cam"><a href="#services">RF</a>
@@ -229,17 +113,17 @@
                   echo "<form class= 'well form-horizontal' action='' method='post'  id='assignService' name='assignServie' enctype= 'multipart/form-data'>";
                       echo "<fieldset>";
                           echo "<legend >Asignación</legend>";
-                          //-------- Text input------
+                          //-------- Text area------
                           echo "<div class='form-group'>";
                             echo "<label class='col-md-1 control-label'></label>";
                               echo "<div class='col-md-9 inputGroupContainer'>";
                                 echo "<div class='input-group'>";
                                   echo "<span class='input-group-addon'><i class='glyphicon glyphicon-file'></i></span>";
-                                  echo "<textarea class='form-control' name='actividades' placeholder='Copiar asignación'></textarea>";
+                                  echo "<textarea class='form-control' rows='14' name='actividades' placeholder='Copiar asignación'></textarea>";
                                 echo "</div>";
                           echo "</div><br><br><br><br>";
                             echo "<center>";
-                                echo "<button type= 'submit' class= 'btn btn-primary' onclick = \"enableSelect();this.form.action = 'http://localhost/Datafill_OT/index.php/SpecificService/assignByMail' \">Asignacion  <span class= 'glyphicon glyphicon-ok'></span></button>";
+                                echo "<button type= 'submit' class= 'btn btn-primary' onclick = \"this.form.action = 'http://localhost/Datafill_OT/index.php/SpecificService/assignByMail' \">Asignacion  <span class= 'glyphicon glyphicon-ok'></span></button>";
                               echo "</center>";
                             // echo "// <!-- Select Basic";
                             // echo "// <a class="btn btn-primary" onclick = "cloneEng()" id="clonar" >";
@@ -276,12 +160,12 @@
                 echo "<div class='col-md-9 inputGroupContainer'>";
                   echo "<div class='input-group'>";
                     echo "<span class='input-group-addon'><i class='glyphicon glyphicon-file'></i></span>";
-                    echo "<textarea class='form-control' name='cancelacion' placeholder='Copiar Cancelación'></textarea>";
+                    echo "<textarea class='form-control' rows='14' name='cancelacion' placeholder='Copiar Cancelación'></textarea>";
                   echo "</div>";
                 echo "</div>";
           echo "</div>";
             echo "<center>";
-               echo "<button type='submit' class='btn btn-primary' onclick = \"enableSelect();this.form.action = 'http://localhost/Datafill_OT/index.php/SpecificService/cancelByMail' \">Cancelación <span class='glyphicon glyphicon-ok'></span></button>";
+               echo "<button type='submit' class='btn btn-primary' onclick = \"this.form.action = 'http://localhost/Datafill_OT/index.php/SpecificService/cancelByMail' \">Cancelación <span class='glyphicon glyphicon-ok'></span></button>";
             echo "</center>";
          echo "</fieldset>";
         echo "</form>";
@@ -294,18 +178,18 @@ echo "</div>";
       echo "<form class='well form-horizontal' action='' method='post'  id='assignService' name='assignServie' enctype='multipart/form-data'>";
        echo "<fieldset>";
           echo "<legend >Ejecución</legend>";
-        // -------------------<!-- Text input-->-----------------------------
+        // -------------------<!-- Text area-->-----------------------------
         echo "<div class='form-group'>";
             echo "<label class='col-md-1 control-label'></label>";
               echo "<div class='col-md-9 inputGroupContainer'>";
                 echo "<div class='input-group'>";
                   echo "<span class='input-group-addon'><i class='glyphicon glyphicon-file'></i></span>";
-                  echo "<textarea class='form-control' name='ejecucion' placeholder='Copiar Ejecución'></textarea>";
+                  echo "<textarea class='form-control' rows='14' name='ejecucion' placeholder='Copiar Ejecución'></textarea>";
                 echo "</div>";
               echo "</div>";
         echo "</div>";
           echo "<center>";
-             echo "<button type='submit' class='btn btn-primary' onclick = \"enableSelect();this.form.action = 'http://localhost/Datafill_OT/index.php/SpecificService/executeByExcel' \">Ejecución  <span class='glyphicon glyphicon-ok'></span></button>";
+             echo "<button type='submit' class='btn btn-primary' onclick = \"this.form.action = 'http://localhost/Datafill_OT/index.php/SpecificService/executeByExcel' \">Ejecución  <span class='glyphicon glyphicon-ok'></span></button>";
           echo "</center>";
        echo "</fieldset>";
       echo "</form>";
@@ -525,10 +409,7 @@ echo "</div>";
         </center>
     </form>
 </div> -->
-  <!--calendar-->
-  <div id='calendarDiv'>
-    <div id='calendar'></div><br><br><br>
-  </div>
+
   <!--footer-->
   <div class="for-full-back " id="footer">
       Zolid By ZTE Colombia | All Right Reserved

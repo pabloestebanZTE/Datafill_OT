@@ -72,7 +72,7 @@
         public function getUserByUsername($username){
           $dbConnection = new configdb_model();
           $session = $dbConnection->openSession();
-          $sql = "SELECT * FROM USER WHERE N_USERNAME = '".$username."';";
+          $sql = "SELECT * FROM user WHERE N_USERNAME = '".$username."';";
           if ($session != "false"){
             $result = $session->query($sql);
             if ($result->num_rows > 0) {
@@ -93,7 +93,7 @@
         public function getUsernamePassword($username){
           $dbConnection = new configdb_model();
           $session = $dbConnection->openSession();
-          $sql = "SELECT N_PASSWORD FROM USER WHERE N_USERNAME = '".$username."';";
+          $sql = "SELECT N_PASSWORD FROM user WHERE N_USERNAME = '".$username."';";
           if ($session != "false"){
             $result = $session->query($sql);
             $row = $result->fetch_assoc();

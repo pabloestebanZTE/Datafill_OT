@@ -24,180 +24,373 @@
 
       //=================
       public function assignByMail(){
-/*        header('Content-Type: text/plain');
-*/       /* print_r(explode("\n", $_POST['actividades']));*/
-        //validacion si viene de correo de asignacion
-        $_POST['actividades'] = str_replace("\t", "\n", $_POST['actividades']);
-        $clave = explode("\n", $_POST['actividades'])[8];
-        $clave = str_replace(array("\n", "\r", "\t"), '', $clave);
-        if ($clave == "Proyecto:") {           
-          //creacion orden          
-          $orden = explode("Detalle de servicios", $_POST['actividades']);       
-          $asignar['ot'] = str_replace(array("\n", "\r", "\t", " "), '', explode("\n", $orden[0])[3]);
-          $asignar['solicitante'] =  explode("\n", $orden[0])[7];
-          $asignar['proyecto'] = explode("\n", $orden[0])[9];
-          $asignar['descripcion'] = explode("\n", $orden[0])[11];
-          $asignar['fCreacion'] = str_replace("/", "-", substr(explode("\n", $orden[0])[13], 0, -9));
-          //separacion  actividades
-          $tareas = explode("Forecast", $_POST['actividades']);
-          $id = explode("\n", $tareas[1]);
-            $plus = 0;
-          $value = count($id);
-          for($x = 1; $x < $value; $x=$x+6){
-             
-            if($id[$x] != ""){
+              // header('Content-Type: text/plain');
+        $dic = str_replace(array("\n", "\r", "\t"), '', explode("\n", $_POST['actividades'])[4]);
+        if ($dic != "OT:" ) {
+                //validacion si viene de correo de asignacion
+                $_POST['actividades'] = str_replace("\t", "\n", $_POST['actividades']);
+                $clave = explode("\n", $_POST['actividades'])[8];
+                $clave = str_replace(array("\n", "\r", "\t"), '', $clave);
+                if ($clave == "Proyecto:") {           
+                  //creacion orden          
+                  $orden = explode("Detalle de servicios", $_POST['actividades']);       
+                  $asignar['ot'] = str_replace(array("\n", "\r", "\t", " "), '', explode("\n", $orden[0])[3]);
+                  $asignar['solicitante'] =  explode("\n", $orden[0])[7];
+                  $asignar['proyecto'] = explode("\n", $orden[0])[9];
+                  $asignar['descripcion'] = explode("\n", $orden[0])[11];
+                  $asignar['fCreacion'] = str_replace("/", "-", substr(explode("\n", $orden[0])[13], 0, -9));
+                  //separacion  actividades
+                  $tareas = explode("Forecast", $_POST['actividades']);
+                  $id = explode("\n", $tareas[1]);
+                    $plus = 0;
+                  $value = count($id);
+                  for($x = 1; $x < $value; $x=$x+6){
+                     
+                    if($id[$x] != ""){
 
-              //creacion actividades
-              $asignar['actividades'][$plus] = str_replace(array("\n", "\r", "\t", " "), '', $id[$x]);
-              //fin actividades
+                      //creacion actividades
+                      $asignar['actividades'][$plus] = str_replace(array("\n", "\r", "\t", " "), '', $id[$x]);
+                      //fin actividades
 
-              //creacion tipo
-              //funciones para comparar el tipo extraido text area, y convertirlo en el id del tipo q esta en bd
-              $service = (explode("-",$id[$x+1])[0]);// funcion para dividir una cadena de caracteres dependiendo la llave, en este caso se usa para tomar la primera parte, antes del guion (-)
+                      //creacion tipo
+                      //funciones para comparar el tipo extraido text area, y convertirlo en el id del tipo q esta en bd
+                      $service = (explode("-",$id[$x+1])[0]);// funcion para dividir una cadena de caracteres dependiendo la llave, en este caso se usa para tomar la primera parte, antes del guion (-)
 
-              if ((explode("-",$id[$x+1])[0][2]) == "0"){//los T10 T11 Y T12 hay q convertirlos en C1 C2 Y C3 respectivamente
-                $service = "C1";
-              }
-              if ((explode("-",$id[$x+1])[0][2]) == "1"){
-                $service = "C2";
-              }
-              if ((explode("-",$id[$x+1])[0][2]) == "2"){
-                $service = "C3";
-              }
-              //traer todos los servicios
-              $allService = $this->dao_service_model->getAllServices();//trae todos los servicios
-                for ($i=0; $i <count($allService) ; $i++){//comparacion de tipo excel y bd y con a id
-                  if ($service == $allService[$i]->getType()) {
-                      $typeId = $allService[$i]->getId();//id del tipo de db
-                      $typeName = $allService[$i]->getType();//id del tipo de db
+                      if ((explode("-",$id[$x+1])[0][2]) == "0"){//los T10 T11 Y T12 hay q convertirlos en C1 C2 Y C3 respectivamente
+                        $service = "C1";
+                      }
+                      if ((explode("-",$id[$x+1])[0][2]) == "1"){
+                        $service = "C2";
+                      }
+                      if ((explode("-",$id[$x+1])[0][2]) == "2"){
+                        $service = "C3";
+                      }
+                      //traer todos los servicios
+                      $allService = $this->dao_service_model->getAllServices();//trae todos los servicios
+                        for ($i=0; $i <count($allService) ; $i++){//comparacion de tipo excel y bd y con a id
+                          if ($service == $allService[$i]->getType()) {
+                              $typeId = $allService[$i]->getId();//id del tipo de db
+                              $typeName = $allService[$i]->getType();//id del tipo de db
 
+                          }
+                        }          
+                        $asignar['tipo']['idTipo'][$plus] = $typeId;
+                        $asignar['tipo']['name'][$plus] = $typeName;
+
+                      // fin creacion tipo
+
+                      //creacion regional
+                      $asignar['regional'][$plus] = $id[$x+2];
+                      //fin creacion regional
+
+                      //creacion cantidad
+                      $asignar['cantidad'][$plus] = $id[$x+3];
+                      //fin creacion cantidad
+
+                      //creacion descripcionActividad
+                      $asignar['descripcionActividad'][$plus] = $id[$x+4];
+                      //fin creacion descripcionActividad
+
+                      //creacion forecast
+                      $asignar['forecast'][$plus] = str_replace("/", "-", $id[$x+5]);
+                      //fin creacion  forecast
+
+                      //creacion site
+                      //funcion para traer solo el sitio especifico de una cadena larga de caracteres con la funcion substr_count(x,y), la cual cuenta cuantas veces esta el string(y) en el string(x)
+                      $allSites = $this->dao_site_model->getAllSites();//llama todos los sitios de la db
+                      $site = $id[$x+4];//celda del excel o arreglo donde esta el sitio
+                      $flag2 = 0;
+                      for ($i=0; $i < count($allSites); $i++) {
+                        $flag = substr_count($site, $allSites[$i]->getName());//cuenta cuantas veces esta allsites en site
+                        if ($flag == 1){
+                          //nombre del sitio (BD)
+                          $asignar['sitio']['name'][$plus] = $allSites[$i]->getName();
+                          //ID del sitio (BD)
+                          $asignar['sitio']['id'][$plus]= $allSites[$i]->getId();
+                          $flag2 = 1;
+                        }
+                      }
+                      //si no existe el sitio, lo añade a bd con id
+                      if($flag2 == 0){
+                            $asignar['sitio']['name'][$plus]= (explode("staciones:", $site)[1]);
+                            $asignar['sitio']['id'][$plus]= count($allSites)+1;//añade id nuevo
+                            $newSite = new site_model;
+                            $newSite->createSite($asignar['sitio']['id'][$plus], $asignar['sitio']['name'][$plus]);
+                            $this->dao_site_model->insertNewSite($newSite);
+                            $allSites[count($allSites)] = $newSite;
+                      }
+                      //fin creacion site
+
+                      $plus++;
+                    }
                   }
-                }          
-                $asignar['tipo']['idTipo'][$plus] = $typeId;
-                $asignar['tipo']['name'][$plus] = $typeName;
+                    $asignar['eng'] = $this->dao_user_model->getAllEngineers();//llama todos los ing para pintar en select
+                    /*print_r($asignar);*/
+                    $array['asignar'] = $asignar;
+                    $this->load->view('excelAssign', $array);
+                  }else{
+                    $answer['error'] = "error";
+                    $this->load->view('assignService', $answer);
+                  }
+        } else {
+            $clave = explode("\n", $_POST['actividades'])[14];
+            $clave = str_replace(array("\n", "\r", "\t"), '', $clave);
+            if ($clave == "Proyecto:") { 
+                  //creacion orden          
+                  $orden = explode("Detalle de servicios", $_POST['actividades']); 
+                  $asignar['ot'] = str_replace(array("\n", "\r", "\t", " "), '', explode("\n", $orden[0])[6]);
+                  $asignar['solicitante'] =  explode("\n", $orden[0])[12];
+                  $asignar['proyecto'] = explode("\n", $orden[0])[16];
+                  $asignar['descripcion'] = explode("\n", $orden[0])[20];
+                  $asignar['fCreacion'] = str_replace("/", "-", substr(explode("\n", $orden[0])[24], 0, -9));
 
-              // fin creacion tipo
+                  //separacion  actividades
+                  $tareas = explode("Forecast", $_POST['actividades']);
+                  $id = explode("\n", $tareas[1]);
+                    $plus = 0;
+                  $value = count($id);
+                  for($x = 2; $x < $value; $x=$x+12){
+                    if($id[$x] != ""){
 
-              //creacion regional
-              $asignar['regional'][$plus] = $id[$x+2];
-              //fin creacion regional
+                      //creacion actividades
+                      $asignar['actividades'][$plus] = str_replace(array("\n", "\r", "\t", " "), '', $id[$x]);
+                      //fin actividades
 
-              //creacion cantidad
-              $asignar['cantidad'][$plus] = $id[$x+3];
-              //fin creacion cantidad
+                      //creacion tipo
+                      //funciones para comparar el tipo extraido text area, y convertirlo en el id del tipo q esta en bd
+                      $service = (explode("-",$id[$x+2])[0]);// funcion para dividir una cadena de caracteres dependiendo la llave, en este caso se usa para tomar la primera parte, antes del guion (-)
 
-              //creacion descripcionActividad
-              $asignar['descripcionActividad'][$plus] = $id[$x+4];
-              //fin creacion descripcionActividad
+                      if ((explode("-",$id[$x+2])[0][2]) == "0"){//los T10 T11 Y T12 hay q convertirlos en C1 C2 Y C3 respectivamente
+                        $service = "C1";
+                      }
+                      if ((explode("-",$id[$x+2])[0][2]) == "1"){
+                        $service = "C2";
+                      }
+                      if ((explode("-",$id[$x+2])[0][2]) == "2"){
+                        $service = "C3";
+                      }
+                      //traer todos los servicios
+                      $allService = $this->dao_service_model->getAllServices();//trae todos los servicios
+                        for ($i=0; $i <count($allService) ; $i++){//comparacion de tipo excel y bd y con a id
+                          if ($service == $allService[$i]->getType()) {
+                              $typeId = $allService[$i]->getId();//id del tipo de db
+                              $typeName = $allService[$i]->getType();//id del tipo de db
 
-              //creacion forecast
-              $asignar['forecast'][$plus] = str_replace("/", "-", $id[$x+5]);
-              //fin creacion  forecast
+                          }
+                        }          
+                        $asignar['tipo']['idTipo'][$plus] = $typeId;
+                        $asignar['tipo']['name'][$plus] = $typeName;
 
-              //creacion site
-              //funcion para traer solo el sitio especifico de una cadena larga de caracteres con la funcion substr_count(x,y), la cual cuenta cuantas veces esta el string(y) en el string(x)
-              $allSites = $this->dao_site_model->getAllSites();//llama todos los sitios de la db
-              $site = $id[$x+4];//celda del excel o arreglo donde esta el sitio
-              $flag2 = 0;
-              for ($i=0; $i < count($allSites); $i++) {
-                $flag = substr_count($site, $allSites[$i]->getName());//cuenta cuantas veces esta allsites en site
-                if ($flag == 1){
-                  //nombre del sitio (BD)
-                  $asignar['sitio']['name'][$plus] = $allSites[$i]->getName();
-                  //ID del sitio (BD)
-                  $asignar['sitio']['id'][$plus]= $allSites[$i]->getId();
-                  $flag2 = 1;
-                }
-              }
-              //si no existe el sitio, lo añade a bd con id
-              if($flag2 == 0){
-                    $asignar['sitio']['name'][$plus]= (explode("staciones:", $site)[1]);
-                    $asignar['sitio']['id'][$plus]= count($allSites)+1;//añade id nuevo
-                    $newSite = new site_model;
-                    $newSite->createSite($asignar['sitio']['id'][$plus], $asignar['sitio']['name'][$plus]);
-                     $this->dao_site_model->insertNewSite($newSite);
-                    $allSites[count($allSites)] = $newSite;
-              }
-              //fin creacion site
+                      // fin creacion tipo
 
-              $plus++;
-            }
-          }
-            $asignar['eng'] = $this->dao_user_model->getAllEngineers();//llama todos los ing para pintar en select
-            /*print_r($asignar);*/
-            $array['asignar'] = $asignar;
-            $this->load->view('excelAssign', $array);
-        }else{
-          $answer['error'] = "error";
-          $this->load->view('assignService', $answer);
-        }
+                      //creacion regional
+                      $asignar['regional'][$plus] = $id[$x+4];
+                      //fin creacion regional
+
+                      //creacion cantidad
+                      $asignar['cantidad'][$plus] = $id[$x+6];
+                      //fin creacion cantidad
+
+                      //creacion descripcionActividad
+                      $asignar['descripcionActividad'][$plus] = $id[$x+8];
+                      //fin creacion descripcionActividad
+
+                      //creacion forecast
+                      $asignar['forecast'][$plus] = str_replace("/", "-", $id[$x+10]);
+                      //fin creacion  forecast
+
+                      //creacion site
+                      //funcion para traer solo el sitio especifico de una cadena larga de caracteres con la funcion substr_count(x,y), la cual cuenta cuantas veces esta el string(y) en el string(x)
+                      $allSites = $this->dao_site_model->getAllSites();//llama todos los sitios de la db
+                      $site = $id[$x+8];//celda del excel o arreglo donde esta el sitio
+                      $flag2 = 0;
+                      for ($i=0; $i < count($allSites); $i++) {
+                        $flag = substr_count($site, $allSites[$i]->getName());//cuenta cuantas veces esta allsites en site
+                        if ($flag == 1){
+                          //nombre del sitio (BD)
+                          $asignar['sitio']['name'][$plus] = $allSites[$i]->getName();
+                          //ID del sitio (BD)
+                          $asignar['sitio']['id'][$plus]= $allSites[$i]->getId();
+                          $flag2 = 1;
+                        }
+                      }
+                      //si no existe el sitio, lo añade a bd con id
+                      if($flag2 == 0){
+                            $asignar['sitio']['name'][$plus]= (explode("staciones:", $site)[1]);
+                            $asignar['sitio']['id'][$plus]= count($allSites)+1;//añade id nuevo
+                            $newSite = new site_model;
+                            $newSite->createSite($asignar['sitio']['id'][$plus], $asignar['sitio']['name'][$plus]);
+                            $this->dao_site_model->insertNewSite($newSite);
+                            $allSites[count($allSites)] = $newSite;
+                      }
+                      //fin creacion site
+
+                      $plus++;
+                    }
+                  }
+                    $asignar['eng'] = $this->dao_user_model->getAllEngineers();//llama todos los ing para pintar en select
+                    /*print_r($asignar);*/
+                    $array['asignar'] = $asignar;
+                    $this->load->view('excelAssign', $array);
+                  }else{
+                    $answer['error'] = "error";
+                    $this->load->view('assignService', $answer);
+                  }
+        } 
       }
 
       public function cancelByMail(){
-        /*header('Content-Type: text/plain');*/
-        //verificacion si viene de correo cancelacion
-        $_POST['cancelacion'] = str_replace("\t", "\n", $_POST['cancelacion']);
-        $clav1 = explode("\n", $_POST['cancelacion'])[8];
-        $clave1 = str_replace(array("\n", "\r", "\t"), '', $clav1);
-        $clav2 = explode("\n", $_POST['cancelacion'])[23];
-        $clave2 = str_replace(array("\n", "\r", "\t"), '', $clav2);
-        //si es de cancelacion ejecuta la accion
-        if ($clave1 == "Fecha de creación:" && $clave2 != "Fecha ejecución") {
-          $orden = explode("Servicios unitarios", $_POST['cancelacion']); 
-          $cancelar['ot'] = str_replace(array("\n", "\r", "\t", " "), '', explode("\n", $orden[0])[3]);
-          $cancelar['solicitante'] = explode("\n", $orden[0])[5];
-          $cancelar['descripcion'] = explode("\n", $orden[0])[7];
-          $cancelar['fCreacion'] = str_replace("/", "-", substr(explode("\n", $orden[0])[9], 0, -9));
-          $tareas = explode("Descripción", $orden[1]);
-          $id = explode("\n", $tareas[1]);
-          $plus = 0;
-          for ($x=1; $x < count($id) ;  $x=$x+4) { 
-            if ($id[$x] != "") {
-              $cancelar['idActividad'][$plus] = str_replace(array("\n", "\r", "\t", " "), '',$id[$x]);
-              $cancelar['tipo'][$plus] = (explode("-",$id[$x+1])[0]);
-              $cancelar['cantidad'][$plus] = $id[$x+2];
-              $cancelar['descripcionActividad'][$plus] = $id[$x+3];
-              $plus++;
+        //diferencio de que formato de correo viene
+        $dic = str_replace(array("\n", "\r", "\t"), '', explode("\n", $_POST['cancelacion'])[4]);
+        if ($dic != "ID:") {//comparo el formato
+           //verificacion si viene de correo cancelacion
+            $_POST['cancelacion'] = str_replace("\t", "\n", $_POST['cancelacion']);
+            $clav1 = explode("\n", $_POST['cancelacion'])[8];
+            $clave1 = str_replace(array("\n", "\r", "\t"), '', $clav1);
+            $clav2 = explode("\n", $_POST['cancelacion'])[23];
+            $clave2 = str_replace(array("\n", "\r", "\t"), '', $clav2);
+            //si es de cancelacion ejecuta la accion
+            if ($clave1 == "Fecha de creación:" && $clave2 != "Fecha ejecución") {
+              $orden = explode("Servicios unitarios", $_POST['cancelacion']); 
+              $cancelar['ot'] = str_replace(array("\n", "\r", "\t", " "), '', explode("\n", $orden[0])[3]);
+              $cancelar['solicitante'] = explode("\n", $orden[0])[5];
+              $cancelar['descripcion'] = explode("\n", $orden[0])[7];
+              $cancelar['fCreacion'] = str_replace("/", "-", substr(explode("\n", $orden[0])[9], 0, -9));
+              $tareas = explode("Descripción", $orden[1]);
+              $id = explode("\n", $tareas[1]);
+              $plus = 0;
+              for ($x=1; $x < count($id) ;  $x=$x+4) { 
+                if ($id[$x] != "") {
+                  $cancelar['idActividad'][$plus] = str_replace(array("\n", "\r", "\t", " "), '',$id[$x]);
+                  $cancelar['tipo'][$plus] = (explode("-",$id[$x+1])[0]);
+                  $cancelar['cantidad'][$plus] = $id[$x+2];
+                  $cancelar['descripcionActividad'][$plus] = $id[$x+3];
+                  $plus++;
+                }
+              }
+              $array['cancelar'] = $cancelar;
+              $this->load->view('excelCancel', $array);
+            }else{
+              $answer['error'] = "error";
+              $this->load->view('assignService', $answer);
             }
-          }
-          $array['cancelar'] = $cancelar;
-          $this->load->view('excelCancel', $array);
-        }else{
-          $answer['error'] = "error";
-          $this->load->view('assignService', $answer);
+        }  else {
+          //verificacion si viene de correo cancelacion
+            $_POST['cancelacion'] = str_replace("\t", "\n", $_POST['cancelacion']);
+            $clav1 = explode("\n", $_POST['cancelacion'])[16];
+            $clave1 = str_replace(array("\n", "\r", "\t"), '', $clav1);
+            $clav2 = explode("\n", $_POST['cancelacion'])[40];
+            $clave2 = str_replace(array("\n", "\r", "\t"), '', $clav2);
+            //si es de cancelacion ejecuta la accion
+            if ($clave1 == "Fecha de creación:" && $clave2 != "Fecha ejecución") {
+              $orden = explode("Servicios unitarios", $_POST['cancelacion']); 
+              $cancelar['ot'] = str_replace(array("\n", "\r", "\t", " "), '', explode("\n", $orden[0])[6]);
+              $cancelar['solicitante'] = explode("\n", $orden[0])[10];
+              $cancelar['descripcion'] = explode("\n", $orden[0])[14];
+              $cancelar['fCreacion'] = str_replace("/", "-", substr(explode("\n", $orden[0])[18], 0, -9));
+              $tareas = explode("Descripción", $orden[1]);
+              $id = explode("\n", $tareas[1]);
+              $plus = 0;
+              for ($x=2; $x < count($id) ;  $x=$x+8) { 
+                if ($id[$x] != "") {
+                  $cancelar['idActividad'][$plus] = str_replace(array("\n", "\r", "\t", " "), '',$id[$x]);
+                  $cancelar['tipo'][$plus] = (explode("-",$id[$x+2])[0]);
+                  $cancelar['cantidad'][$plus] = $id[$x+4];
+                  $cancelar['descripcionActividad'][$plus] = $id[$x+6];
+                  $plus++;
+                }
+              }
+              $array['cancelar'] = $cancelar;
+              $this->load->view('excelCancel', $array);
+            }else{
+              $answer['error'] = "error";
+              $this->load->view('assignService', $answer);
+            }
         }
       }
 
       public function executeByExcel(){
-       /* header('Content-Type: text/plain');*/
-        $_POST['ejecucion'] = str_replace("\t", "\n", $_POST['ejecucion']);
-        $clave = str_replace(array("\n", "\r", "\t"), '',explode("\n", $_POST['ejecucion'])[23]);
-        if ($clave == "Fecha ejecución") {          
-          $orden = explode("Servicios unitarios", $_POST['ejecucion']);
-          $ejecutar['ot'] = str_replace(array("\n", "\r", "\t", " "), '', explode("\n", $orden[0])[3]);
-          $ejecutar['solicitante'] = explode("\n", $orden[0])[5];
-          $ejecutar['descripcion'] = explode("\n", $orden[0])[7];
-          $ejecutar['fCreacion'] = str_replace("/", "-", substr(explode("\n", $orden[0])[9], 0, -9));
-          $tareas = explode("Ejecutada en inst. proveedor", $orden[1]);
-          $id = explode("\n", $tareas[1]);
-          $plus = 0;
-          for ($x=1; $x < count($id) ; $x=$x+7) { 
-            if ($id[$x] != "") {
-              $ejecutar['idActividad'][$plus] = str_replace(array("\n", "\r", "\t", " "), '', $id[$x]);
-              $ejecutar['tipo'][$plus] = (explode("-",$id[$x+1])[0]);
-              $ejecutar['cantidad'][$plus] = $id[$x+2];
-              $ejecutar['descripcionActividad'][$plus] = $id[$x+3];
-              $ejecutar['estado'][$plus] = $id[$x+4];
-              $ejecutar['fEjecucion'][$plus] = $id[$x+5];
-              $ejecutar['ejecProveedor'][$plus] = $id[$x+6];
-              $plus++;
-            }
-          }
-          $array['ejecutar'] = $ejecutar;
-          $this->load->view('excelExecute', $array);
-        }else{
-          $answer['error'] = "error";
-          $this->load->view('assignService', $answer);
+        $dic = str_replace(array("\n", "\r", "\t"), '', explode("\n", $_POST['ejecucion'])[40]);
+        if ($dic != "Fecha ejecución") {
+              $_POST['ejecucion'] = str_replace("\t", "\n", $_POST['ejecucion']);
+              $clave = str_replace(array("\n", "\r", "\t"), '',explode("\n", $_POST['ejecucion'])[23]);
+              if ($clave == "Fecha ejecución") {          
+                $orden = explode("Servicios unitarios", $_POST['ejecucion']);
+                $ejecutar['ot'] = str_replace(array("\n", "\r", "\t", " "), '', explode("\n", $orden[0])[3]);
+                $ejecutar['solicitante'] = explode("\n", $orden[0])[5];
+                $ejecutar['descripcion'] = explode("\n", $orden[0])[7];
+                $ejecutar['fCreacion'] = str_replace("/", "-", substr(explode("\n", $orden[0])[9], 0, -9));
+                $tareas = explode("Ejecutada en inst. proveedor", $orden[1]);
+                $id = explode("\n", $tareas[1]);
+                $plus = 0;
+                for ($x=1; $x < count($id) ; $x=$x+7) { 
+                  if ($id[$x] != "") {
+                    $ejecutar['idActividad'][$plus] = str_replace(array("\n", "\r", "\t", " "), '', $id[$x]);
+                    $ejecutar['tipo'][$plus] = (explode("-",$id[$x+1])[0]);
+                    $ejecutar['cantidad'][$plus] = $id[$x+2];
+                    $ejecutar['descripcionActividad'][$plus] = $id[$x+3];
+                    $ejecutar['estado'][$plus] = $id[$x+4];
+                    $ejecutar['fEjecucion'][$plus] = $id[$x+5];
+                    $ejecutar['ejecProveedor'][$plus] = $id[$x+6];
+                    $plus++;
+                  }
+                }
+                $array['ejecutar'] = $ejecutar;
+                $this->load->view('excelExecute', $array);
+              }else{
+                $answer['error'] = "error";
+                $this->load->view('assignService', $answer);
+              }
+        } else {
+            // print_r(str_replace(array("\n", "\r", "\t"), '', explode("\n", $_POST['ejecucion'])));
+            $_POST['ejecucion'] = str_replace("\t", "\n", $_POST['ejecucion']);
+              $clave = str_replace(array("\n", "\r", "\t"), '',explode("\n", $_POST['ejecucion'])[40]);
+              if ($clave == "Fecha ejecución") {          
+                $orden = explode("Servicios unitarios", $_POST['ejecucion']);
+                // print_r(str_replace(array("\n", "\r", "\t", " "), '', explode("\n", $orden[0])));
+                $ejecutar['ot'] = str_replace(array("\n", "\r", "\t", " "), '', explode("\n", $orden[0])[6]);
+                $ejecutar['solicitante'] = explode("\n", $orden[0])[10];
+                $ejecutar['descripcion'] = explode("\n", $orden[0])[14];
+                $ejecutar['fCreacion'] = str_replace("/", "-", substr(explode("\n", $orden[0])[18], 0, -9));
+                $tareas = explode("Ejecutada en inst. proveedor", $orden[1]);
+                $id = explode("\n", $tareas[1]);
+                $id[14] = str_replace(array("\n", "\r", "\t"), '', $id[14]);
+                $plus = 0;
+
+                if ($id[14] == "X") {
+                    for ($x=2; $x < count($id) ; $x=$x+14) { 
+                      if ($id[$x] != "") {
+                        $ejecutar['idActividad'][$plus] = str_replace(array("\n", "\r", "\t", " "), '', $id[$x]);
+                        $ejecutar['tipo'][$plus] = (explode("-",$id[$x+2])[0]);
+                        $ejecutar['cantidad'][$plus] = $id[$x+4];
+                        $ejecutar['descripcionActividad'][$plus] = $id[$x+6];
+                        $ejecutar['estado'][$plus] = $id[$x+8];
+                        $ejecutar['fEjecucion'][$plus] = $id[$x+10];
+                        $ejecutar['ejecProveedor'][$plus] = $id[$x+12];
+                       $plus++;
+                     }
+                    }
+                } else {
+                    for ($x=2; $x < count($id) ; $x=$x+12) { 
+                      if ($id[$x] != "") {
+                        $ejecutar['idActividad'][$plus] = str_replace(array("\n", "\r", "\t", " "), '', $id[$x]);
+                        $ejecutar['tipo'][$plus] = (explode("-",$id[$x+2])[0]);
+                        $ejecutar['cantidad'][$plus] = $id[$x+4];
+                        $ejecutar['descripcionActividad'][$plus] = $id[$x+6];
+                        $ejecutar['estado'][$plus] = $id[$x+8];
+                        $ejecutar['fEjecucion'][$plus] = $id[$x+10];
+                        $ejecutar['ejecProveedor'][$plus] = "";
+                       $plus++;
+                     }
+                    }
+                }
+
+                $array['ejecutar'] = $ejecutar;
+                $this->load->view('excelExecute', $array);
+              }else{
+                $answer['error'] = "error";
+                $this->load->view('assignService', $answer);
+              }
         }
 
       }
@@ -746,8 +939,8 @@
           $this->email->initialize($config);
           $this->email->from('zolid@zte.com', 'ZOLID_ZTE');
 
-         // $this->email->to(strtolower($mails));
-          $this->email->to('bredybuitrago@outlook.com, yuyupa14@gmail.com');
+          $this->email->to(strtolower($mails));
+          //$this->email->to('bredybuitrago@outlook.com, yuyupa14@gmail.com');
           
           //$this->email->to('yuyupa14@gmail.com, andrea.rosero.ext@claro.com.co, andrea.lorenaroserochasoy@zte.com.cn, pablo.esteban@zte.com.cn, bredybuitrago@gmail.com');
           //$this->email->cc('andrea.rosero.ext@claro.com.co, andrea.lorenaroserochasoy@zte.com.cn');//, cesar.rios.ext@claro.com.co
@@ -873,8 +1066,8 @@
           $this->email->initialize($config);
           $this->email->from('zolid@zte.com', 'ZOLID_ZTE');
 
-         // $this->email->to(strtolower($mails));
-          $this->email->to('bredybuitrago@outlook.com, yuyupa14@gmail.com');
+          $this->email->to(strtolower($mails));
+          //$this->email->to('bredybuitrago@outlook.com, yuyupa14@gmail.com');
           
           //$this->email->to('yuyupa14@gmail.com, andrea.rosero.ext@claro.com.co, andrea.lorenaroserochasoy@zte.com.cn, pablo.esteban@zte.com.cn, bredybuitrago@gmail.com');
           //$this->email->cc('andrea.rosero.ext@claro.com.co, andrea.lorenaroserochasoy@zte.com.cn');//, cesar.rios.ext@claro.com.co
@@ -927,9 +1120,10 @@
             }
           }
           //llamamos los datos del ing seleccionado con su id
-          $_POST['Ingeniero'] = $this->dao_user_model->getUserById($_POST['Ingeniero'])->mail;
+          $_POST['Ingeniero'] = $this->dao_user_model->getUserById($_POST['Ingeniero']);          
+          // print_r($_POST['Ingeniero']->name." ".$_POST['Ingeniero']->lastname);
           //concateno ingeniero mail ingeniero seleccionado con ingenieros asignados
-          $mails = $_POST['Ingeniero'].", ".$mails;
+          $mails = $_POST['Ingeniero']->mail.", ".$mails;
           $cuerpo = "<html>
                           <head>
                           <title>asignacion</title>

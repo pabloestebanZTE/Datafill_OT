@@ -84,6 +84,8 @@
 
            $('#body').html(body);
         $('#modalEvento').modal('show');
+         // mostrar = document.getElementById('formulario');
+         //    mostrar.style.display = 'none';
       }
       
       var suma = 0;
@@ -209,7 +211,7 @@
                         <ul>
                             <li><a href="/Datafill_OT/index.php/Service/assignService">Agendar Actividad</a></li>
                             <li><a href="/Datafill_OT/index.php/Service/listServices">Ver Actividades</a></li>
-                            <li><a href="#">Ver Ingenieros</a></li>
+                            <li><a href="https://drive.google.com/drive/u/2/my-drive" target='_blank'>Drive</a></li>
                         </ul>
                         </li>
                         <li class="cam"><a href="#services">RF</a>
@@ -290,7 +292,7 @@
                               }
                                   if ($services[$i]->getId() != "") {
                                   echo "<tr>";
-                                      echo "<td><a onclick='modalEditar(".json_encode($services[$i]).", ".$services[$i]->getId().", ".$_SESSION["id"].",".$_SESSION["role"].")'>".$services[$i]->getId()."</td>";
+                                      echo "<td><a onclick='modalEditar(".json_encode($services[$i]).", ".$services[$i]->getId().", ".$_SESSION["id"].",".$_SESSION["role"].")'>".$services[$i]->getId()."<br><a href='#' target='_blank' class='btn boton' role='button'>h</a></td>";
                                       echo "<td>".$services[$i]->getCreationDate()."</td>";
                                       echo "<td>".$services[$i]->services[0]->ingSol."</td>";
                                       echo "<td>".$services[$i]->services[0]->dateForecast."</td>";
@@ -307,7 +309,7 @@
                                               echo "<div class='col-md-12'>";
                                                 echo "<div class='progress' style='height: 13px;'>";
                                                   echo "<div class='progress-bar progress-bar-warning progress-bar-striped active' role='progressbar' style='width: ".$avance."%; '>";
-                                                    echo "<div style='font-size: 10px; margin-top: -3px;'>".$avance."%</div>";                         
+                                                    echo "<div style='font-size: 10px; margin-top: -3px;'>".round($avance, 1)."%</div>";                         
                                                   echo "</div>";
                                                 echo "</div>";
                                               echo "</div>";
@@ -317,7 +319,7 @@
                                               echo "<div class='col-md-12'>";
                                                 echo "<div class='progress' style='height: 13px;'>";
                                                   echo "<div class='progress-bar progress-bar-success progress-bar-striped active' role='progressbar' style='width: ".$porEjecutadas."%; '>";
-                                                    echo "<div style='font-size: 10px; margin-top: -3px;'>".$porEjecutadas."%</div>";                         
+                                                    echo "<div style='font-size: 10px; margin-top: -3px;'>".round($porEjecutadas, 1)."%</div>";                         
                                                   echo "</div>";
                                                 echo "</div>";
                                               echo "</div>";
@@ -327,7 +329,7 @@
                                               echo "<div class='col-md-12'>";
                                                 echo "<div class='progress' style='height: 13px;'>";
                                                   echo "<div class='progress-bar progress-bar-info progress-bar-striped active' role='progressbar' style='width: ".$porEnviadas."%; '>";
-                                                    echo "<div style='font-size: 10px; margin-top: -3px;'>".$porEnviadas."%</div>";                         
+                                                    echo "<div style='font-size: 10px; margin-top: -3px;'>".round($porEnviadas, 1)."%</div>";                         
                                                   echo "</div>";
                                                 echo "</div>";
                                               echo "</div>";
@@ -337,7 +339,7 @@
                                               echo "<div class='col-md-12'>";
                                                 echo "<div class='progress' style='height: 13px;'>";
                                                   echo "<div class='progress-bar progress-bar-danger progress-bar-striped active' role='progressbar' style='width: ".$porCanceladas."%; '>";
-                                                    echo "<div style='font-size: 10px; margin-top: -3px;'>".$porCanceladas."%</div>";                         
+                                                    echo "<div style='font-size: 10px; margin-top: -3px;'>".round($porCanceladas, 1)."%</div>";                         
                                                   echo "</div>";
                                                 echo "</div>";
                                               echo "</div>";
@@ -427,7 +429,7 @@
                                               echo "<div class='col-md-12'>";
                                                 echo "<div class='progress' style='height: 13px;'>";
                                                   echo "<div class='progress-bar progress-bar-warning progress-bar-striped active' role='progressbar' style='width: ".$avance."%; '>";
-                                                    echo "<div style='font-size: 10px; margin-top: -3px;'>".$avance."%</div>";                         
+                                                    echo "<div style='font-size: 10px; margin-top: -3px;'>".round($avance, 1)."%</div>";                         
                                                   echo "</div>";
                                                 echo "</div>";
                                               echo "</div>";
@@ -437,7 +439,7 @@
                                               echo "<div class='col-md-12'>";
                                                 echo "<div class='progress' style='height: 13px;'>";
                                                   echo "<div class='progress-bar progress-bar-success progress-bar-striped active' role='progressbar' style='width: ".$porEjecutadas."%; '>";
-                                                    echo "<div style='font-size: 10px; margin-top: -3px;'>".$porEjecutadas."%</div>";                         
+                                                    echo "<div style='font-size: 10px; margin-top: -3px;'>".round($porEjecutadas, 1)."%</div>";                         
                                                   echo "</div>";
                                                 echo "</div>";
                                               echo "</div>";
@@ -447,7 +449,7 @@
                                               echo "<div class='col-md-12'>";
                                                 echo "<div class='progress' style='height: 13px;'>";
                                                   echo "<div class='progress-bar progress-bar-info progress-bar-striped active' role='progressbar' style='width: ".$porEnviadas."%; '>";
-                                                    echo "<div style='font-size: 10px; margin-top: -3px;'>".$porEnviadas."%</div>";                         
+                                                    echo "<div style='font-size: 10px; margin-top: -3px;'>".round($porEnviadas, 1)."%</div>";                         
                                                   echo "</div>";
                                                 echo "</div>";
                                               echo "</div>";
@@ -457,7 +459,7 @@
                                               echo "<div class='col-md-12'>";
                                                 echo "<div class='progress' style='height: 13px;'>";
                                                   echo "<div class='progress-bar progress-bar-danger progress-bar-striped active' role='progressbar' style='width: ".$porCanceladas."%; '>";
-                                                    echo "<div style='font-size: 10px; margin-top: -3px;'>".$porCanceladas."%</div>";                         
+                                                    echo "<div style='font-size: 10px; margin-top: -3px;'>".round($porCanceladas, 1)."%</div>";                         
                                                   echo "</div>";
                                                 echo "</div>";
                                               echo "</div>";
