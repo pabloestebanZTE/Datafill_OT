@@ -77,6 +77,7 @@ class CI_Controller {
 
 		$this->load =& load_class('Loader', 'core');
 		$this->load->initialize();
+		$this->load->model('URL');
 		log_message('info', 'Controller Class Initialized');
 	}
 
@@ -93,4 +94,16 @@ class CI_Controller {
 		return self::$instance;
 	}
 
+}
+
+function __autoload($class_name) {
+    $file = $class_name . ".php";
+    $folders = ["models/data"];
+    foreach ($folders as $folder) {
+        $path = APPPATH . $folder . DIRECTORY_SEPARATOR . $file;
+        if (file_exists($path)) {
+            require_once $path;
+            break;
+        }
+    }
 }

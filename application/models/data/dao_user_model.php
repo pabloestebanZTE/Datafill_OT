@@ -14,6 +14,7 @@
         public function getAllEngineers(){
           $dbConnection = new configdb_model();
           $session = $dbConnection->openSession();
+          //selecciono solo ingenieros asignables
           $sql = "SELECT * FROM user where K_IDROLE = 1 or K_IDROLE = 2 or K_IDROLE = 3;";
           if ($session != "false"){
             $result = $session->query($sql);
@@ -28,7 +29,7 @@
                 $role = new role_model;
                 $role->createRole($row2['K_IDROLE'], $row2['N_NAME']);
                 $eng->setRole($role);
-                $schedule = $this->dao_service_model->getServicesPerUser($eng->getId());
+     //          $schedule = $this->dao_service_model->getServicesPerUser($eng->getId());
                // $eng->setSchedule($schedule);
                 $answer[$i] = $eng;
                 $i++;

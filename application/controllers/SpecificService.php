@@ -406,15 +406,7 @@
       }
 
       public function listServices(){//revisar esta funcion que la llama
-        $answer['eng'] = $this->dao_user_model->getAllEngineers();//llama todos los ing para pintar en select
-        $answer['services'] = $this->dao_service_model->getAllServicesS();
-        for ($y=0; $y < count($answer['services']); $y++) {
-          $answer['services'][$y]->enviadas = $this->dao_service_model->getEnviadoByOrder($answer['services'][$y]->getId());
-          $answer['services'][$y]->canceladas = $this->dao_service_model->getCanceladoByOrder($answer['services'][$y]->getId());
-          $answer['services'][$y]->ejecutadas = $this->dao_service_model->getEjecutadoByOrder($answer['services'][$y]->getId());
-        }
-        $answer['message'] = $_SESSION['mensaje'];
-        $this->load->view('listServices', $answer);
+        header('Location: '. URL::to("Service/listServices"));
         
       }
 //CAMILO-------------------------------------------------------------------------------------
@@ -432,15 +424,8 @@
           $_POST['orden'] = $this->dao_service_model->getServiceByIdActivity($_POST['checkbox'][0])->order->getId();
         }
         $this->dao_order_model->link($_POST['link'], $_POST['orden']);        
-        $answer['eng'] = $this->dao_user_model->getAllEngineers();//llama todos los ing para pintar en select
-        $answer['message'] = "actualizado";
-        $answer['services'] = $this->dao_order_model->getAllOrders();
-        for ($y=0; $y < count($answer['services']); $y++) {
-          $answer['services'][$y]->enviadas = $this->dao_service_model->getEnviadoByOrder($answer['services'][$y]->getId());
-          $answer['services'][$y]->canceladas = $this->dao_service_model->getCanceladoByOrder($answer['services'][$y]->getId());
-          $answer['services'][$y]->ejecutadas = $this->dao_service_model->getEjecutadoByOrder($answer['services'][$y]->getId());
-        }
-        $this->load->view('listServices', $answer);
+        $_SESSION["message"] = 'actualizado';
+        header('Location: '. URL::to("Service/listServices"));
       }
 //CAMILO-----------------------------------------------------------------para leer excel
 
@@ -829,25 +814,11 @@
         }
         $_SESSION['excel']= null;*/
         if ($flag == 0) {
-          $answer['message'] = "ok";
-          $answer['eng'] = $this->dao_user_model->getAllEngineers();//llama todos los ing para pintar en select
-          $answer['services'] = $this->dao_order_model->getAllOrders();
-          for ($y=0; $y < count($answer['services']); $y++) {
-          $answer['services'][$y]->enviadas = $this->dao_service_model->getEnviadoByOrder($answer['services'][$y]->getId());
-          $answer['services'][$y]->canceladas = $this->dao_service_model->getCanceladoByOrder($answer['services'][$y]->getId());
-          $answer['services'][$y]->ejecutadas = $this->dao_service_model->getEjecutadoByOrder($answer['services'][$y]->getId());
-        }
-          $this->load->view('listServices', $answer);
+          $_SESSION["message"] = 'ok';
+          header('Location: '. URL::to("Service/listServices"));
         }else{
-          $answer['message'] = "error";
-          $answer['eng'] = $this->dao_user_model->getAllEngineers();//llama todos los ing para pintar en select
-          $answer['services'] = $this->dao_order_model->getAllOrders();
-          for ($y=0; $y < count($answer['services']); $y++) {
-          $answer['services'][$y]->enviadas = $this->dao_service_model->getEnviadoByOrder($answer['services'][$y]->getId());
-          $answer['services'][$y]->canceladas = $this->dao_service_model->getCanceladoByOrder($answer['services'][$y]->getId());
-          $answer['services'][$y]->ejecutadas = $this->dao_service_model->getEjecutadoByOrder($answer['services'][$y]->getId());
-        }
-          $this->load->view('listServices', $answer);
+          $_SESSION["message"] = 'error';
+          header('Location: '. URL::to("Service/listServices"));
         }
       }
 
@@ -949,27 +920,11 @@
           $this->email->message($cuerpo);
           $this->email->send();
 
-
-
-
-          $answer['message'] = "actualizado";
-          $array['eng'] = $this->dao_user_model->getAllEngineers();//llama todos los ing para pintar en select
-          $answer['services'] = $this->dao_order_model->getAllOrders();for ($y=0; $y < count($answer['services']); $y++) {
-          $answer['services'][$y]->enviadas = $this->dao_service_model->getEnviadoByOrder($answer['services'][$y]->getId());
-          $answer['services'][$y]->canceladas = $this->dao_service_model->getCanceladoByOrder($answer['services'][$y]->getId());
-          $answer['services'][$y]->ejecutadas = $this->dao_service_model->getEjecutadoByOrder($answer['services'][$y]->getId());
-        }
-          $this->load->view('listServices', $answer);        
+          $_SESSION["message"] = 'actualizado';
+          header('Location: '. URL::to("Service/listServices"));        
         } else {
-          $answer['message'] = "no existe";
-          $answer['eng'] = $this->dao_user_model->getAllEngineers();//llama todos los ing para pintar en select
-          $answer['services'] = $this->dao_order_model->getAllOrders();
-          for ($y=0; $y < count($answer['services']); $y++) {
-          $answer['services'][$y]->enviadas = $this->dao_service_model->getEnviadoByOrder($answer['services'][$y]->getId());
-          $answer['services'][$y]->canceladas = $this->dao_service_model->getCanceladoByOrder($answer['services'][$y]->getId());
-          $answer['services'][$y]->ejecutadas = $this->dao_service_model->getEjecutadoByOrder($answer['services'][$y]->getId());
-        }
-          $this->load->view('listServices', $answer);
+          $_SESSION["message"] = 'no existe';
+          header('Location: '. URL::to("Service/listServices"));
         }
       }
 
@@ -1076,25 +1031,12 @@
           $this->email->message($cuerpo);
           $this->email->send();
 
-          $answer['message'] = "actualizado";
-          $answer['eng'] = $this->dao_user_model->getAllEngineers();//llama todos los ing para pintar en select
-          $answer['services'] = $this->dao_order_model->getAllOrders();
-          for ($y=0; $y < count($answer['services']); $y++) {
-          $answer['services'][$y]->enviadas = $this->dao_service_model->getEnviadoByOrder($answer['services'][$y]->getId());
-          $answer['services'][$y]->canceladas = $this->dao_service_model->getCanceladoByOrder($answer['services'][$y]->getId());
-          $answer['services'][$y]->ejecutadas = $this->dao_service_model->getEjecutadoByOrder($answer['services'][$y]->getId());
-        }
+          $_SESSION["message"] = 'actualizado';
+          header('Location: '. URL::to("Service/listServices"));
           $this->load->view('listServices', $answer);              
         }else{
-          $answer['message'] = "no existe";
-          $answer['eng'] = $this->dao_user_model->getAllEngineers();//llama todos los ing para pintar en select
-          $answer['services'] = $this->dao_order_model->getAllOrders();
-          for ($y=0; $y < count($answer['services']); $y++) {
-          $answer['services'][$y]->enviadas = $this->dao_service_model->getEnviadoByOrder($answer['services'][$y]->getId());
-          $answer['services'][$y]->canceladas = $this->dao_service_model->getCanceladoByOrder($answer['services'][$y]->getId());
-          $answer['services'][$y]->ejecutadas = $this->dao_service_model->getEjecutadoByOrder($answer['services'][$y]->getId());
-        }
-          $this->load->view('listServices', $answer);
+          $_SESSION["message"] = 'no existe';
+          header('Location: '. URL::to("Service/listServices"));
         }   
       }
 
@@ -1196,29 +1138,14 @@
           //$this->email->bcc('bredybuitrago@gmail.com ,bredi.buitrago@zte.com.cn, pablo.esteban@zte.com.cn');
           $this->email->subject("Notificación de Reasignación de orden de servicio. Orden: ".$_POST['ot'].". Proyecto: ".$activity[0]->proyecto.".");
           $this->email->message($cuerpo);
-          $this->email->send();                     
+          $this->email->send();         
 
-
-          $answer['eng'] = $this->dao_user_model->getAllEngineers();//llama todos los ing para pintar en select
-          $answer['message'] = "actualizado";
-          $answer['services'] = $this->dao_order_model->getAllOrders();
-          //para las progresbar
-          for ($y=0; $y < count($answer['services']); $y++) {
-            $answer['services'][$y]->enviadas = $this->dao_service_model->getEnviadoByOrder($answer['services'][$y]->getId());
-            $answer['services'][$y]->canceladas = $this->dao_service_model->getCanceladoByOrder($answer['services'][$y]->getId());
-            $answer['services'][$y]->ejecutadas = $this->dao_service_model->getEjecutadoByOrder($answer['services'][$y]->getId());
-          }
-          $this->load->view('listServices', $answer);
+          $_SESSION["message"] = 'actualizado';          
+          header('Location: '. URL::to("Service/listServices"));
         } else {
-            $answer['message'] = "no seleccionado";
-            $answer['eng'] = $this->dao_user_model->getAllEngineers();//llama todos los ing para pintar en select
-            $answer['services'] = $this->dao_order_model->getAllOrders();
-          for ($y=0; $y < count($answer['services']); $y++) {
-            $answer['services'][$y]->enviadas = $this->dao_service_model->getEnviadoByOrder($answer['services'][$y]->getId());
-            $answer['services'][$y]->canceladas = $this->dao_service_model->getCanceladoByOrder($answer['services'][$y]->getId());
-            $answer['services'][$y]->ejecutadas = $this->dao_service_model->getEjecutadoByOrder($answer['services'][$y]->getId());
-        }
-            $this->load->view('listServices', $answer);
+          $_SESSION["message"] = 'no seleccionado';
+          header('Location: '. URL::to("Service/listServices"));
+        
         }
       }
 

@@ -7,39 +7,43 @@
     <!--   ICONO PAGINA    -->
     <link rel="icon" href="http://cellaron.com/media/wysiwyg/zte-mwc-2015-8-l-124x124.png">
     <!--   BOOTSTRAP    -->
-    <link href="/Datafill_OT/assets/css/bootstrap.css" rel="stylesheet" />
-    <link href="/Datafill_OT/assets/css/font-awesome.min.css" rel="stylesheet" />
-    <link href="/Datafill_OT/assets/plugins/datatables/dataTables.bootstrap.css" rel="stylesheet">
-    <script type="text/javascript" src="/Datafill_OT/assets/plugins/jQuery/jquery-3.1.1.js"></script>
-    <script type="text/javascript" src="/Datafill_OT/assets/plugins/bootstrap.js"></script>
+    <link href="<?= URL::to('assets/css/bootstrap.css'); ?>" rel="stylesheet" />
+    <link href="<?= URL::to('assets/css/font-awesome.min.css'); ?>" rel="stylesheet" />
+    <script type="text/javascript" src="<?= URL::to('assets/plugins/jQuery/jquery-3.1.1.js'); ?>"></script>
+    <script type="text/javascript" src="<?= URL::to('assets/plugins/bootstrap.js'); ?>"></script>
     <!-- bottstrap select -->
     <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.6.3/css/bootstrap-select.min.css" />
     <!-- modal stilo -->
-    <link rel="stylesheet" href="/Datafill_OT/assets/css/emergente.min.css">
+    <link rel="stylesheet" href="<?= URL::to('assets/css/emergente.min.css'); ?>">
     <!-- datatables-->
-    <link href="/Datafill_OT/assets/plugins/datatables/dataTables.bootstrap.css" rel="stylesheet">
-    <link href="/Datafill_OT/assets/css/bootstrap.min.css" rel="stylesheet">
+    <link href="<?= URL::to('assets/plugins/datatables/dataTables.bootstrap.css'); ?>" rel="stylesheet">
+    <link href="<?= URL::to('assets/css/bootstrap.min.css" rel="stylesheet'); ?>">
     <!--   HEADER CSS    -->
-    <link href="/Datafill_OT/assets/css/styleHeader.css?v=1.0" rel="stylesheet" />
+    <link href="<?= URL::to('assets/css/styleHeader.css?v=1.0'); ?>" rel="stylesheet" />
      <!-- boton -->
-    <link href="/Datafill_OT/assets/css/styleBoton.css" rel="stylesheet" />
+    <link href="<?= URL::to('assets/css/styleBoton.css'); ?>" rel="stylesheet" />
+    <!-- checkbox -->
+    <link href="<?= URL::to('assets/css/checkboxStyle.css'); ?>" rel="stylesheet" />
     <!--   SWEET ALERT    -->
-    <link rel="stylesheet" href="/Datafill_OT/assets/plugins/sweetalert-master/dist/sweetalert.css" />
-    <script type="text/javascript" src="/Datafill_OT/assets/plugins/sweetalert-master/dist/sweetalert.min.js"></script>
+    <link rel="stylesheet" href="<?= URL::to('assets/plugins/sweetalert-master/dist/sweetalert.css'); ?>" />
+    <script type="text/javascript" src="<?= URL::to('assets/plugins/sweetalert-master/dist/sweetalert.min.js'); ?>"></script>
+    <!-- <script type="text/javascript" src="<?= URL::to('assets/js/showMessage.js'); ?>"></script> -->
+
 
     <script type="text/javascript" charset="utf-8" async defer>
       //Funcion para mostrar mensaje de error de validacion de datos
 
       function modalEditar(servicio, orden, idIng, role){
-        console.log(servicio);
          $('#orden').html("Orden: "+orden);
          var body = "";
+         //------------------Tabla Modal------------------
           for (var i = 0; i < servicio.services.length; i++) {
             if (servicio.services[i].user.id == idIng || role == 0 || role == 4 || role == 5) {
                body += "<tr>";
                body += "<input type='hidden' name='ot' id='ot' value='"+orden+"'>";
-               body += "<th><input type='checkbox' name='checkbox[]' id= "+i+" value="+servicio.services[i].idClaro+" onclick='mostrarForm("+i+")'></th>";
-               body += "<td><a href='/Datafill_OT/index.php/service/serviceDetails?K_ID_SP_SERVICE="+servicio.services[i].id+"'>"+servicio.services[i].idClaro+"</td>";
+               body += "<th><input type='checkbox' class='checkbox' name='checkbox[]' id= "+i+" value="+servicio.services[i].idClaro+" onclick='validarForm()'></th>";
+               // body += "<th><input type='checkbox' name='checkbox' id= "+i+" value="+servicio.services[i].idClaro+" '></th>";
+               body += "<td><a href='<?= URL::to('index.php/service/serviceDetails?K_ID_SP_SERVICE="+servicio.services[i].id+"'); ?>'>"+servicio.services[i].idClaro+"</td>";
                body += "<td>"+servicio.services[i].proyecto+"</td>";
                body += "<td>"+servicio.services[i].service.type+"</td>";
                body += "<td>"+servicio.services[i].quantity+"</td>";
@@ -76,57 +80,88 @@
                body += "</tr>";
             }
           } 
-          var boton = "";
-            if (servicio.services[0].order.link) {
-              boton += "<a href='"+servicio.services[0].order.link+"' target='_blank' class='btn boton formaBoton color' role='button'>"+servicio.services[0].order.link+"</a><br><br>";
-              $('#enlace').html(boton);
-            }
-
+          
            $('#body').html(body);
-        $('#modalEvento').modal('show');
-         // mostrar = document.getElementById('formulario');
-         //    mostrar.style.display = 'none';
+           $('#modalEvento').modal('show');
+
+           validarLink(servicio.link);
+           
       }
       
-      var suma = 0;
-      
-      function mostrarForm(h){        
-        div = document.getElementById(h);
-          var event =  document.getElementById('modalEvento');;
-          //console.log( );
-         // alert(div.checked);
-          var sumando = 0;
-          if(div.checked == true){
-            sumando = -1;
-          } else {
-            sumando  = 1;
+      //-------------Validar input link------------
+      function validarLink(link){
+        if (link != null && link != "") {
+             var drive = document.getElementById('link');
+             drive.disabled = true;
+             drive.value = link;
+
+           } else {
+             var drive = document.getElementById('link');
+             drive.disabled = false;
+             drive.value = "";
+           }
+      }
+
+     //-------------validar check para mostrar u ocultar formulario -------------
+     function validarForm(){  
+        var checkboxs = document.getElementsByClassName('checkbox');
+          var flag = 0;
+          //Validar si algun check está marcado
+          for (var i = 0; i < checkboxs.length; i++) {
+            if (checkboxs[i].checked == true) {
+              flag = 1;
+            }
           }
-          suma =  suma + sumando;
-          if (suma == 0){
-            mostrar = document.getElementById('formulario');
-            mostrar.style.display = 'none';
-            $('#fInicior').removeAttr("required");
-
-            mostrar2 = document.getElementById('reasignar');
-            mostrar2.style.display = 'none';
-
-          } else {
-            mostrar = document.getElementById('formulario');
-            mostrar.style.display = 'block';
-
-            $('#fInicior').prop("required", true);
-            $('#fFinr').prop("required", true);
-            $('#state').prop("required", true);            
-
-            mostrar2 = document.getElementById('reasignar');
-            mostrar2.style.display = 'block';
+          if (flag == 1) {
+            mostrarForm();
           }
+          else if (flag == 0) {
+            ocultarForm();
+          }          
+      }
+      // Mostrar formulario del modal
+      function mostrarForm(){
+       var  form = document.getElementById('formulario');
+        form.style.display = 'block';
+        //Del form dejamos requeridos inputs
+        $('#fInicior').prop("required", true);
+        $('#fFinr').prop("required", true);
+        $('#state').prop("required", true);
+        //Mostrar select segun el roll
+        var roll = document.getElementById('session_role').value;
+        if (roll == 4 || roll == 0) {
+          var select = document.getElementById('reasignar');
+          select.style.display = 'block';
+        }
+      }
+      //Ocultar formulario del modal
+      function ocultarForm(){
+       var form = document.getElementById('formulario');
+        form.style.display = 'none';
+        document.getElementById('squaredTwo').checked = false;
+
+        $('#fInicior').removeAttr("required");
+        //ocultamos el select
+        var select = document.getElementById('reasignar');
+          select.style.display = 'none';
       }
 
       function quitarRequired(){
             $('#fInicior').removeAttr("required");
             $('#fFinr').removeAttr("required");
             $('#state').removeAttr("required");
+      }
+      //checkbox para marcar o desmarcar el resto de checkbox
+      function marcar(source, id){
+        checkboxes=document.getElementsByTagName('input'); //obtenemos todos los controles del tipo Input
+        for(i=0;i<checkboxes.length;i++) //recoremos todos los controles
+        {
+          if(checkboxes[i].type == "checkbox") //solo si es un checkbox entramos
+          {
+            checkboxes[i].checked=source.checked; //si es un checkbox le damos el valor del checkbox que lo llamó (Marcar/Desmarcar Todos)
+            validarForm(id);
+          }
+        }
       }
 
       function showMessage(mensaje){
@@ -172,21 +207,11 @@
         }
       }
     </script>
-    <style>
-        body {
-            margin: 40px 10px;
-            padding: 0;
-            font-family: "Lucida Grande",Helvetica,Arial,Verdana,sans-serif;
-            font-size: 14px;
-        }
-
-        #calendar {
-            width: 50%;
-            margin: 0 auto;
-        }
-    </style>
+   
 </head>
-<body>
+<body data-url="<?= URL::base(); ?>">
+    <input type="hidden" id="session_id" value="<?= $_SESSION["id"] ?>"/>
+    <input type="hidden" id="session_role" value="<?= $_SESSION["role"] ?>"/>
     <!-- Navigation -->
     <header>
         <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
@@ -198,32 +223,32 @@
                         <span class="icon-bar"></span>
                         <span class="icon-bar"></span>
                     </button>
-                    <a class="logo"><img id="logo" src="/Datafill_OT/assets/img/logo2.png" /></a>
+                    <a class="logo"><img id="logo" src="<?= URL::to('assets/img/logo2.png'); ?>" /></a>
                 </div>
                 <!-- Collect the nav links for toggling -->
                 <div class="collapse navbar-collapse navbar-ex1-collapse">
                     <ul class="nav navbar-nav navbar-right">
                         <li class="cam"><a >Bienvenid@ <?php print_r( $_SESSION['userName']) ?></a>
                         </li>
-                        <li class="cam"><a href="/Datafill_OT/index.php/user/principalView">Home</a>
+                        <li class="cam"><a href="<?= URL::to('index.php/user/principalView'); ?>">Home</a>
                         </li>
                         <li class="cam"><a href="#services">Servicios</a>
                         <ul>
-                            <li><a href="/Datafill_OT/index.php/Service/assignService">Agendar Actividad</a></li>
-                            <li><a href="/Datafill_OT/index.php/Service/listServices">Ver Actividades</a></li>
+                            <li><a href="<?= URL::to('index.php/Service/assignService'); ?>">Agendar Actividad</a></li>
+                            <li><a href="<?= URL::to('index.php/Service/listService'); ?>s">Ver Actividades</a></li>
                             <li><a href="https://drive.google.com/drive/u/2/my-drive" target='_blank'>Drive</a></li>
                         </ul>
                         </li>
                         <li class="cam"><a href="#services">RF</a>
                             <ul>
-                                <li class="cam"><a href="/Datafill_OT/index.php/Service/RF">Actualizar RF</a></li>
-                                <li class="cam"><a href="/Datafill_OT/index.php/SpecificService/viewRF">Ver RF</a></li>
+                                <li class="cam"><a href="<?= URL::to('index.php/Service/RF'); ?>">Actualizar RF</a></li>
+                                <li class="cam"><a href="<?= URL::to('index.php/SpecificService/viewRF'); ?>">Ver RF</a></li>
                             </ul>
                         </li>
                          <li class="cam"><a href="#contact-sec">Contactos</a>
                         </li>
                         </li>
-                         <li class="cam"><a href="/Datafill_OT/index.php/welcome/index">Salir</a>
+                         <li class="cam"><a href="<?= URL::to('index.php/welcome/index'); ?>">Salir</a>
                         </li>
                     </ul>
                 </div>
@@ -243,243 +268,29 @@
         echo "</center>";
         //<!-- /.box-header -->
         echo "<div class='box-body'>";
-          echo "<table id='example1' class='table table-bordered table-striped' width='100%'>";
-              echo "<thead>";
-                  echo "<tr>";
-                      echo "<th style='width:8px';>Id orden</th>";
-                      echo "<th>Fecha Creacion</th>";
-                      echo "<th>Ingeniero Solicitante</th>";
-                      echo "<th>Forecast aprox.</th>";
-                      echo "<th>F. Asignación</th>";
-                      echo "<th>Proyecto</th>";
-                      echo "<th>Regional</th>";
-                      echo "<th>Ingenieros Asignado</th>";
-                      echo "<th>Descripción de la orden</th>";
-                      echo "<th>#</th>";
-                      echo "<th>Progress</th>";
-                  echo "</tr>";
-              echo "</thead>";
-              echo "<tbody>";                 
-               /*   print_r($_SESSION["userName"]);
-                  echo "<br>";
-                  print_r($_SESSION["id"]);
-                  echo "<br>";
-                  print_r($_SESSION["role"]);*/
-              //    header('content-type:text/plain');
-                // print_r($services);
-                  $cien=0;$porEnviadas=0;$porEjecutadas=0;$porCanceladas=0;
-                    if(isset($services)){
-                        for($i = 0; $i < count($services); $i++){                          
-                          $cien = count($services[$i]->services);
-                          $porEnviadas = (count($services[$i]->enviadas)*100)/$cien;
-                          $porEjecutadas = (count($services[$i]->ejecutadas)*100)/$cien;
-                          $porCanceladas = (count($services[$i]->canceladas)*100)/$cien;
-                          $avance = $porCanceladas+$porEjecutadas+$porEnviadas;
-                          $proyecto = str_replace(array("\n", "\r", "\t"), '', $services[$i]->services[0]->proyecto);
-                          if ($proyecto != "GDATOS") {
-                              
-                              $ing[] = "";
-                              $engs = "";
-                              if(count($services[$i]->services) > 0){
-                              for ($k=0; $k <count($services[$i]->services) ; $k++) { 
-                                $ing[$k] = "- ".$services[$i]->services[$k]->user->name." ".$services[$i]->services[$k]->user->lastname."<br>";
-                              }
-                                $ing = array_unique($ing);
-                                $ing = array_values($ing);
-                                for ($k=0; $k <count($ing) ; $k++) { 
-                                  $engs = $engs.$ing[$k]."  ";
-                                }
-                              }
-                                  if ($services[$i]->getId() != "") {
-                                  echo "<tr>";
-                                      echo "<td><a onclick='modalEditar(".json_encode($services[$i]).", ".$services[$i]->getId().", ".$_SESSION["id"].",".$_SESSION["role"].")'>".$services[$i]->getId()."<br><a href='#' target='_blank' class='btn boton' role='button'>h</a></td>";
-                                      echo "<td>".$services[$i]->getCreationDate()."</td>";
-                                      echo "<td>".$services[$i]->services[0]->ingSol."</td>";
-                                      echo "<td>".$services[$i]->services[0]->dateForecast."</td>";
-                                      echo "<td>".$services[$i]->services[0]->dateStartP."</td>";
-                                      echo "<td>".$services[$i]->services[0]->proyecto."</td>";
-                                      echo "<td>".$services[$i]->services[0]->region."</td>";
-                                      echo "<td>".$engs."</td>";
-                                      echo "<td>".$services[$i]->services[0]->claroDescription."</td>";
-                                      echo "<td>".count($services[$i]->services)."</td>";
-                                      echo "<td>";
-                                        echo "<div class='containerfluid'>";
-                                        
-                                            echo "<div class='row'>";
-                                              echo "<div class='col-md-12'>";
-                                                echo "<div class='progress' style='height: 13px;'>";
-                                                  echo "<div class='progress-bar progress-bar-warning progress-bar-striped active' role='progressbar' style='width: ".$avance."%; '>";
-                                                    echo "<div style='font-size: 10px; margin-top: -3px;'>".round($avance, 1)."%</div>";                         
-                                                  echo "</div>";
-                                                echo "</div>";
-                                              echo "</div>";
-                                            echo "</div><br>";
-
-                                            echo "<div class='row'>";
-                                              echo "<div class='col-md-12'>";
-                                                echo "<div class='progress' style='height: 13px;'>";
-                                                  echo "<div class='progress-bar progress-bar-success progress-bar-striped active' role='progressbar' style='width: ".$porEjecutadas."%; '>";
-                                                    echo "<div style='font-size: 10px; margin-top: -3px;'>".round($porEjecutadas, 1)."%</div>";                         
-                                                  echo "</div>";
-                                                echo "</div>";
-                                              echo "</div>";
-                                            echo "</div>";
-
-                                            echo "<div class='row'>";
-                                              echo "<div class='col-md-12'>";
-                                                echo "<div class='progress' style='height: 13px;'>";
-                                                  echo "<div class='progress-bar progress-bar-info progress-bar-striped active' role='progressbar' style='width: ".$porEnviadas."%; '>";
-                                                    echo "<div style='font-size: 10px; margin-top: -3px;'>".round($porEnviadas, 1)."%</div>";                         
-                                                  echo "</div>";
-                                                echo "</div>";
-                                              echo "</div>";
-                                            echo "</div>";
-
-                                            echo "<div class='row'>";
-                                              echo "<div class='col-md-12'>";
-                                                echo "<div class='progress' style='height: 13px;'>";
-                                                  echo "<div class='progress-bar progress-bar-danger progress-bar-striped active' role='progressbar' style='width: ".$porCanceladas."%; '>";
-                                                    echo "<div style='font-size: 10px; margin-top: -3px;'>".round($porCanceladas, 1)."%</div>";                         
-                                                  echo "</div>";
-                                                echo "</div>";
-                                              echo "</div>";
-                                            echo "</div>";
-
-
-                                         echo "</div>";
-                                      echo "</td>";
-                                   echo "</tr>";
-                                  unset($ing);
-                                  }
-                          }
-                        }
-                    }
-                   
-              echo "</tbody>";
+          echo "<table id='tableTransport' class='table table-bordered table-striped' width='100%'>";
           echo "</table>";
         echo "</div>";
-    echo "</div>";
-    //===================================<!-- fin tabla transporte ===================================-->
-  }  
+      echo "</div>";
+  //           
+  //   //===================================<!-- fin tabla transporte ===================================-->
+  } 
+
   if ($_SESSION["role"] == 2 || $_SESSION["role"] == 3 || $_SESSION["role"] == 4) {
-    //========================================<!-- tabla gdatos========================================-->
+  //   //========================================<!-- tabla gdatos========================================-->
     echo "<br><br><br>";
     echo "<div class='container'>";
         echo "<center>";
           echo "<legend >Lista de Actividades GDATOS</legend>";
         echo "</center>";
-        //<!-- /.box-header -->
+  //       //<!-- /.box-header -->
         echo "<div class='box-body'>";
-          echo "<table id='example3' class='table table-bordered table-striped'>";
-              echo "<thead>";
-                  echo "<tr>";
-                      echo "<th>Id orden</th>";
-                      echo "<th>Fecha Creacion</th>";
-                      echo "<th>Ingeniero Solicitante</th>";
-                      echo "<th>Forecast aprox.</th>";
-                      echo "<th>F. Asignación</th>";
-                      echo "<th>Proyecto</th>";
-                      echo "<th>Regional</th>";
-                      echo "<th>Ingenieros Asignado</th>";
-                      echo "<th>Descripción de la orden</th>";
-                      echo "<th>#</th>";
-                      echo "<th>Progress</th>";
-                  echo "</tr>";
-              echo "</thead>";
-              echo "<tbody>";
-                    $cien=0;$porEnviadas=0;$porEjecutadas=0;$porCanceladas=0;
-                    if(isset($services)){
-                        for($i = 0; $i < count($services); $i++){
-                          $cien = count($services[$i]->services);
-                          $porEnviadas = (count($services[$i]->enviadas)*100)/$cien;
-                          $porEjecutadas = (count($services[$i]->ejecutadas)*100)/$cien;
-                          $porCanceladas = (count($services[$i]->canceladas)*100)/$cien;
-                          $avance = $porCanceladas+$porEjecutadas+$porEnviadas;
-                          $proyecto = str_replace(array("\n", "\r", "\t"), '', $services[$i]->services[0]->proyecto);
-                          if ($proyecto == "GDATOS") {
-                              
-                              $ing[] = "";
-                              $engs = "";
-                              if(count($services[$i]->services) > 0){
-                              for ($k=0; $k <count($services[$i]->services) ; $k++) { 
-                                $ing[$k] = "- ".$services[$i]->services[$k]->user->name." ".$services[$i]->services[$k]->user->lastname."<br>";
-                              }
-                                $ing = array_unique($ing);
-                                $ing = array_values($ing);
-                                for ($k=0; $k <count($ing) ; $k++) { 
-                                  $engs = $engs.$ing[$k]."  ";
-                                }
-                              }
-                                 if ($services[$i]->getId() != "") {
-                                  echo "<tr>";
-                                 echo "<td><a onclick='modalEditar(".json_encode($services[$i]).", ".$services[$i]->getId().", ".$_SESSION["id"].",".$_SESSION["role"].")'>".$services[$i]->getId()."</td>";
-                                  echo "<td>".$services[$i]->getCreationDate()."</td>";
-                                  echo "<td>".$services[$i]->services[0]->ingSol."</td>";
-                                  echo "<td>".$services[$i]->services[0]->dateForecast."</td>";
-                                  echo "<td>".$services[$i]->services[0]->dateStartP."</td>";
-                                  echo "<td>".$services[$i]->services[0]->proyecto."</td>";
-                                  echo "<td>".$services[$i]->services[0]->region."</td>";
-                                  echo "<td>".$engs."</td>";
-                                  echo "<td>".$services[$i]->services[0]->claroDescription."</td>";
-                                  echo "<td>".count($services[$i]->services)."</td>";
-                                  echo "<td>";
-                                        echo "<div class='containerfluid'>";
-                                        
-                                            echo "<div class='row'>";
-                                              echo "<div class='col-md-12'>";
-                                                echo "<div class='progress' style='height: 13px;'>";
-                                                  echo "<div class='progress-bar progress-bar-warning progress-bar-striped active' role='progressbar' style='width: ".$avance."%; '>";
-                                                    echo "<div style='font-size: 10px; margin-top: -3px;'>".round($avance, 1)."%</div>";                         
-                                                  echo "</div>";
-                                                echo "</div>";
-                                              echo "</div>";
-                                            echo "</div><br>";
-
-                                            echo "<div class='row'>";
-                                              echo "<div class='col-md-12'>";
-                                                echo "<div class='progress' style='height: 13px;'>";
-                                                  echo "<div class='progress-bar progress-bar-success progress-bar-striped active' role='progressbar' style='width: ".$porEjecutadas."%; '>";
-                                                    echo "<div style='font-size: 10px; margin-top: -3px;'>".round($porEjecutadas, 1)."%</div>";                         
-                                                  echo "</div>";
-                                                echo "</div>";
-                                              echo "</div>";
-                                            echo "</div>";
-
-                                            echo "<div class='row'>";
-                                              echo "<div class='col-md-12'>";
-                                                echo "<div class='progress' style='height: 13px;'>";
-                                                  echo "<div class='progress-bar progress-bar-info progress-bar-striped active' role='progressbar' style='width: ".$porEnviadas."%; '>";
-                                                    echo "<div style='font-size: 10px; margin-top: -3px;'>".round($porEnviadas, 1)."%</div>";                         
-                                                  echo "</div>";
-                                                echo "</div>";
-                                              echo "</div>";
-                                            echo "</div>";
-
-                                            echo "<div class='row'>";
-                                              echo "<div class='col-md-12'>";
-                                                echo "<div class='progress' style='height: 13px;'>";
-                                                  echo "<div class='progress-bar progress-bar-danger progress-bar-striped active' role='progressbar' style='width: ".$porCanceladas."%; '>";
-                                                    echo "<div style='font-size: 10px; margin-top: -3px;'>".round($porCanceladas, 1)."%</div>";                         
-                                                  echo "</div>";
-                                                echo "</div>";
-                                              echo "</div>";
-                                            echo "</div>";
-
-
-                                         echo "</div>";
-                                      echo "</td>";
-                                   echo "</tr>";
-                                  unset($ing);
-                                }
-                          }
-                        }
-                    }
-              echo "</tbody>";
+          echo "<table id='tableGDATOS' class='table table-bordered table-striped'>";
           echo "</table>";
         echo "</div>";
      echo "</div>";
 
-         //===================================<!-- fin tabla GDATOS ===================================-->
+  //        //===================================<!-- fin tabla GDATOS ===================================-->
   }
 ?>
 <!-- Modal -->
@@ -489,7 +300,7 @@
       <div class="modal-dialog modal-lg" role="document">
         <div class="modal-content">
           <div class="modal-header">
-            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+            <button type="button" class="close" data-dismiss="modal" onclick="ocultarForm()" aria-label="Close"><span aria-hidden="true"><i class='glyphicon glyphicon-eye-close'></i> cerrar</span></button>
             <h1 class="modal-title">Detalles del Evento</h1>
             <h4 id="orden"></h4>
           </div>
@@ -497,7 +308,12 @@
             <table id='example5' class='table table-bordered table-striped'>
               <thead>
                   <tr>
-                    <th> </th>
+                    <th>
+                      <div class="squaredTwo">
+                        <input type="checkbox" value="None" id="squaredTwo" class="checkbox" name="checkbox" onclick="marcar(this);" />
+                        <label for="squaredTwo"></label>
+                      </div>
+                    </th>
                     <th>Id actividad</th>
                     <th>Proyecto</th>
                     <th>Tipo</th>
@@ -512,37 +328,36 @@
                   </tr>    
               </thead>
               <tbody name="body" id="body">
-              </tbody>
             </table>
           </div>
-<?php  
-    if ($_SESSION["role"] == 0 || $_SESSION["role"] == 4) {
-       echo "<div class='container m-l-5' style='display: none' id='reasignar'>";
-        echo "<h2>Reasignar Actividades</h2>";
-        echo "<div class='row-fluid'>";
-          echo "<div class='input-group'>";
-            echo "<span class='input-group-addon'><i class='glyphicon glyphicon-user'></i></span>";
-            echo "<select class='selectpicker' name='Ingeniero' data-show-subtext='true' data-live-search='true'  data-width='80%'>";
-              echo "<option value=''>Seleccione Ingeniero</option>";
-              for ($i=0; $i < count($eng); $i++) { 
-                if ($eng[$i]->role->name == 'Ingeniero Datafill GDRCD') {
-                  $eng[$i]->role->name = '&nbsp&nbsp-&nbspGDATOS';
-                }
-                if ($eng[$i]->role->name == 'Ingeniero Datafill GDRT') {
-                  $eng[$i]->role->name = '&nbsp&nbsp-&nbspTRANSPORTE';
-                }
-                if ($eng[$i]->role->name == 'Ingeniero Datafill GRF') {
-                  $eng[$i]->role->name = '&nbsp&nbsp-&nbspRF';
-                }
-                echo "<option data-subtext=".$eng[$i]->role->name." value= ".$eng[$i]->id."><b>".$eng[$i]->name." ".$eng[$i]->lastname."</b></option>";
-              }             
-            echo "</select>";
-            echo "<button style='margin-left: 40px;' type='submit' class='btn btn-success'  onclick=\"quitarRequired(); this.form.action='http://localhost/Datafill_OT/index.php/SpecificService/reasign'\">Reasignar</button>";
-          echo "</div>  ";
-        echo "</div>";
-      echo "</div><br><br>";
-    }
-?>      
+     <!-- if ($_SESSION["role"] == 0 || $_SESSION["role"] == 4) { -->
+   <div class='container m-l-5' style='display: none' id='reasignar'>
+    <h2>Reasignar Actividades</h2>
+    <div class='row-fluid'>
+      <div class='input-group'>
+        <span class='input-group-addon'><i class='glyphicon glyphicon-user'></i></span>
+        <select class='selectpicker' name='Ingeniero' data-show-subtext='true' data-live-search='true'  data-width='80%'>
+          <option value=''>Seleccione Ingeniero</option>
+            <optgroup label="Transporte  GDRT">
+            <option value="80158472"><b>Andres Alberto Rubio Idrobo</b></option>
+            <option value="1032364958"><b>Cesar David Duran Alvarez</b></option>
+            <option value="1030565500"><b>David Arevalo Bravo</b></option>
+            <option value="1022350779"><b>Giovanny Reyes Torres</b></option>
+            <option value="80392886"><b>Juan Carlos Olmos Bonilla</b></option>
+            <option value="1016028754"><b>Lina Casallas Melgarejo</b></option>
+            <option value="1014251868"><b>Marcela Fernanda Herrera Quila</b></option>
+            <option value="80160305"><b>Miguel Angel Moreno Alarcon</b></option>
+            </optgroup>
+            <optgroup label="GDATOS  GDRCD">
+            <option value="1070916624"><b>Daniel Guillermo Reyes Prieto</b></option>
+            <option value="1012399862"><b>Jhon Fredy Novoa</b></option>
+            <option value="1065631508"><b>Julián Camilo Durán Hernández</b></option>
+          </optgroup>                      
+        </select>
+        <button style='margin-left: 40px;' type='submit' class='btn btn-success'  onclick="quitarRequired(); this.form.action='<?= URL::to('/index.php/SpecificService/reasign'); ?>'">Reasignar</button>
+      </div>  
+    </div>
+  </div><br><br>
  </form> 
         <div class="container" style="display: none" id="formulario">
           <h2>Cerrar Actividades</h2>
@@ -591,11 +406,13 @@
 
             <div class="form-group m-b-5">        
               <div class="col-sm-offset-2 col-sm-10">
-                <button type="submit" class="btn btn-success btn-block" onclick="this.form.action='http://localhost/Datafill_OT/index.php/SpecificService/updateSpectService'">Enviar</button>
+                <button type="submit" class="btn btn-success btn-block" onclick="this.form.action='<?= URL::to('/index.php/SpecificService/updateSpectService'); ?>'">Enviar</button>
               </div>
             </div>
         </div>
   </form>
+  
+</tbody>
           <div class="modal-footer">
             <!-- <button type="button" class="btn btn-info btn-block" id="btnCerrarModal" data-dismiss="modal">CERRAR</button> -->
           </div>
@@ -604,28 +421,13 @@
     </div>
 <!--  container  -->
 
-
   <!--footer-->
   <div class="for-full-back " id="footer">
       Zolid By ZTE Colombia | All Right Reserved
   </div>
 
   <script src="//cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.6.3/js/bootstrap-select.min.js"></script>
-  <script src="/Datafill_OT/assets/plugins/tableFilter/tablefilter.js"></script>
-  <link rel="stylesheet" type="text/css" href="/Datafill_OT/assets/plugins/tableFilter/style/tablefilter.css">
-  <script data-config>
-    var filtersConfig = {
-      base_path: '/Datafill_OT/assets/plugins/tableFilter/',
-      filters_row_index: 1,
-      alternate_rows: true,
-      grid_cont_css_class: 'grd-main-cont',
-      grid_tblHead_cont_css_class: 'grd-head-cont',
-      grid_tbl_cont_css_class: 'grd-cont',
-      loader: true
-    };
-      var tf1 = new TableFilter('demo', filtersConfig);
-      tf1.init();
-  </script>
+
 
     <?php
       if (isset($message)) {
@@ -633,8 +435,8 @@
       }
     ?>
     <!-- DataTables -->
-<script src="/Datafill_OT/assets/plugins/datatables/jquery.dataTables.min.js"></script>
-<script src="/Datafill_OT/assets/plugins/datatables/dataTables.bootstrap.min.js"></script>
+<script src="<?= URL::to('assets/plugins/datatables/jquery.dataTables.min.js'); ?>"></script>
+<script src="<?= URL::to('assets/plugins/datatables/dataTables.bootstrap.min.js'); ?>"></script>
 
 <script>
   $(function () {
@@ -672,5 +474,6 @@
     });    
   });
 </script>
+<script type="text/javascript" src="<?= URL::to('assets/js/listServices.js?v= time() '); ?>"></script>
 </body>
 </html>

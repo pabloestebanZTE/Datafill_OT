@@ -210,7 +210,7 @@
                   $i = 0;
                     while($row = $result->fetch_assoc()) {  
                     $sService = new service_spec_model();
-                     $sService->createServiceS($row['K_ID_SP_SERVICE'], $row['N_DURATION'], $row['K_IDCLARO'], $row['N_DESCRIPTION'], $row['D_DATE_START_P'], $row['D_DATE_FINISH_P'], $row['D_DATE_CREATION'], $row['D_FORECAST'], $this->dao_order_model->getOrderById($row['K_IDORDER']), $this->dao_site_model->getSitePerId($row['K_IDSITE']), $this->getServicePerId($row['K_IDSERVICE']), $this->dao_user_model->getUserById($row['K_IDUSER']), $row['N_CLARO_DESCRIPTION'], $row['N_ING_SOL'], $row['N_PROYECTO'], $row['N_ESTADO'], $row['N_CRQ']);
+                     $sService->createServiceS($row['K_ID_SP_SERVICE'], $row['N_DURATION'], $row['K_IDCLARO'], $row['N_DESCRIPTION'], $row['D_DATE_START_P'], $row['D_DATE_FINISH_P'], $row['D_DATE_CREATION'], $row['D_FORECAST'], $row['K_IDORDER'], $this->dao_site_model->getSitePerId($row['K_IDSITE']), $this->getServicePerId($row['K_IDSERVICE']), $this->dao_user_model->getUserById($row['K_IDUSER']), $row['N_CLARO_DESCRIPTION'], $row['N_ING_SOL'], $row['N_PROYECTO'], $row['N_ESTADO'], $row['N_CRQ']);
                        $sService->setDateFinishR($row['D_DATE_FINISH_R']);
                        $sService->setDateStartR($row['D_DATE_START_R']);
                        $sService->setCierreDescription($row['N_CIERRE_DESCRIPTION']); 
@@ -304,65 +304,38 @@
 
       public function getEnviadoByOrder($order){
         $dbConnection = new configdb_model();
-              $session = $dbConnection->openSession();
-              $sql = "SELECT * FROM specific_service WHERE K_IDORDER = ".$order." and N_ESTADO = 'Enviado';";
-              if ($session != "false"){
-                $result = $session->query($sql);
-                if ($result->num_rows > 0) {
-                  $i = 0;
-                    while($row = $result->fetch_assoc()) {  
-                    $sService = new service_spec_model();
-                     $sService->createServiceS($row['K_ID_SP_SERVICE'], $row['N_DURATION'], $row['K_IDCLARO'], $row['N_DESCRIPTION'], $row['D_DATE_START_P'], $row['D_DATE_FINISH_P'], $row['D_DATE_CREATION'], $row['D_FORECAST'],$row['K_IDORDER'], $row['K_IDSITE'],$row['K_IDSERVICE'], $row['K_IDUSER'], $row['N_CLARO_DESCRIPTION'], $row['N_ING_SOL'], $row['N_PROYECTO'], $row['N_ESTADO'], $row['N_CRQ']);                      
-                       $answer[$i] = $sService;
-                       $i++;
-                    } 
-                }
-              } else{
-                  $answer = "Error de informacion";
-              }
-            return $answer;
+          $session = $dbConnection->openSession();
+          $sql = "SELECT count(*) FROM specific_service where N_ESTADO = 'Enviado' and K_IDORDER = ".$order.";";
+          $result = $session->query($sql);
+          $answer = $result->fetch_assoc();
+        return $answer['count(*)'];
       }
 
       public function getEjecutadoByOrder($order){
         $dbConnection = new configdb_model();
-              $session = $dbConnection->openSession();
-              $sql = "SELECT * FROM specific_service WHERE K_IDORDER = ".$order." and N_ESTADO = 'Ejecutado';";
-              if ($session != "false"){
-                $result = $session->query($sql);
-                if ($result->num_rows > 0) {
-                  $i = 0;
-                    while($row = $result->fetch_assoc()) {  
-                    $sService = new service_spec_model();
-                     $sService->createServiceS($row['K_ID_SP_SERVICE'], $row['N_DURATION'], $row['K_IDCLARO'], $row['N_DESCRIPTION'], $row['D_DATE_START_P'], $row['D_DATE_FINISH_P'], $row['D_DATE_CREATION'], $row['D_FORECAST'],$row['K_IDORDER'], $row['K_IDSITE'],$row['K_IDSERVICE'], $row['K_IDUSER'], $row['N_CLARO_DESCRIPTION'], $row['N_ING_SOL'], $row['N_PROYECTO'], $row['N_ESTADO'], $row['N_CRQ']);                      
-                       $answer[$i] = $sService;
-                       $i++;
-                    } 
-                }
-              } else{
-                  $answer = "Error de informacion";
-              }
-            return $answer;
+          $session = $dbConnection->openSession();
+          $sql = "SELECT count(*) FROM specific_service where N_ESTADO = 'Ejecutado' and K_IDORDER = ".$order.";";
+          $result = $session->query($sql);
+          $answer = $result->fetch_assoc();
+        return $answer['count(*)'];
       }
 
       public function getCanceladoByOrder($order){
         $dbConnection = new configdb_model();
-              $session = $dbConnection->openSession();
-              $sql = "SELECT * FROM specific_service WHERE K_IDORDER = ".$order." and N_ESTADO = 'Cancelado';";
-              if ($session != "false"){
-                $result = $session->query($sql);
-                if ($result->num_rows > 0) {
-                  $i = 0;
-                    while($row = $result->fetch_assoc()) {  
-                    $sService = new service_spec_model();
-                     $sService->createServiceS($row['K_ID_SP_SERVICE'], $row['N_DURATION'], $row['K_IDCLARO'], $row['N_DESCRIPTION'], $row['D_DATE_START_P'], $row['D_DATE_FINISH_P'], $row['D_DATE_CREATION'], $row['D_FORECAST'],$row['K_IDORDER'], $row['K_IDSITE'],$row['K_IDSERVICE'], $row['K_IDUSER'], $row['N_CLARO_DESCRIPTION'], $row['N_ING_SOL'], $row['N_PROYECTO'], $row['N_ESTADO'], $row['N_CRQ']);                      
-                       $answer[$i] = $sService;
-                       $i++;
-                    } 
-                }
-              } else{
-                  $answer = "Error de informacion";
-              }
-            return $answer;
+          $session = $dbConnection->openSession();
+          $sql = "SELECT count(*) FROM specific_service where N_ESTADO = 'Cancelado' and K_IDORDER = ".$order.";";
+          $result = $session->query($sql);
+          $answer = $result->fetch_assoc();
+        return $answer['count(*)'];
+      }
+
+      public function getAsignadoByOrder($order){
+        $dbConnection = new configdb_model();
+          $session = $dbConnection->openSession();
+          $sql = "SELECT count(*) FROM specific_service where N_ESTADO = 'Asignada' and K_IDORDER = ".$order.";";
+          $result = $session->query($sql);
+          $answer = $result->fetch_assoc();
+        return $answer['count(*)'];
       }
 
 

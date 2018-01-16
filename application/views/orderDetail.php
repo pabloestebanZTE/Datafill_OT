@@ -178,7 +178,7 @@
               echo "<div id='ultimate'>";
                 echo "<p>LINK</p>";
               echo "</div>";
-                echo "<input type='text' name='link' id='link' class='form-control' value='' placeholder='Digite el link' required style='display: center; color: white; background-color: #333;'>";
+                echo "<input type='text' name='link' id='link' class='form-control' value='' placeholder='Digite el link'style='display: center; color: white; background-color: #333;'>";
               
               echo "<div id='ultimate'>";
                 echo "<p>Fecha inicio real</p>";

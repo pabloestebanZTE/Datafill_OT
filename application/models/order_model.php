@@ -1,9 +1,9 @@
 <?php
 	class order_model extends CI_Model{
 
-		protected $id;
-		protected $name;
-		protected $creationDate;
+		public $id;
+		public $name;
+		public $creationDate;
 		public $link;
 
 		public function __construct(){
