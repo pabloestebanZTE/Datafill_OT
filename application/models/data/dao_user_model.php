@@ -2,7 +2,7 @@
 
     defined('BASEPATH') OR exit('No direct script access allowed');
 
-    class dao_user_model extends CI_Model{
+    class Dao_user_model extends CI_Model{
 
         public function __construct(){
             $this->load->model('data/configdb_model');
@@ -135,6 +135,23 @@
                 $user = new user_model;
                 $user->createUser($row['K_IDUSER'], $row['N_NAME'], $row['N_LASTNAME'], $row['N_PHONE'], $row['N_CELPHONE'], $row['N_MAIL']);
                 $answer = $user;              
+             }
+          } else {
+            $answer = "Error de BD";
+          }
+          return $answer;
+        }
+
+        //capturo el mail por su id
+        public function getMailById($idUser){
+          $dbConnection = new configdb_model();
+          $session = $dbConnection->openSession();
+          $sql = "SELECT N_MAIL FROM user WHERE K_IDUSER = ".$idUser.";";
+          if ($session != "false"){
+            $result = $session->query($sql);
+             if ($result->num_rows > 0) {
+                $row = $result->fetch_assoc(); 
+                $answer = $row['N_MAIL'];              
              }
           } else {
             $answer = "Error de BD";

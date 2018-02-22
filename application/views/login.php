@@ -4,14 +4,14 @@
     <meta charset="UTF-8">
     <title>ZOLID LOGIN</title>
     <!--   SWEET ALERT    -->
-    <link rel="stylesheet" href="/Datafill_OT/assets/plugins/sweetalert-master/dist/sweetalert.css" />
-    <script type="text/javascript" src="/Datafill_OT/assets/plugins/sweetalert-master/dist/sweetalert.min.js"></script>
+    <link rel="stylesheet" href="<?= URL::to('assets/plugins/sweetalert-master/dist/sweetalert.css'); ?>" />
+    <script type="text/javascript" src="<?= URL::to('assets/plugins/sweetalert-master/dist/sweetalert.min.js'); ?>"></script>
     <!--   ICONO PAGINA    -->
     <link rel="icon" href="http://cellaron.com/media/wysiwyg/zte-mwc-2015-8-l-124x124.png">
     <!--   ANIMACION LOGIN    -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/meyer-reset/2.0/reset.min.css">
     <!--   CSS ESTILOS LOGIN    -->
-    <link rel="stylesheet" href="/Datafill_OT/assets/css/stylelogin.css">
+    <link rel="stylesheet" href="<?= URL::to('assets/css/stylelogin.css'); ?>">
     <!--   JQUERY   -->
     <script src='http://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js'></script>
     <!--   SCRIPT PROPIOS   -->
@@ -48,7 +48,7 @@
         <div class="cms">
           <div class="roti">
             <h1>ZTE</h1>
-            <button type="submit" class="button" id="valid" name="valid" onclick = "this.form.action = 'http://localhost/Datafill_OT/index.php/User/loginUser'">Login</button><br />
+            <button type="submit" class="button" id="valid" name="valid" onclick = "this.form.action = '<?= URL::to('User/loginUser'); ?>'">Login</button><br />
             <p><a href="#">ZTE</a> <a>And</a> <a href="#">ZTE Colombia</a></p>
           </div>
         </div>
@@ -61,6 +61,6 @@
       }
     ?>
     <!--   ANIMACION DE LOGIN   -->
-    <script src="/Datafill_OT/assets/js/index.js"></script>
+    <script src="<?= URL::to('assets/js/index.js?v=1.2'); ?>"></script>
   </body>
 </html>

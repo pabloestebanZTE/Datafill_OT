@@ -1,5 +1,5 @@
 <?php
-    class rf_model extends CI_Model{
+    class Rf_model extends CI_Model{
 
         public $idRF;
         public $dateRequested;

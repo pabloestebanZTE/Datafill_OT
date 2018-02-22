@@ -2,7 +2,7 @@
 
     defined('BASEPATH') OR exit('No direct script access allowed');
 
-    class dao_order_model extends CI_Model{
+    class Dao_order_model extends CI_Model{
 
         public function __construct(){
             $this->load->model('data/configdb_model');
@@ -120,7 +120,7 @@
             if ($search){               
 
                //Se obtienen los registros por límite de x a 10...
-                $sqlIni = "select ot.K_IDORDER, ot.N_DRIVE, ot.D_DATE_CREATION, se.N_ING_SOL, se.D_FORECAST, se.D_DATE_START_P, se.N_PROYECTO, se.n_region, u.N_NAME, u.N_LASTNAME, se.N_CLARO_DESCRIPTION 
+                $sqlIni = "select ot.K_IDORDER, ot.N_DRIVE, ot.D_DATE_CREATION, se.N_ING_SOL, se.D_FORECAST, se.D_DATE_START_P, se.N_PROYECTO, se.n_region, u.N_NAME, u.N_LASTNAME, se.N_CLARO_DESCRIPTION, se.D_CLARO_F 
                   from ot inner join specific_service se
                   on ot.K_IDORDER = se.K_IDORDER  
                   inner join user u 
@@ -165,7 +165,7 @@
 
               else {              
                 //Si no se está filtrando se realiza la consulta normalmnete limitada de x a 10...        
-                $sqlIni = "select ot.K_IDORDER, ot.N_DRIVE, ot.D_DATE_CREATION, se.N_ING_SOL, se.D_FORECAST, se.D_DATE_START_P, se.N_PROYECTO, se.n_region, u.N_NAME, u.N_LASTNAME, se.N_CLARO_DESCRIPTION 
+                $sqlIni = "select ot.K_IDORDER, ot.N_DRIVE, ot.D_DATE_CREATION, se.N_ING_SOL, se.D_FORECAST, se.D_DATE_START_P, se.N_PROYECTO, se.n_region, u.N_NAME, u.N_LASTNAME, se.N_CLARO_DESCRIPTION, se.D_CLARO_F 
                   from ot inner join specific_service se
                   on ot.K_IDORDER = se.K_IDORDER 
                   inner join user u 

@@ -107,6 +107,30 @@ $(function () {
             }
             return href;
         },
+
+        getDescription: function(obj){
+             // console.log(obj.services[0].claroDescription);
+            var ini = obj.services[0].claroDescription.substring(0,45);
+            var description ="";
+            $(document).ready(function(){
+                $("#hide"+ obj.id).click(function(){
+                    $("#p" + obj.id).hide(500);
+                    $("#show" + obj.id).show(500);
+                });
+                $("#show" + obj.id).click(function(){
+                    $("#p" + obj.id).show(500);
+                    $("#show" + obj.id).hide(500);
+                });
+            });
+
+            description += ini;
+            description += "<p id='p"+obj.id+"' style='display:none;'> "+obj.services[0].claroDescription.substring(45);
+            description += "<a class='miniBoton' id='hide"+obj.id+"'><br>...menos</a>";
+             description += " </p>";
+            description += "<a class='miniBoton' id='show"+obj.id+"'><br>... mas</a>";            
+            return description;
+        },
+
         genericCogDataTable: function (url, table) {
             // console.log();
             // $('.contentPrincipal').removeClass('hidden');
@@ -120,7 +144,7 @@ $(function () {
                     {title: "Proyecto", data: "services.0.proyecto"},
                     {title: "Region", data: "services.0.region"},
                     {title: "Ingenieros Asignados", data: vista.getEngs},
-                    {title: "Descripción de la orden", data: "services.0.claroDescription"},
+                    {title: "Descripción de la orden", data: vista.getDescription},
                     {title: "#", data: "services.length"},// Cantidad de actividades
                     {title: "Progress", data: vista.getProgress},// barras de progreso
                 ],
@@ -151,6 +175,33 @@ $(function () {
         events: function () {
             $('#tableTransport').on('click', 'a.link-ver-actividades', vista.onClickVerActividadTr);
             $('#tableGDATOS').on('click', 'a.link-ver-actividades', vista.onClickVerActividadGd);
+           
+
+            $('#btn_fixed2').on('click', function(){
+                $(this).hide();                
+                $('#content_fixed2').removeClass('closed2');
+                $('#content_fixed2 #menu_fixed2').removeClass('hidden').hide().fadeIn(500);
+            });
+            $('#btn_close_fixed2').on('click', function(){                
+                $('#content_fixed2').addClass('closed2');
+                $('#content_fixed2 #menu_fixed2').hide();
+                $('#btn_fixed2').fadeIn(500);
+            });
+
+
+
+
+            $('#btn_fixed').on('click', function(){
+                $(this).hide();                
+                $('#content_fixed').removeClass('closed');
+                $('#content_fixed #menu_fixed').removeClass('hidden').hide().fadeIn(500);
+            });
+            $('#btn_close_fixed').on('click', function(){                
+                $('#content_fixed').addClass('closed');
+                $('#content_fixed #menu_fixed').hide();
+                $('#btn_fixed').fadeIn(500);
+            });
+
             // $('table').off('click', '.btn-preview', vista.onClickPreviewBtn);
             // $('table').on('click', '.btn-preview', vista.onClickPreviewBtn);
             // $('.tab-tables').on('click', vista.onClickTabTables);

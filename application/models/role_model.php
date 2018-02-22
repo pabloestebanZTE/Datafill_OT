@@ -1,7 +1,7 @@
 <?php
 	//require_once 'Profesor_model.php';
 
-	class role_model extends CI_Model{
+	class Role_model extends CI_Model{
 
 		public $id;
 		public $name;

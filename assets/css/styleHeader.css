@@ -98,25 +98,37 @@ margin-top: 10px;
 .d-n {
     display: none !important;
 }
-table#example1{
+table#tableTransport{
   display: block !important;;
   width: 100% !important;
   
 }
-table#example1 th{
-  font-size: 12px;  
+table#tableTransport th{
+  font-size: 12px;
+  background-color:#207be5;
+  color:#fff;
+  text-align:center;
+  border: 1px solid #545458;
+  text-shadow: .5px 0.5px 0px #000;
 }
-table#example1 td{
+table#tableTransport td{
   font-size: 13px;
 }
-table#example1 td:nth-child(1){    
+table#tableTransport td:nth-child(1){    
   max-width: 25px !important;
 }
-table#example1 td:nth-child(2){      
+table#tableTransport td:nth-child(2){      
   max-width: 40px !important;
 }
-table#example1 td:nth-child(9){
+table#tableTransport td:nth-child(9){
   max-width: 120px !important;
   word-wrap: break-word;
 }
-
+table#tableGDATOS th{
+  font-size: 12px;
+  background-color:#207be5;
+  color:#fff;
+  text-align:center;
+  border: 1px solid #545458;
+  text-shadow: .5px 0.5px 0px #000;
+}

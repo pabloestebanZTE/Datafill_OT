@@ -1,5 +1,5 @@
 <?php
-	class service_model extends CI_Model{
+	class Service_model extends CI_Model{
 
 		public $id;
 		public $gerency;

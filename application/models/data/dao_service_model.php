@@ -2,7 +2,7 @@
 
     defined('BASEPATH') OR exit('No direct script access allowed');
 
-    class dao_service_model extends CI_Model{
+    class Dao_service_model extends CI_Model{
 
         public function __construct(){
             $this->load->model('data/configdb_model');
@@ -215,7 +215,8 @@
                        $sService->setDateStartR($row['D_DATE_START_R']);
                        $sService->setCierreDescription($row['N_CIERRE_DESCRIPTION']); 
                        $sService->setQuantity($row['n_cantidad']);
-                       $sService->setRegion($row['n_region']);                       
+                       $sService->setRegion($row['n_region']);
+                       $sService->setDateFinishClaro($row['D_CLARO_F']);                    
                        $answer[$i] = $sService;
                        $i++;
                     } 
@@ -336,6 +337,57 @@
           $result = $session->query($sql);
           $answer = $result->fetch_assoc();
         return $answer['count(*)'];
+      }
+      //consulta de todas las actividades
+      public function getTotalActivities($mes, $idUser, $role){
+        $where = "";$usuario = "";
+        if ($idUser != '1069722400') {
+          $usuario = " and ss.K_IDUSER =".$idUser."";
+
+        }
+          //si le enviamos mes
+          if ($mes) {
+            $where = "where (ss.D_CLARO_F >= '2018-".$mes."-01' and ss.D_CLARO_F < '2018-".($mes + 1)."-01'".$usuario.") or ( ss.D_DATE_START_P >= '2018-".$mes."-01' and ss.D_DATE_START_P < '2018-".($mes + 1)."-01' and ss.D_CLARO_F is null".$usuario.")";
+          }elseif ($mes == '12') {
+            $where = "where (ss.D_CLARO_F >= '2018-".$mes."-01' and ss.D_CLARO_F < '2019-01-01'".$usuario.") or ( ss.D_DATE_START_P >= '2018-".$mes."-01' and ss.D_DATE_START_P < '2019-01-01' and ss.D_CLARO_F is null".$usuario.")";
+          }
+
+
+        $query = $this->db->query("
+            select 
+            ss.K_IDORDER as ORDEN, ss.K_IDCLARO AS ACTIVIDAD,
+            service.N_TYPE AS TIPO, 
+            ss.n_cantidad as CANT, 
+            s.N_NAME as ESTACION, 
+            concat(u.N_NAME,' ', u.N_LASTNAME) as NOMBRE_ING,
+            ss.D_DATE_START_P as F_ASIFGNACION, 
+            ss.D_DATE_FINISH_R as F_CIERRE_ING, 
+            ss.D_CLARO_F as F_EJECUCION, 
+            ss.N_ESTADO as ESTADO, 
+            ss.N_PROYECTO as PROYECTO 
+
+            from specific_service ss 
+            inner join user u 
+            on ss.K_IDUSER = u.K_IDUSER 
+            inner join site s 
+            on ss.K_IDSITE = s.K_IDSITE 
+            inner join service 
+            on ss.K_IDSERVICE = service.K_IDSERVICE 
+            ".$where."".$usuario."
+            order by ss.K_IDORDER asc
+            ;"
+        );
+
+      return $query->result();
+      }
+      //Modelo de los meses totales que han asignado actividad
+      public function getMonthsWorked(){
+        $query = $this->db->query("
+          SELECT distinct 
+          EXTRACT( YEAR_MONTH FROM specific_service.D_DATE_START_P ) AS meses
+          FROM specific_service GROUP BY D_DATE_START_P;
+          ");
+        return $query->result();
       }
 
 

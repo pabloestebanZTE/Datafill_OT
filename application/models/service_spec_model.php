@@ -1,5 +1,5 @@
 <?php
-	class service_spec_model extends CI_Model{
+	class Service_spec_model extends CI_Model{
 
 		public $id;
 		public $duration;

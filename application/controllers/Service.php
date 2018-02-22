@@ -60,6 +60,11 @@
       public function RF(){
         $this->load->view('updateRF');
       }
+      // Retorna todos los meses que han trabajado
+      public function getMonthsWorked(){
+        $months = $this->dao_service_model->getMonthsWorked();
+        echo json_encode($months);
+      }
   }
 
 ?>

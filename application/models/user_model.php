@@ -1,7 +1,7 @@
 <?php
 	//require_once 'Profesor_model.php';
 
-	class user_model extends CI_Model{
+	class User_model extends CI_Model{
 
 		public $id;
 		public $name;

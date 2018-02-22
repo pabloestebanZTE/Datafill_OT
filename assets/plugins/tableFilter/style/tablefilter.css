@@ -3,8 +3,8 @@
  *	 build date: 2017-05-18T03:37:03.376Z
  *	 MIT License
  */
-.activeHeader{background-color:##C14242 !important;color:##C14242 !important}
-.even{background-color:##C14242}.odd{background-color:##C14242}
+.activeHeader{background-color:#C14242 !important;color:#C14242 !important}
+.even{background-color:#C14242}.odd{background-color:#C14242}
 
 .ezActiveRow{
   background-color:#2852a8 !important;
@@ -241,7 +241,7 @@ div.grd_headTblCont{
   width:800px;
   overflow:hidden;
   border-bottom:1px solid #99bbe8;
-  background-color:##C14242
+  background-color:#C14242;
 }
 
 div.grd_tblCont table,div.grd_headTblCont table{

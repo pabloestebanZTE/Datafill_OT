@@ -8,13 +8,13 @@
         <!--   ICONO PAGINA    -->
         <link rel="icon" href="http://cellaron.com/media/wysiwyg/zte-mwc-2015-8-l-124x124.png">
         <!--   BOOTSTRAP    -->
-        <link href="/Datafill_OT/assets/css/bootstrap.css" rel="stylesheet" />
-        <link href="/Datafill_OT/assets/plugins/datatables/dataTables.bootstrap.css" rel="stylesheet">
-        <link href="/Datafill_OT/assets/css/bootstrap.min.css" rel="stylesheet">
+        <link href="<?= URL::to('assets/css/bootstrap.css" rel="stylesheet'); ?>" />
+        <link href="<?= URL::to('assets/plugins/datatables/dataTables.bootstrap.css'); ?>" rel="stylesheet">
+        <link href="<?= URL::to('assets/css/bootstrap.min.css'); ?>" rel="stylesheet">
         <!--   HEADER CSS    -->
-        <link href="/Datafill_OT/assets/css/styleHeader.css" rel="stylesheet" />
+        <link href="<?= URL::to('assets/css/styleHeader.css'); ?>" rel="stylesheet" />
         <!--   INPUTFILE CSS    -->
-        <link href="/Datafill_OT/assets/css/inputFile.css" rel="stylesheet" />
+        <link href="<?= URL::to('assets/css/inputFile.css'); ?>" rel="stylesheet" />
 
 
 </head>
@@ -30,32 +30,32 @@
                         <span class="icon-bar"></span>
                         <span class="icon-bar"></span>
                     </button>
-                    <a class="logo"><img id="logo" src="/Datafill_OT/assets/img/logo2.png" /></a>
+                    <a class="logo"><img id="logo" src="<?= URL::to('assets/img/logo2.png'); ?>" /></a>
                 </div>
                 <!-- Collect the nav links for toggling -->
                 <div class="collapse navbar-collapse navbar-ex1-collapse">
                     <ul class="nav navbar-nav navbar-right">
                         <li class="cam"><a >Bienvenid@ <?php print_r( $_SESSION['userName']) ?></a>
                         </li>
-                        <li class="cam"><a href="/Datafill_OT/index.php/user/principalView">Home</a>
+                        <li class="cam"><a href="<?= URL::to('user/principalView'); ?>">Home</a>
                         </li>
                         <li class="cam"><a href="#services">Servicios</a>
                         <ul>
-                            <li><a href="/Datafill_OT/index.php/Service/assignService">Agendar Actividad</a></li>
-                            <li><a href="/Datafill_OT/index.php/Service/listServices">Ver Actividades</a></li>
-                            <li><a href="https://drive.google.com/drive/u/2/my-drive" target='_blank'>Drive</a></li>
+                            <li><a href="<?= URL::to('Service/assignService'); ?>">Agendar Actividad</a></li>
+                            <li><a href="<?= URL::to('Service/listServices'); ?>">Ver Actividades</a></li>
+                            <li><a href="https://accounts.google.com/ServiceLogin/signinchooser?passive=1209600&continue=https%3A%2F%2Faccounts.google.com%2FManageAccount&followup=https%3A%2F%2Faccounts.google.com%2FManageAccount&flowName=GlifWebSignIn&flowEntry=ServiceLogin" title="drive" target='_blank'>Drive</a></li>
                         </ul>
                         </li>
                         <li class="cam"><a href="#services">RF</a>
                             <ul>
-                                <li class="cam"><a href="/Datafill_OT/index.php/Service/RF">Actualizar RF</a></li>
-                                <li class="cam"><a href="/Datafill_OT/index.php/SpecificService/viewRF">Ver RF</a></li>
+                                <li class="cam"><a href="<?= URL::to('Service/RF'); ?>">Actualizar RF</a></li>
+                                <li class="cam"><a href="<?= URL::to('SpecificService/viewRF'); ?>">Ver RF</a></li>
                             </ul>
                         </li>
                          <li class="cam"><a href="#contact-sec">Contactos</a>
                         </li>
                         </li>
-                         <li class="cam"><a href="/Datafill_OT/index.php/welcome/index">Salir</a>
+                         <li class="cam"><a href="<?= URL::to('welcome/index'); ?>">Salir</a>
                         </li>
                     </ul>
                 </div>
@@ -63,16 +63,16 @@
         </nav>
      </header><br><br><br><br>
 <!--      fin header         -->
-<form method="post" enctype="multipart/form-data" action="http://localhost/Datafill_OT/index.php/SpecificService/upLoadRF">
+<form method="post" enctype="multipart/form-data" action="<?= URL::to('SpecificService/upLoadRF'); ?>">
   <input type="file" name="idarchivo">
   <p>Arrastra tu archivo aquí o haz clic en esta área.</p>
-<button type="submit" class="btn btn-primary" onclick = "enableSelect();this.form.action = 'http://localhost/Datafill_OT/index.php/SpecificService/upLoadRF'">UpLoad  <span class="glyphicon glyphicon-ok"></span></button>
+<button type="submit" class="btn btn-primary" onclick = "enableSelect();this.form.action = '<?= URL::to('SpecificService/upLoadRF'); ?>'">UpLoad  <span class="glyphicon glyphicon-ok"></span></button>
 </form>
 
-<script src="/Datafill_OT/assets/plugins/jQuery/jquery-2.2.3.min.js"></script>
+<script src="<?= URL::to('assets/plugins/jQuery/jquery-2.2.3.min.js'); ?>"></script>
 <!-- DataTables -->
-<script src="/Datafill_OT/assets/plugins/datatables/jquery.dataTables.min.js"></script>
-<script src="/Datafill_OT/assets/plugins/datatables/dataTables.bootstrap.min.js"></script>
+<script src="<?= URL::to('assets/plugins/datatables/jquery.dataTables.min.js'); ?>"></script>
+<script src="<?= URL::to('assets/plugins/datatables/dataTables.bootstrap.min.js'); ?>"></script>
 
 <script>
   $(document).ready(function(){

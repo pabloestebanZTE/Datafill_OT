@@ -8,21 +8,21 @@
         <!--   ICONO PAGINA    -->
         <link rel="icon" href="http://cellaron.com/media/wysiwyg/zte-mwc-2015-8-l-124x124.png">
         <!--   BOOTSTRAP    -->
-        <link href="/Datafill_OT/assets/css/bootstrap.css" rel="stylesheet" />
-        <link href="/Datafill_OT/assets/css/font-awesome.min.css" rel="stylesheet" />
-        <link href="/Datafill_OT/assets/plugins/datatables/dataTables.bootstrap.css" rel="stylesheet">
+        <link href="<?= URL::to('assets/css/bootstrap.css'); ?>" rel="stylesheet" />
+        <link href="<?= URL::to('assets/css/font-awesome.min.css'); ?>" rel="stylesheet" />
+        <link href="<?= URL::to('assets/plugins/datatables/dataTables.bootstrap.css'); ?>" rel="stylesheet">
         <!--   HEADER CSS    -->
-        <link href="/Datafill_OT/assets/css/styleHeader.css" rel="stylesheet" />
+        <link href="<?= URL::to('assets/css/styleHeader.css'); ?>" rel="stylesheet" />
         <!--   botones tabla    -->
-        <link rel="stylesheet" href="/Datafill_OT/assets/css/botonesStyle2.css" type="text/css" media="all">
+        <link rel="stylesheet" href="<?= URL::to('assets/css/botonesStyle2.css'); ?>" type="text/css" media="all">
         <!--   FORMULARIO CSS    -->
-        <link href="/Datafill_OT/assets/css/formStyle.css" rel="stylesheet" />
+        <link href="<?= URL::to('assets/css/formStyle.css'); ?>" rel="stylesheet" />
         <!--    JS    -->
-        <script src='/Datafill_OT/assets/plugins/fullcalendar/lib/jquery.min.js'></script>
-        <script type="text/javascript" src="/Datafill_OT/assets/js/tabs.js"></script>
+        <script src='<?= URL::to('assets/plugins/fullcalendar/lib/jquery.min.js'); ?>'></script>
+        <script type="text/javascript" src="<?= URL::to('assets/js/tabs.js'); ?>"></script>
         <!--   SWEET ALERT    -->
-        <link rel="stylesheet" href="/Datafill_OT/assets/plugins/sweetalert-master/dist/sweetalert.css" />
-        <script type="text/javascript" src="/Datafill_OT/assets/plugins/sweetalert-master/dist/sweetalert.min.js"></script>
+        <link rel="stylesheet" href="<?= URL::to('assets/plugins/sweetalert-master/dist/sweetalert.css'); ?>" />
+        <script type="text/javascript" src="<?= URL::to('assets/plugins/sweetalert-master/dist/sweetalert.min.js'); ?>"></script>
 
         <link href='http://fonts.googleapis.com/css?family=Open+Sans' rel='stylesheet' type='text/css' />
 
@@ -54,32 +54,32 @@
                         <span class="icon-bar"></span>
                         <span class="icon-bar"></span>
                     </button>
-                    <a class="logo"><img id="logo" src="/Datafill_OT/assets/img/logo2.png" /></a>
+                    <a class="logo"><img id="logo" src="<?= URL::to('assets/img/logo2.png'); ?>" /></a>
                 </div>
                 <!-- Collect the nav links for toggling -->
                 <div class="collapse navbar-collapse navbar-ex1-collapse">
                     <ul class="nav navbar-nav navbar-right">
                         <li class="cam"><a >Bienvenid@ <?php print_r( $_SESSION['userName']) ?></a>
                         </li>
-                        <li class="cam"><a href="/Datafill_OT/index.php/user/principalView">Home</a>
+                        <li class="cam"><a href="<?= URL::to('user/principalView'); ?>">Home</a>
                         </li>
                         <li class="cam"><a href="#services">Servicios</a>
                         <ul>
-                            <li><a href="/Datafill_OT/index.php/Service/assignService">Agendar Actividad</a></li>
-                            <li><a href="/Datafill_OT/index.php/Service/listServices">Ver Actividades</a></li>
-                            <li><a href="https://drive.google.com/drive/u/2/my-drive" target='_blank'>Drive</a></li>
+                            <li><a href="<?= URL::to('Service/assignService'); ?>">Agendar Actividad</a></li>
+                            <li><a href="<?= URL::to('Service/listServices'); ?>">Ver Actividades</a></li>
+                            <li><a href="https://accounts.google.com/ServiceLogin/signinchooser?passive=1209600&continue=https%3A%2F%2Faccounts.google.com%2FManageAccount&followup=https%3A%2F%2Faccounts.google.com%2FManageAccount&flowName=GlifWebSignIn&flowEntry=ServiceLogin" title="drive" target='_blank'>Drive</a></li>
                         </ul>
                         </li>
                         <li class="cam"><a href="#services">RF</a>
                             <ul>
-                                <li class="cam"><a href="/Datafill_OT/index.php/Service/RF">Actualizar RF</a></li>
-                                <li class="cam"><a href="/Datafill_OT/index.php/SpecificService/viewRF">Ver RF</a></li>
+                                <li class="cam"><a href="<?= URL::to('Service/RF'); ?>">Actualizar RF</a></li>
+                                <li class="cam"><a href="<?= URL::to('SpecificService/viewRF'); ?>">Ver RF</a></li>
                             </ul>
                         </li>
                          <li class="cam"><a href="#contact-sec">Contactos</a>
                         </li>
                         </li>
-                         <li class="cam"><a href="/Datafill_OT/index.php/welcome/index">Salir</a>
+                         <li class="cam"><a href="<?= URL::to('welcome/index'); ?>">Salir</a>
                         </li>
                     </ul>
                 </div>
@@ -123,7 +123,7 @@
                                 echo "</div>";
                           echo "</div><br><br><br><br>";
                             echo "<center>";
-                                echo "<button type= 'submit' class= 'btn btn-primary' onclick = \"this.form.action = 'http://localhost/Datafill_OT/index.php/SpecificService/assignByMail' \">Asignacion  <span class= 'glyphicon glyphicon-ok'></span></button>";
+                                echo "<button type= 'submit' class= 'btn btn-primary' onclick = \"this.form.action = '".URL::to('SpecificService/assignByMail')."'\">Asignacion  <span class= 'glyphicon glyphicon-ok'></span></button>";
                               echo "</center>";
                             // echo "// <!-- Select Basic";
                             // echo "// <a class="btn btn-primary" onclick = "cloneEng()" id="clonar" >";
@@ -165,7 +165,7 @@
                 echo "</div>";
           echo "</div>";
             echo "<center>";
-               echo "<button type='submit' class='btn btn-primary' onclick = \"this.form.action = 'http://localhost/Datafill_OT/index.php/SpecificService/cancelByMail' \">Cancelación <span class='glyphicon glyphicon-ok'></span></button>";
+               echo "<button type='submit' class='btn btn-primary' onclick = \"this.form.action = '".URL::to('SpecificService/cancelByMail')."'\">Cancelación <span class='glyphicon glyphicon-ok'></span></button>";
             echo "</center>";
          echo "</fieldset>";
         echo "</form>";
@@ -189,7 +189,7 @@ echo "</div>";
               echo "</div>";
         echo "</div>";
           echo "<center>";
-             echo "<button type='submit' class='btn btn-primary' onclick = \"this.form.action = 'http://localhost/Datafill_OT/index.php/SpecificService/executeByExcel' \">Ejecución  <span class='glyphicon glyphicon-ok'></span></button>";
+             echo "<button type='submit' class='btn btn-primary' onclick = \"this.form.action = '".URL::to('SpecificService/executeByExcel')."'\">Ejecución  <span class='glyphicon glyphicon-ok'></span></button>";
           echo "</center>";
        echo "</fieldset>";
       echo "</form>";
@@ -403,7 +403,7 @@ echo "</div>";
             <div class="form-group">
                 <label class="col-md-12 control-label"></label>
                  <div class="col-md-12">
-                     <button type="submit" class="btn btn-primary" onclick = "enableSelect();this.form.action = 'http://localhost/Datafill_OT/index.php/SpecificService/saveServiceS'">Crear <span class="glyphicon glyphicon-ok"></span></button>
+                     <button type="submit" class="btn btn-primary" onclick = "enableSelect();this.form.action = '<?= URL::to('SpecificService/saveServiceS'); ?>'">Crear <span class="glyphicon glyphicon-ok"></span></button>
                 </div>
             </div>
         </center>
