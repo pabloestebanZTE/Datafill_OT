@@ -607,7 +607,7 @@
           $idEngA = "";
           for ($j=0; $j <count($users) ; $j++) {
 
-            similar_text((explode(" ", $engA))[0], explode(" ", $users[$j]->getName())[0], $pName);//porcentaje de similar entre primer nombre de db y primera palabra (nombre) de rf
+            similar_text(explode(" ", $engA)[0], explode(" ", $users[$j]->getName())[0], $pName);//porcentaje de similar entre primer nombre de db y primera palabra (nombre) de rf
             similar_text(explode(" ", $users[$j]->getLastname())[0], explode(" ", $engA)[1], $pLastname1);//porcentaje de similar entre primer apellido de db y segunda palabra (apellido) de rf
             similar_text(explode(" ", $users[$j]->getLastname())[0], explode(" ", $engA)[2], $pLastname2);//porcentaje de similar entre primer apellido de db y tercera (apellido) de rf
             similar_text(explode(" ", $users[$j]->getLastname())[0], explode(" ", $engA)[3], $pLastname3);//porcentaje de similar entre primer apellido de db y cuarta (apellido) de rf

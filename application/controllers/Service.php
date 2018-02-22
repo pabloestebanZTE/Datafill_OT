@@ -86,8 +86,6 @@ class Service extends CI_Controller {
 //        $param['mesesTrab'] = array_unique($param['mesesTrab']);
         
 //        print_r($param);
-        
-    }
 
 }
 
