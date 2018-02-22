@@ -1,6 +1,6 @@
 $(function () {
     vista = {
-        init: function () {      
+        init: function () {
             vista.events();
             // vista.getGraficAsignadas();
             // vista.getGraficEnviadas();
@@ -11,17 +11,22 @@ $(function () {
         },
 
         getGrafics: function () {
-            var paramMeses = vista.getArregloMeses();//["Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio"];
-            var paramAsignadas = [120,139,150,211,116,125,120];
-            var paramEnviadas = [85,79,100,101,76,75,60];
-            var paramCanceladas = [25,39,50,51,26,25,10];
-            var paramEjecutadas = [65,59,80,81,56,55,40];
+            vista.getParams();
+        },
+
+        printGrafics: function (params) {
+            //["Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio"];
+//            var mesesTrabajados = params.mesesTrabajados;
+            var paramAsignadas = [120, 139, 150, 211, 116, 125, 120];
+            var paramEnviadas = [85, 79, 100, 101, 76, 75, 60];
+            var paramCanceladas = [25, 39, 50, 51, 26, 25, 10];
+            var paramEjecutadas = [65, 59, 80, 81, 56, 55, 40];
 
             var ctx = $("#myChart");
             var myChart = new Chart(ctx, {
                 type: 'line',
                 data: {
-                    labels: paramMeses,//horizontal
+                    labels: paramMeses, //horizontal
                     datasets: [
                         {
                             //asignadas
@@ -43,7 +48,7 @@ $(function () {
                             pointHoverBorderWidth: 5,
                             pointRadius: 1,
                             pointHitRadius: 10,
-                            data: paramAsignadas,//vertical
+                            data: paramAsignadas, //vertical
                             spanGaps: false,
                         },
                         {
@@ -66,7 +71,7 @@ $(function () {
                             pointHoverBorderWidth: 5,
                             pointRadius: 1,
                             pointHitRadius: 10,
-                            data: paramEnviadas,//vertical
+                            data: paramEnviadas, //vertical
                             spanGaps: false,
                         },
                         {
@@ -89,9 +94,9 @@ $(function () {
                             pointHoverBorderWidth: 5,
                             pointRadius: 1,
                             pointHitRadius: 10,
-                            data: paramCanceladas,//vertical
+                            data: paramCanceladas, //vertical
                             spanGaps: false,
-                        },{
+                        }, {
                             //ejecutadas
                             label: 'Ejecutadas',
                             fill: true,
@@ -111,7 +116,7 @@ $(function () {
                             pointHoverBorderWidth: 5,
                             pointRadius: 1,
                             pointHitRadius: 10,
-                            data: paramEjecutadas,//vertical
+                            data: paramEjecutadas, //vertical
                             spanGaps: false,
                         }
                     ]
@@ -119,16 +124,13 @@ $(function () {
                 options: {
                     scales: {
                         yAxes: [{
-                            ticks: {
-                                beginAtZero:true
-                            }
-                        }]
+                                ticks: {
+                                    beginAtZero: true
+                                }
+                            }]
                     }
                 }
             });
-
-
-            
         },
 
         /**
@@ -137,32 +139,44 @@ $(function () {
          * @example {name: "", x: ""}
          * @returns {undefined}
          */
-        getArregloMeses: function (var1) {
-            $.post(baseurl + "/Service/getMonthsWorked",
-               function(data){
-                var meses = ["Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"];
-                mesesTrabajados = [];
-                     
-                var obj = JSON.parse(data);
-                for (var i = 0; i < obj.length; i++) {
-                    var indice = obj[i].meses.substr(4);
-                      console.log(indice);
-                    console.log(meses[01]);
-//                    console.log(obj[i].meses.substr(4));
-                }
+        getParams: function () {
+            $.post(baseurl + "/Service/getParams",
+                    function (data) {
+                        var obj = JSON.parse(data);
+//                        console.log(obj);
+                        $.each(obj,function(i,item){
+                            console.log(item);
+                        });
 
-                
+                        
+                        
+                        
+//                        data.mesestrabajados;
+//                        var meses = ["", "Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"];
+//                        var indice = 0;
+//                        var mesesTrabajados = [];
+//
+//                        var obj = JSON.parse(data);
+//                        for (var i = 0; i < obj.length; i++) {
+//                            var indice = obj[i].meses.substr(4);
+//                            mesesTrabajados.push(meses[parseInt(indice)]);
+//                        }
 
-               });
+                        vista.printGrafics();
+
+//               return mesesTrabajados;
+
+                    });
+
         },
 
-        
+
         //Eventos de la ventana.
         events: function () {
             //
-            
+
         }
-              
+
     };
 
     vista.init();

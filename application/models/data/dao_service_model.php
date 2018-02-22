@@ -389,6 +389,17 @@
           ");
         return $query->result();
       }
+      // retorna la cantidad y estados totales por meses
+      public function getCatMonthStatusTotal() {
+          $query = $this->db->query("
+            SELECT count(*) as cantidad, EXTRACT( YEAR_MONTH FROM specific_service.D_DATE_START_P ) AS meses, N_ESTADO as estado
+            FROM
+            specific_service
+            group by EXTRACT( YEAR_MONTH FROM specific_service.D_DATE_START_P ), N_ESTADO
+            ; 
+            ");
+          return $query->result();
+      }
 
 
     }

@@ -64,17 +64,6 @@
 <!--      fin header         -->
     <canvas id="myChart" width="400" height="150"></canvas>
 
-
-
-
-
-
-
-
-
-
-
-
   <div class="for-full-back " id="footer">
       Zolid By ZTE Colombia | All Right Reserved
   </div>
