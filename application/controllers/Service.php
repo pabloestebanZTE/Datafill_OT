@@ -61,32 +61,8 @@ class Service extends CI_Controller {
         $this->load->view('updateRF');
     }
 
-    public function getParams() {
-        header('Content-Type: text/plain');
-//        $param['months'] = $this->dao_service_model->getMonthsWorked();
-        $param = $this->dao_service_model->getCatMonthStatusTotal();
-        $param['mesesTrab'] = [];
-        
-        for ($i = 0; $i < count($param)-1 ; $i++) {
-//            if ($) {
-//                
-//            }
-            
-            
-            
-            
-            
-            
-//            array_push($param['mesesTrab'], $param[$i]->meses);
-        
-            
-            
-        }
-            print_r($param);
-//        $param['mesesTrab'] = array_unique($param['mesesTrab']);
-        
-//        print_r($param);
+    
+
 
 }
 
-?>

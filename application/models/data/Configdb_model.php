@@ -49,32 +49,32 @@ class Configdb_model extends CI_Model {
 
 
     /*     * ******************************localhost******************************* */
-//        public function openSession(){
-//          $user = "root";
-//          $pass =  "a4b3c2d1";
-//          $db = "Datafill_OT";
-//
-//          try {
-//            $connection = new mysqli('localhost', $user, $pass, $db);
-//            $connection->set_charset("utf8");
-//          } catch (Exception $e ) {
-//             $connection = "false";
-//          }
-//          return $connection;
-//        }
-    public function openSession() {
-        $user = "root";
-        $pass = "";
-        $db = "datafill_ot";
+        public function openSession(){
+          $user = "root";
+          $pass =  "a4b3c2d1";
+          $db = "Datafill_OT";
 
-        try {
+          try {
             $connection = new mysqli('localhost', $user, $pass, $db);
             $connection->set_charset("utf8");
-        } catch (Exception $e) {
-            $connection = "false";
+          } catch (Exception $e ) {
+             $connection = "false";
+          }
+          return $connection;
         }
-        return $connection;
-    }
+//    public function openSession() {
+//        $user = "root";
+//        $pass = "";
+//        $db = "datafill_ot";
+//
+//        try {
+//            $connection = new mysqli('localhost', $user, $pass, $db);
+//            $connection->set_charset("utf8");
+//        } catch (Exception $e) {
+//            $connection = "false";
+//        }
+//        return $connection;
+//    }
 
     public function closeSession($session) {
         $session->close();

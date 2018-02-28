@@ -404,10 +404,10 @@
     <div class='row-fluid'>
       <div class='input-group'>
         <span class='input-group-addon'><i class='glyphicon glyphicon-user'></i></span>
-        <select class='selectpicker' name='Ingeniero' data-show-subtext='true' data-live-search='true'  data-width='80%'>
+        <select class='selectBre' name='Ingeniero' data-show-subtext='true' data-live-search='true'  data-width='80%'>
           <option value=''>Seleccione Ingeniero</option>
             <optgroup label="Transporte  GDRT">
-            <option value="80158472"><b>Andres Alberto Rubio Idrobo</b></option>
+            <option value="80158472" class="ing"><b>Andres Alberto Rubio Idrobo</b></option>
             <option value="1032364958"><b>Cesar David Duran Alvarez</b></option>
             <option value="1030565500"><b>David Arevalo Bravo</b></option>
             <option value="1022350779"><b>Giovanny Reyes Torres</b></option>

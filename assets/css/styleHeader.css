@@ -132,3 +132,11 @@ table#tableGDATOS th{
   border: 1px solid #545458;
   text-shadow: .5px 0.5px 0px #000;
 }
+.h1-c{
+  text-align: center;
+  letter-spacing: 5px;
+  word-spacing: 15px;
+  font-weight: bold;
+  margin-bottom: 2%;
+  text-shadow: 1px 1px 1px #207be5;
+}

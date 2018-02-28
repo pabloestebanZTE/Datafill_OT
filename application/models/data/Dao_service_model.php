@@ -392,14 +392,88 @@
       // retorna la cantidad y estados totales por meses
       public function getCatMonthStatusTotal() {
           $query = $this->db->query("
-            SELECT count(*) as cantidad, EXTRACT( YEAR_MONTH FROM specific_service.D_DATE_START_P ) AS meses, N_ESTADO as estado
-            FROM
-            specific_service
-            group by EXTRACT( YEAR_MONTH FROM specific_service.D_DATE_START_P ), N_ESTADO
-            ; 
+            select
+            count(*) as cantidad, N_ESTADO as estado,
+            CASE
+                WHEN D_CLARO_F >0 THEN EXTRACT(year_month FROM D_CLARO_F)    
+                ELSE EXTRACT(year_month FROM D_DATE_START_P)
+            END
+             as meses 
+             from specific_service 
+             group by meses, estado; 
             ");
           return $query->result();
       }
+
+      public function getParamsBymonth($mes) {
+        $usuario = "";
+        $where = "";
+        $where = ($mes == 12) ? 
+        "(ss.D_CLARO_F >= '2017-".$mes."-01' and ss.D_CLARO_F < '2018-01-01'".$usuario.") or ( ss.D_DATE_START_P >= '2017-".$mes."-01' and ss.D_DATE_START_P < '2018-01-01' and ss.D_CLARO_F is null".$usuario.")" :
+
+         "(ss.D_CLARO_F >= '2018-".$mes."-01' and ss.D_CLARO_F < '2018-".($mes + 1)."-01'".$usuario.") or ( ss.D_DATE_START_P >= '2018-".$mes."-01' and ss.D_DATE_START_P < '2018-".($mes + 1)."-01' and ss.D_CLARO_F is null".$usuario.")";
+
+          $query = $this->db->query("
+            select 
+            count(*) as cantidad,
+            s.N_TYPE as tipo, 
+            ss.N_ESTADO as estado
+            from specific_service ss
+            inner join service s
+            on ss.K_IDSERVICE = s.K_IDSERVICE
+            where
+            ".$where."
+            group by s.N_TYPE, ss.N_ESTADO
+          ");
+          return $query->result();
+      }
+
+      public function getActivitiesByTipe($tipo, $mes){
+        $where = "";
+        if ($mes == 12) {
+          $where = "where 
+            ( 
+              (ss.D_CLARO_F >= '2017-".$mes."-01' and ss.D_CLARO_F < '2018-01-01') 
+              or 
+                ( ss.D_DATE_START_P >= '2017-".$mes."-01' and ss.D_DATE_START_P < '2018-01-01' and ss.D_CLARO_F is null)
+            ) 
+            and 
+            (s.N_TYPE ='".$tipo."');";
+        }else{
+          $where = "where 
+            ( 
+              (ss.D_CLARO_F >= '2018-".$mes."-01' and ss.D_CLARO_F < '2018-".($mes + 1)."-01') 
+              or 
+                ( ss.D_DATE_START_P >= '2018-".$mes."-01' and ss.D_DATE_START_P < '2018-".($mes + 1)."-01' and ss.D_CLARO_F is null)
+            ) 
+            and 
+            (s.N_TYPE ='".$tipo."');";
+        }
+
+        $query = $this->db->query("
+            select
+            s.N_TYPE as tipo, 
+            ss.K_IDORDER as orden, 
+            ss.K_IDCLARO as id, 
+            ss.n_cantidad as cant, 
+            ss.N_PROYECTO as proyecto, 
+            ss.D_DATE_START_P as f_asignacion, 
+            ss.D_CLARO_F as f_ejecucion, 
+            concat(u.N_NAME, ' ', u.N_LASTNAME) as ingeniero, 
+            ss.N_ESTADO as estado
+
+            from specific_service ss
+            inner join service s
+            on ss.K_IDSERVICE = s.K_IDSERVICE
+            inner join user u 
+            on ss.K_IDUSER = u.K_IDUSER
+            ".$where."
+        ");
+        return $query->result();
+      }
+
+
+
 
 
     }
