@@ -162,9 +162,7 @@ $(function () {
         // mostrar modal de la tabla detalle
         showModalTable: function(obj, mes, tipo){
             $('#tablaModal').modal('show');
-
-
-
+            $('#titleType').html('Detalle total de actividades <b>'+tipo+'</b> del mes de <b>'+mes+'</b>');
             vista.printTableModal(obj);
         },
 
@@ -226,13 +224,14 @@ $(function () {
         //mostrar modal
         showModal: function (parametros, mes){
             $('#graficsModal').modal('show');
+            $('#titleMonth').html('Graficas del mes de <b>'+mes+' </b>');
             // console.log(mes);
             $('#contentModalGrafics').html('<canvas id="modalGrafics" width="400" height="150"></canvas>');
             var ctx = $("#modalGrafics");
             var myChart = new Chart(ctx, {
                 type: 'bar',
                 data: {
-                    labels: parametros.tipo, //horizontal
+                    labels: ["C1","C2","C3","T1","T2","T3","T4","T5","T6"]/*parametros.tipo*/, //horizontal
                     datasets: [
                         {
                             //asignadas
@@ -345,9 +344,6 @@ $(function () {
             });
 
         },
-
-
-
 
         getParams: function () {
             $.post(baseurl + "/Grafics/getParams",

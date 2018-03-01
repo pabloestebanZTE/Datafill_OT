@@ -56,7 +56,7 @@
                                 <li class="cam"><a href="<?= URL::to('SpecificService/viewRF'); ?>">Ver RF</a></li>
                             </ul>
                         </li>
-                         <li class="cam"><a href="#contact-sec">Contactos</a>
+                         <li class="cam"><a href="<?= URL::to('Grafics/getGrafics'); ?>">Graficas</a>
                         </li>
                          <li class="cam"><a href="<?= URL::to('welcome/index'); ?>">Salir</a>
                         </li>
@@ -66,26 +66,25 @@
         </nav>
      </header><br><br><br><br>
 <!--      fin header         -->
-<h1 class="h1-c">GRAFICAS POR MESES</h1>
+<center><h1 class="h1">GRAFICAS POR MESES</h1></center>
 <div class="container">
   <!-- GRAFICAS -->
   <canvas id="graficsTotal" width="400" height="155"></canvas>
 </div>
-
 <!-- Modal Graficas Mes-->
 <div class="modal fade" id="graficsModal" tabindex="-1"  data-toggle="modal" role="dialog" aria-labelledby="myModalLabel">
   <div class="modal-dialog modal-lg" role="document">
     <div class="modal-content">
       <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-        <h4 class="modal-title" id="myModalLabel">Modal title</h4>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><img src="<?= URL::to('assets/img/close.ico'); ?>" alt="cerrar" class="modalImage" ></button>
+        <h4 class="modal-title" id="titleMonth">Modal title</h4>
       </div>
       <div class="modal-body" id="contentModalGrafics">        
             <canvas id="modalGrafics" width="400" height="150"></canvas>
       </div>
       <div class="modal-footer">
-        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-        <button type="button" class="btn btn-primary">Save changes</button>
+        <h4 class="foot">Zolid By ZTE Colombia | All Right Reserved</h4>
+        <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar  <i class="glyphicon glyphicon-chevron-up"></i></button>
       </div>
     </div>
   </div>
@@ -93,11 +92,11 @@
 
 <!-- Modal tabla detalles-->
 <div class="modal fade" id="tablaModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
-  <div class="modal-dialog modal-lg2" role="document">
+  <div class="modal-dialog modal-lg" role="document">
     <div class="modal-content">
       <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-        <h4 class="modal-title" id="myModalLabel">Modal tabla</h4>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><img src="<?= URL::to('assets/img/close.ico'); ?>" alt="cerrar" class="modalImage" ></button>
+        <h4 class="modal-title" id="titleType">Modal tabla</h4>
       </div>
       <div class="modal-body">   
 
@@ -108,17 +107,12 @@
 
       </div>
       <div class="modal-footer">
-        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-        <button type="button" class="btn btn-primary">Save changes</button>
+      <h4 class="foot">Zolid By ZTE Colombia | All Right Reserved</h4>
+        <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar  <i class="glyphicon glyphicon-chevron-up"></i></button>
       </div>
     </div>
   </div>
 </div>
-
-
-
-
-
 
   <div class="for-full-back " id="footer">
       Zolid By ZTE Colombia | All Right Reserved

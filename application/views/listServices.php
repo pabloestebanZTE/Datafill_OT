@@ -247,7 +247,7 @@
                                 <li class="cam"><a href="<?= URL::to('SpecificService/viewRF'); ?>">Ver RF</a></li>
                             </ul>
                         </li>
-                         <li class="cam"><a href="#contact-sec">Contactos</a>
+                         <li class="cam"><a href="<?= URL::to('Grafics/getGrafics'); ?>">Graficas</a>
                         </li>
                         </li>
                          <li class="cam"><a href="<?= URL::to('welcome/index'); ?>">Salir</a>
@@ -259,7 +259,7 @@
      </header>
 <!--      fin header         -->
      <br><br><br><br>
-
+<a href="<?= URL::to('Grafics/getGrafics'); ?>" data-toggle="tooltip" title="Ver Graficas"><img src="<?= URL::to('assets/img/grafics.gif'); ?>" alt="graficas"  class="botonIcon"></a>
 <!-- menu sticky -->
 <div class="contenedor closed" id="content_fixed">
 <div id="btn_fixed" >
@@ -296,7 +296,7 @@
   </span>
   <a href="<?= URL::to('Report/totalReport?id='.$_SESSION["id"].'&&role='.$_SESSION["role"].''); ?>" class="boton2" id="total">TOTAL</a>
   <a href="<?= URL::to('Report/thisMonthReport?id='.$_SESSION["id"].'&&role='.$_SESSION["role"].''); ?>" class="boton2" id="esteMes">Total este Mes</a>
-  <!-- <a href="#" class="boton2" id="porMes">Por Mes</a> -->
+
 
   <div class="dropdown">
   <button class="btn btn-secondary dropdown-toggle boton2" type="button" id="porMes" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Por Mes</button>

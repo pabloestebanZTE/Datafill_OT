@@ -55,7 +55,7 @@
                                 <li class="cam"><a href="<?= URL::to('SpecificService/viewRF'); ?>">Ver RF</a></li>
                             </ul>
                         </li>
-                         <li class="cam"><a href="#contact-sec">Contactos</a>
+                         <li class="cam"><a href="<?= URL::to('Grafics/getGrafics'); ?>">Graficas</a>
                         </li>
                         </li>
                          <li class="cam"><a href="<?= URL::to('welcome/index'); ?>">Salir</a>

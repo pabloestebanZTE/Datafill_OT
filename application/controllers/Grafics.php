@@ -105,21 +105,20 @@
        //devuelve el indice del mes seleccionado
        $indiceMes = array_keys($meses, $mes)[0];       
        $param = $this->dao_service_model->getParamsBymonth($indiceMes);
-
        $response['asignadas'] = [];
        $response['canceladas'] = [];
        $response['enviadas'] = [];
        $response['ejecutadas'] = [];
        $response['tipo'] = [];
-
+       //creo el objeto y le asigno a cada campo el valor 0
        for ($i = 0; $i <= 8 ; $i++) {
           $respuesta[$i]['asignadas']=0;
           $respuesta[$i]['canceladas']=0;
           $respuesta[$i]['enviadas']=0;
           $respuesta[$i]['ejecutadas']=0;
         }
-
-        for ($i=0; $i < count($param)-1 ; $i++) { 
+        // lleno los campos, si no hay valor sigue predeterminado el valor 0
+        for ($i=0; $i < count($param) ; $i++) { 
 
           array_push($response['tipo'], $param[$i]->tipo);
           //asignadas c1
@@ -279,15 +278,17 @@
             $respuesta[8]['ejecutadas']=$param[$i]->cantidad;
           }
         }
-
+        //el arreglo tipo, trae los tipos de actividades q han sido asignados
+        //pero no lo uso porque deje predeteminado en las graficas c1 c2 c3 t1 t2 t3...
         $response['tipo'] = array_values(array_unique($response['tipo']));
+        //creo los arreglos finales separandolos en asignados, cancelados etc en el orden espacifico
+        // 9 valores por arreglos c1 c2 c3 t1 t2 t3 .......
         foreach ($respuesta as $key => $value) {
           array_push($response['asignadas'], $value['asignadas']);
           array_push($response['canceladas'], $value['canceladas']);
           array_push($response['enviadas'], $value['enviadas']);
           array_push($response['ejecutadas'], $value['ejecutadas']);
         }
-
         echo json_encode($response);
 
     }

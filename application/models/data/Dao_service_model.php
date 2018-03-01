@@ -389,8 +389,10 @@
           ");
         return $query->result();
       }
+
       // retorna la cantidad y estados totales por meses
       public function getCatMonthStatusTotal() {
+        $user = ($_SESSION['role'] == 4)? "":"where K_IDUSER = ".$_SESSION['id']."";
           $query = $this->db->query("
             select
             count(*) as cantidad, N_ESTADO as estado,
@@ -400,6 +402,7 @@
             END
              as meses 
              from specific_service 
+             ".$user."
              group by meses, estado; 
             ");
           return $query->result();
@@ -407,6 +410,8 @@
 
       public function getParamsBymonth($mes) {
         $usuario = "";
+        $usuario = ($_SESSION['role'] == 4)? "":" and ss.K_IDUSER = ".$_SESSION['id']."";
+
         $where = "";
         $where = ($mes == 12) ? 
         "(ss.D_CLARO_F >= '2017-".$mes."-01' and ss.D_CLARO_F < '2018-01-01'".$usuario.") or ( ss.D_DATE_START_P >= '2017-".$mes."-01' and ss.D_DATE_START_P < '2018-01-01' and ss.D_CLARO_F is null".$usuario.")" :
@@ -429,6 +434,8 @@
       }
 
       public function getActivitiesByTipe($tipo, $mes){
+        $usuario = "";
+        $usuario = ($_SESSION['role'] == 4)? "": " and (ss.K_IDUSER= ".$_SESSION['id'].")";
         $where = "";
         if ($mes == 12) {
           $where = "where 
@@ -438,7 +445,7 @@
                 ( ss.D_DATE_START_P >= '2017-".$mes."-01' and ss.D_DATE_START_P < '2018-01-01' and ss.D_CLARO_F is null)
             ) 
             and 
-            (s.N_TYPE ='".$tipo."');";
+            (s.N_TYPE ='".$tipo."'".$usuario.");";
         }else{
           $where = "where 
             ( 
@@ -447,7 +454,7 @@
                 ( ss.D_DATE_START_P >= '2018-".$mes."-01' and ss.D_DATE_START_P < '2018-".($mes + 1)."-01' and ss.D_CLARO_F is null)
             ) 
             and 
-            (s.N_TYPE ='".$tipo."');";
+            (s.N_TYPE ='".$tipo."'".$usuario.");";
         }
 
         $query = $this->db->query("
