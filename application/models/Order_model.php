@@ -6,6 +6,7 @@ class Order_model extends CI_Model {
     public $name;
     public $creationDate;
     public $link;
+    public $prioridad;
 
     public function __construct() {
         
@@ -43,10 +44,19 @@ class Order_model extends CI_Model {
         $this->link = $link;
     }
 
+    public function getPrioridad() {
+        return $this->prioridad;
+    }
+
+    public function setPrioridad($prioridad) {
+        $this->prioridad = $prioridad;
+    }
+
     public function createOrder($id, $name, $creationDate) {
         $this->setId($id);
         $this->setName($name);
         $this->setCreationDate($creationDate);
+        $this->setPrioridad($prioridad);
     }
 
 }

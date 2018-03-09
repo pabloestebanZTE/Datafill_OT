@@ -147,24 +147,27 @@
                     $this->load->view('assignService', $answer);
                   }
         } else {
-              header('Content-Type: text/plain');
-              print_r($_POST['actividades']);
-
 
             $clave = explode("\n", $_POST['actividades'])[14];
             $clave = str_replace(array("\n", "\r", "\t"), '', $clave);
-            print_r($clave);
-              echo "\n\n\n";
             if ($clave == "Proyecto:") { 
                   //creacion orden          
-                  $orden = explode("Detalle de servicios", $_POST['actividades']); 
+                  $orden = explode("Detalle de servicios", $_POST['actividades']);
+
                   $asignar['ot'] = str_replace(array("\n", "\r", "\t", " "), '', explode("\n", $orden[0])[6]);
                   $asignar['solicitante'] =  explode("\n", $orden[0])[12];
                   $asignar['proyecto'] = explode("\n", $orden[0])[16];
-                  $asignar['descripcion'] = explode("\n", $orden[0])[20];
-                  $asignar['fCreacion'] = str_replace("/", "-", substr(explode("\n", $orden[0])[24], 0, -9));
 
-                  print_r($asignar);
+                  if (str_replace(array("\n", "\r", "\t", " "), '', explode("\n", $orden[0])[18]) == 'Prioridad:'){
+                     $asignar['prioridad'] = str_replace(array("\n", "\r", "\t", " "), '', explode("\n", $orden[0])[20]);
+                      $asignar['descripcion'] = explode("\n", $orden[0])[24];
+                     $asignar['fCreacion'] = str_replace("/", "-", substr(explode("\n", $orden[0])[28], 0, -9));
+                    
+                  } else {
+                     $asignar['prioridad'] = " ";
+                     $asignar['descripcion'] = explode("\n", $orden[0])[20];
+                     $asignar['fCreacion'] = str_replace("/", "-", substr(explode("\n", $orden[0])[24], 0, -9));
+                  }
 
                   //separacion  actividades
                   $tareas = explode("Forecast", $_POST['actividades']);
@@ -674,8 +677,10 @@
 
 //**************************guardar en bd asignar con mail**************************
       public function saveServicesExcel(){
+         // header('Content-Type: text/plain');
        $order = new order_model;
        $order->createOrder(str_replace(array("\n", "\r", "\t", " "), '',$_POST['OT']),"",$_POST['fCreacion']);
+       $order->setPrioridad($_POST['prioridad']);
        $this->dao_order_model->insertOrder($order);
        $activity = new service_spec_model;
        $count2 = 0; 
@@ -706,8 +711,7 @@
                   $activity = new service_spec_model;
               $activity->createServiceS($eng, "", $_POST['actividades_'.$g], $_POST['descripcionActividad_'.$g], "", "", $_POST['fCreacion'], $_POST['forecast_'.$g], $_POST['OT'], $_POST['sitio_'.$g], $_POST['tipo_'.$g], "", $_POST['descripcion'], $_POST['solicitante'], $_POST['proyecto'], "Asignada","");
               $activity->setQuantity($_POST['cantidadActiv_'.$g]);
-              $activity->setRegion($_POST['regional_'.$g]);
-              // print_r($activity);
+              $activity->setRegion($_POST['regional_'.$g]);              
               $countActivities = $this->dao_service_model->insertFromExcel($activity);
               $count2+=$countActivities;
               $actividades[$g] = $activity;

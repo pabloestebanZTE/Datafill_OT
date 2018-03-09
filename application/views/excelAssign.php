@@ -118,25 +118,7 @@ fila = fila + '</tr>';
     console.log(sumados);
     console.log(cantidadExcel);
   }
-/*
-  function seleccionar(id_fila){
-    if($('#'+id_fila).hasClass('seleccionada')){
-      $('#'+id_fila).removeClass('seleccionada');
-    }
-    else{
-      $('#'+id_fila).addClass('seleccionada');
-    }
-    //2702id_fila_selected=id_fila;
-    id_fila_selected.push(id_fila);
-  }
-  
-  function eliminar(id_fila){
-    for(var i=0; i<id_fila.length; i++){
-      $('#'+id_fila[i]).remove();
-    }
-    reordenar();
-  }
-*/
+
   function reordenar(){
     var num=1;
     $('#tabla tbody tr').each(function(){
@@ -208,6 +190,7 @@ $('#tabla tbody tr').each(function(){
         <a id="bt_delall" class="btn btn-primary"><span class="glyphicon glyphicon-minus" aria-hidden="true"></span></a>
 <?php
         echo "<input type='hidden' name='OT' id='OT' value='".$asignar['ot']."'>";
+        echo "<input type='hidden' name='prioridad' id='prioridad' value='".$asignar['prioridad']."'>";
         echo "<input type='hidden' name='solicitante' id='solicitante' value='".$asignar['solicitante']."'>";
         echo "<input type='hidden' name='fCreacion' id='fCreacion' value='".$asignar['fCreacion']."'>";
         echo "<input type='hidden' name='proyecto' id='proyecto' value='".$asignar['proyecto']."'>";
@@ -248,7 +231,9 @@ $('#tabla tbody tr').each(function(){
     print_r($asignar);*/
        echo "<div class='box-header'>";
          echo "<h5><b>OT : </b>".$asignar['ot']."</h5><h5><b>Solicitante : </b>".$asignar['solicitante']."</h5><h5><b>Fecha de Creacion : </b>".$asignar['fCreacion']."</h5>";
-         echo "<h5><b>Proyecto : </b>".$asignar['proyecto']."</h5><h5><b>Descripción : </b>".$asignar['descripcion']."</h5>";
+         echo "<h5><b>Proyecto : </b>".$asignar['proyecto']."</h5>";
+         echo "<h5><b>Descripción : </b>".$asignar['descripcion']."</h5>";
+         echo "<h5><b>Prioridad : </b><spam style='color:red'>".$asignar['prioridad']."</spam></h5>";
        echo "</div>";
        echo "<!-- /.box-header -->";
        echo "<div class='box-body'>";

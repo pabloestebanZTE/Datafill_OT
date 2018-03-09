@@ -201,8 +201,8 @@ class Dao_order_model extends CI_Model {
     public function insertOrder($order) {
         $dbConnection = new configdb_model();
         $session = $dbConnection->openSession();
-        $sql = "INSERT INTO ot (K_IDORDER, N_NAME, D_DATE_CREATION)
-            values (" . $order->getId() . ", '" . $order->getName() . "', STR_TO_DATE('" . $order->getCreationDate() . "', '%Y-%m-%d'));";
+        $sql = "INSERT INTO ot (K_IDORDER, N_NAME, D_DATE_CREATION, N_PRIORIDAD)
+            values (" . $order->getId() . ", '" . $order->getName() . "', STR_TO_DATE('" . $order->getCreationDate() . "', '%Y-%m-%d'), '".$order->getPrioridad()."');";
         if ($session != "false") {
             $result = $session->query($sql);
         }
