@@ -25,11 +25,11 @@
         <script type="text/javascript" src="<?= URL::to('assets/plugins/sweetalert-master/dist/sweetalert.min.js'); ?>"></script>
 
         <!-- Push.js   -->
-        <script src="<?= URL::to('assets/js/push.min.js'); ?>"></script> 
+        <script src="<?= URL::to('assets/js/push.min.js'); ?>"></script>
 
         <link href='http://fonts.googleapis.com/css?family=Open+Sans' rel='stylesheet' type='text/css' />
 
-       <script>         
+       <script>
        baseurl = "<?php echo URL::base(); ?>";
           function showMessage(mensaje){
            if(mensaje == "error"){
@@ -39,13 +39,13 @@
               type: "error",
               confirmButtonText: "Ok"
             });
-           } 
+           }
           }
 
 
 
        </script>
-    
+
 </head>
 <body>
     <!-- Navigation -->
@@ -95,11 +95,10 @@
      <br>
 
 <?php
-    
+
       echo "<div class='wrapper tabs'>";
-             $meses[1] = 'Asignación';
-             $meses[2] = 'Cancelación';
-             $meses[3] = 'Ejecución';
+             $meses[1] = 'Agendamiento';
+
              echo "<center>";
          echo "<ul class='nav'>";
            for ($p = 1; $p <= count($meses); $p++){
@@ -117,7 +116,7 @@
               echo "<div class='container'>";
                   echo "<form class= 'well form-horizontal' action='' method='post'  id='assignService' name='assignServie' enctype= 'multipart/form-data'>";
                       echo "<fieldset>";
-                          echo "<legend >Asignación</legend>";
+                          echo "<legend >Agendamiento de actividades</legend>";
                           //-------- Text area------
                           echo "<div class='form-group'>";
                             echo "<label class='col-md-1 control-label'></label>";
@@ -128,8 +127,10 @@
                                 echo "</div>";
                           echo "</div><br><br><br><br>";
                             echo "<center>";
-                                echo "<button type= 'submit' class= 'btn btn-primary' onclick = \"this.form.action = '".URL::to('SpecificService/assignByMail')."'\">Asignacion  <span class= 'glyphicon glyphicon-ok'></span></button>";
-                              echo "</center>";
+                                echo "<button type= 'submit' class= 'btn btn-primary' onclick = \"this.form.action = '".URL::to('SpecificService/assignByMail')."'\">Asignación  <span class= 'glyphicon glyphicon-ok'></span></button><br><br>";
+                                echo "<button type= 'submit' class= 'btn btn-danger' onclick = \"this.form.action = '".URL::to('SpecificService/cancelByMail')."'\">Cancelación  <span class= 'glyphicon glyphicon-ok'></span></button><br><br>";
+                                echo "<button type= 'submit' class= 'btn btn-success' onclick = \"this.form.action = '".URL::to('SpecificService/executeByExcel')."'\">Ejecución  <span class= 'glyphicon glyphicon-ok'></span></button>";
+                            echo "</center>";
                             // echo "// <!-- Select Basic";
                             // echo "// <a class="btn btn-primary" onclick = "cloneEng()" id="clonar" >";
                             // echo "// <span class="glyphicon glyphicon-plus" aria-hidden="true"></span></a>";
@@ -153,54 +154,6 @@
                     echo "</form>";
                 echo "</div>";
           echo "</div>";
-
-  echo "<div class='tab-content' id='tab2'><br>";
-      echo "<div class= 'container'>";
-        echo "<form class= 'well form-horizontal' action='' method='post'  id='assignService' name='assignServie' enctype= 'multipart/form-data'>";
-         echo "<fieldset>";
-         //-------------------------text area---------------------------------
-            echo "<legend >Cancelación</legend>";
-          echo "<div class='form-group'>";
-              echo "<label class='col-md-1 control-label'></label>";
-                echo "<div class='col-md-9 inputGroupContainer'>";
-                  echo "<div class='input-group'>";
-                    echo "<span class='input-group-addon'><i class='glyphicon glyphicon-file'></i></span>";
-                    echo "<textarea class='form-control' rows='14' name='cancelacion' placeholder='Copiar Cancelación'></textarea>";
-                  echo "</div>";
-                echo "</div>";
-          echo "</div>";
-            echo "<center>";
-               echo "<button type='submit' class='btn btn-primary' onclick = \"this.form.action = '".URL::to('SpecificService/cancelByMail')."'\">Cancelación <span class='glyphicon glyphicon-ok'></span></button>";
-            echo "</center>";
-         echo "</fieldset>";
-        echo "</form>";
-      echo "</div>";
-echo "</div>";
-
-
- echo "<div class='tab-content' id='tab3'><br>";
-    echo "<div class='container'>";
-      echo "<form class='well form-horizontal' action='' method='post'  id='assignService' name='assignServie' enctype='multipart/form-data'>";
-       echo "<fieldset>";
-          echo "<legend >Ejecución</legend>";
-        // -------------------<!-- Text area-->-----------------------------
-        echo "<div class='form-group'>";
-            echo "<label class='col-md-1 control-label'></label>";
-              echo "<div class='col-md-9 inputGroupContainer'>";
-                echo "<div class='input-group'>";
-                  echo "<span class='input-group-addon'><i class='glyphicon glyphicon-file'></i></span>";
-                  echo "<textarea class='form-control' rows='14' name='ejecucion' placeholder='Copiar Ejecución'></textarea>";
-                echo "</div>";
-              echo "</div>";
-        echo "</div>";
-          echo "<center>";
-             echo "<button type='submit' class='btn btn-primary' onclick = \"this.form.action = '".URL::to('SpecificService/executeByExcel')."'\">Ejecución  <span class='glyphicon glyphicon-ok'></span></button>";
-          echo "</center>";
-       echo "</fieldset>";
-      echo "</form>";
-    echo "</div>";
-echo "</div>";
-
 ?>
 
 
@@ -440,7 +393,7 @@ echo "</div>";
       }
 
   ?>
-         function pushMessage(mensaje){         
+         function pushMessage(mensaje){
 
             if (mensaje == "ok") {
               Push.create( "Bien hecho!", {
@@ -463,7 +416,7 @@ echo "</div>";
                       }
               });
             }
-          }      
+          }
         </script>
 </body>
 </html>
