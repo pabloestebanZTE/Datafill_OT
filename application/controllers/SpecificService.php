@@ -24,8 +24,9 @@
 
       //=================
       public function assignByMail(){
-              // header('Content-Type: text/plain');
+        //$dic es el campo de validacion q uso para saber si la copia viene de outlook o z-mail
         $dic = str_replace(array("\n", "\r", "\t"), '', explode("\n", $_POST['actividades'])[4]);
+        //si es diferente a ot viene de zmail 
         if ($dic != "OT:" ) {
                 //validacion si viene de correo de asignacion
                 $_POST['actividades'] = str_replace("\t", "\n", $_POST['actividades']);
@@ -33,12 +34,22 @@
                 $clave = str_replace(array("\n", "\r", "\t"), '', $clave);
                 if ($clave == "Proyecto:") {           
                   //creacion orden          
-                  $orden = explode("Detalle de servicios", $_POST['actividades']);       
+                  $orden = explode("Detalle de servicios", $_POST['actividades']);
+
                   $asignar['ot'] = str_replace(array("\n", "\r", "\t", " "), '', explode("\n", $orden[0])[3]);
                   $asignar['solicitante'] =  explode("\n", $orden[0])[7];
                   $asignar['proyecto'] = explode("\n", $orden[0])[9];
-                  $asignar['descripcion'] = explode("\n", $orden[0])[11];
-                  $asignar['fCreacion'] = str_replace("/", "-", substr(explode("\n", $orden[0])[13], 0, -9));
+
+                  if (str_replace(array("\n", "\r", "\t", " "), '', explode("\n", $orden[0])[10]) == 'Prioridad:'){
+                      $asignar['prioridad'] = explode("\n", $orden[0])[11];
+                      $asignar['descripcion'] = explode("\n", $orden[0])[13];
+                      $asignar['fCreacion'] = str_replace("/", "-", substr(explode("\n", $orden[0])[15], 0, -9));  
+                  } else {
+                      $asignar['prioridad'] = " ";
+                      $asignar['descripcion'] = explode("\n", $orden[0])[11];
+                      $asignar['fCreacion'] = str_replace("/", "-", substr(explode("\n", $orden[0])[13], 0, -9));
+                  }
+
                   //separacion  actividades
                   $tareas = explode("Forecast", $_POST['actividades']);
                   $id = explode("\n", $tareas[1]);
@@ -136,8 +147,14 @@
                     $this->load->view('assignService', $answer);
                   }
         } else {
+              header('Content-Type: text/plain');
+              print_r($_POST['actividades']);
+
+
             $clave = explode("\n", $_POST['actividades'])[14];
             $clave = str_replace(array("\n", "\r", "\t"), '', $clave);
+            print_r($clave);
+              echo "\n\n\n";
             if ($clave == "Proyecto:") { 
                   //creacion orden          
                   $orden = explode("Detalle de servicios", $_POST['actividades']); 
@@ -146,6 +163,8 @@
                   $asignar['proyecto'] = explode("\n", $orden[0])[16];
                   $asignar['descripcion'] = explode("\n", $orden[0])[20];
                   $asignar['fCreacion'] = str_replace("/", "-", substr(explode("\n", $orden[0])[24], 0, -9));
+
+                  print_r($asignar);
 
                   //separacion  actividades
                   $tareas = explode("Forecast", $_POST['actividades']);
@@ -414,13 +433,17 @@
       }
 //CAMILO-------------------------------------------------------------------------------------
       public function updateSpectService(){
+        // print_r($_POST);
+        // echo "<br><br><br><br>";
         if (!$_POST['checkbox']) {
           $_POST['checkbox'][0] = $_POST['idService'];  
         }
         for ($i=0; $i < count($_POST['checkbox']); $i++) { 
           $close = new service_spec_model;
-          $close->closeService($_POST['fInicior'], $_POST['fFinr'], $_POST['crq'], $_POST['state'], $_POST['observacionesCierre']);
+          $close->closeService($_POST['fInicior'], $_POST['fFinr'], $_POST['crq'], $_POST['state'], $_POST['observacionesCierre'], $_POST['link'], $_POST['link2']);
           $close->setIdClaro($_POST['checkbox'][$i]);
+          // print_r($close);
+          // echo "<br><br><br>";
           $this->dao_service_model->updateClose($close);
         }
         if (!$_POST['orden']) {
@@ -675,11 +698,12 @@
                if ($cant2 < $g) {
                  $eng = $_POST['inge3'];
                }
-          //le sumo 1 porque del formulario viene desed name= [inge1] y  del for inicia en 0
-          $h = $g+1;
-          //capturo los mails de los ingenieros para el envio de correo algunos indices quedan vacios
-          $ingeMails[$g] = $this->dao_user_model->getMailById($_POST["inge".$h]);
+              //le sumo 1 porque del formulario viene desed name= [inge1] y  del for inicia en 0
+              $h = $g+1;
+              //capturo los mails de los ingenieros para el envio de correo algunos indices quedan vacios
+              $ingeMails[$g] = $this->dao_user_model->getMailById($_POST["inge".$h]);
               //-----------creacion del objeto---------------------------
+                  $activity = new service_spec_model;
               $activity->createServiceS($eng, "", $_POST['actividades_'.$g], $_POST['descripcionActividad_'.$g], "", "", $_POST['fCreacion'], $_POST['forecast_'.$g], $_POST['OT'], $_POST['sitio_'.$g], $_POST['tipo_'.$g], "", $_POST['descripcion'], $_POST['solicitante'], $_POST['proyecto'], "Asignada","");
               $activity->setQuantity($_POST['cantidadActiv_'.$g]);
               $activity->setRegion($_POST['regional_'.$g]);
@@ -687,6 +711,7 @@
               $countActivities = $this->dao_service_model->insertFromExcel($activity);
               $count2+=$countActivities;
               $actividades[$g] = $activity;
+
             }
           }
         }
@@ -722,7 +747,6 @@
                         }*/
 
                     //-------------------------------email------------------
-
                     $cuerpo = "<html>
                                   <head>
                                   <title>asignacion</title>
@@ -744,7 +768,7 @@
 
                             <div class='box-body'>
                                <table id='example1' class='table table-bordered table-striped' border = '1'>
-                                 <thead>
+                                 <thead style='background-color: #818181;color: #fff;'>
                                  <tr>
                                    <th>ID Actividad</th>
                                    <th>Regional</th>
@@ -755,6 +779,8 @@
                                  </thead>
                                  <tbody>
                                  ";
+
+
                                  for ($i=0; $i < $cantAct ; $i++) {
                                       $cuerpo = $cuerpo."<tr>
                                                  <td>".$actividades[$i]->idClaro."</td>
@@ -766,10 +792,9 @@
                                                ";
                                 }
 
-                                $cuerpo = $cuerpo."<tfoot>
+                                $cuerpo = $cuerpo."<tfoot style='background-color: #818181;color: #fff;'>
                                                  <tr>
                                                    <th>ID Actividad</th>
-                                                   <th>Tipo Actividad</th>
                                                    <th>Regional</th>
                                                    <th>Cantidad</th>
                                                    <th>Descripcion</th>
@@ -788,18 +813,18 @@
                     $this->email->initialize($config);
                     $this->email->from('zolid@zte.com', 'ZOLID_ZTE');
                     $this->email->to($correos);
-                    //$this->email->to('yuyupa14@gmail.com, andrea.rosero.ext@claro.com.co, andrea.lorenaroserochasoy@zte.com.cn, pablo.esteban@zte.com.cn, bredybuitrago@gmail.com');
-                    // $this->email->cc('andrea.rosero.ext@claro.com.co, andrea.lorenaroserochasoy@zte.com.cn');//, cesar.rios.ext@claro.com.co
-                    // $this->email->bcc('bredybuitrago@gmail.com ,bredi.buitrago@zte.com.cn, pablo.esteban@zte.com.cn');
+                    
                     $this->email->subject("Notificación de ASIGNACIÓN de orden de servicio. Orden: ".$actividades[0]->order.". Proyecto: ".$actividades[0]->proyecto.".");
                     $this->email->message($cuerpo);
                     $this->email->send();
                 }
-          $_SESSION["message"] = 'ok';
-          header('Location: '. URL::to("Service/listServices"));
+          $mensaje["message"] = 'ok';
+          $this->load->view('assignService', $mensaje);
+          // header('Location: '. URL::to("Service/listServices"));
         }else{
-          $_SESSION["message"] = 'error';
-          header('Location: '. URL::to("Service/listServices"));
+          $mensaje["message"] = 'error';
+          $this->load->view('assignService', $mensaje);
+          // header('Location: '. URL::to("Service/listServices"));
         }
       }
 
@@ -836,7 +861,7 @@
                             </div>
                             <div class='box-body'>
                               <table id='example1' class='table table-bordered table-striped' border = '1'>
-                                  <thead>
+                                  <thead style='background-color: #ff0000;color: #fff;'>
                                     <tr>
                                       <th>ID Actividad</th>
                                       <th>Tipo Actividad</th>
@@ -858,7 +883,7 @@
                                       </tr>
                                   </tbody>";
                       }
-               $cuerpo = $cuerpo."<tfoot>
+               $cuerpo = $cuerpo."<tfoot style='background-color: #ff0000;color: #fff;'>
                                       <tr>
                                         <th>ID Actividad</th>
                                         <th>Tipo Actividad</th>
@@ -892,11 +917,7 @@
           $this->email->from('zolid@zte.com', 'ZOLID_ZTE');
 
           $this->email->to(strtolower($mails));
-          //$this->email->to('bredybuitrago@outlook.com, yuyupa14@gmail.com');
           
-          //$this->email->to('yuyupa14@gmail.com, andrea.rosero.ext@claro.com.co, andrea.lorenaroserochasoy@zte.com.cn, pablo.esteban@zte.com.cn, bredybuitrago@gmail.com');
-          //$this->email->cc('andrea.rosero.ext@claro.com.co, andrea.lorenaroserochasoy@zte.com.cn');//, cesar.rios.ext@claro.com.co
-          //$this->email->bcc('bredybuitrago@gmail.com ,bredi.buitrago@zte.com.cn, pablo.esteban@zte.com.cn');
           $this->email->subject("Notificación de CANCELACIÓN de orden de servicio. Orden: ".$existe[0]->order->getId().". Proyecto: ".$existe[0]->proyecto.".");
           $this->email->message($cuerpo);
           $this->email->send();
@@ -944,7 +965,7 @@
                             </div>
                             <div class='box-body'>
                               <table id='example1' class='table table-bordered table-striped' border = '1'>
-                                  <thead>
+                                  <thead style='background-color: #1ba616;color: #fff;'>
                                     <tr>
                                       <th>ID Actividad</th>
                                       <th>Tipo Actividad</th>
@@ -968,7 +989,7 @@
                                       </tr>
                                   </tbody>";
                       }
-               $cuerpo = $cuerpo."<tfoot>
+               $cuerpo = $cuerpo."<tfoot style='background-color: #1ba616;color: #fff;'>
                                       <tr>
                                         <th>ID Actividad</th>
                                         <th>Tipo Actividad</th>
@@ -1021,10 +1042,12 @@
           header('Location: '. URL::to("Service/listServices"));
         }   
       }
-
+      // Metodo para reasignar una o varias actividades a otro ingeniero
       public function reasign(){
         $a=[];
+        // Si se eligio ingeniero
         if ($_POST['Ingeniero']) {
+          // recorre todas las actividades selecciona
           for ($i=0; $i < count($_POST['checkbox']); $i++) {
             $activity[$i] = $this->dao_service_model->getServiceByIdActivity($_POST['checkbox'][$i]);
 
@@ -1066,7 +1089,7 @@
                             </div>
                             <div class='box-body'>
                               <table id='example1' class='table table-bordered table-striped' border = '1'>
-                                  <thead>
+                                  <thead style='background-color: #4486f8;color: #fff;'>
                                     <tr>
                                       <th>ID Actividad</th>
                                       <th>Tipo Actividad</th>
@@ -1090,7 +1113,7 @@
                                       </tr>
                                   </tbody>";
                       }
-               $cuerpo = $cuerpo."<tfoot>
+               $cuerpo = $cuerpo."<tfoot style='background-color: #4486f8;color: #fff;'>
                                       <tr>
                                         <th>ID Actividad</th>
                                         <th>Tipo Actividad</th>

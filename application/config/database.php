@@ -121,27 +121,27 @@ $db['jj'] = array(
 
 
 /*=====================================Servidor de Prueba=====================================*/
-// $db['default'] = array(
-// 	'dsn'	=> '',
-// 	'hostname' => 'zte-col.cws6f2qsxddy.us-west-2.rds.amazonaws.com',
-// 	'username' => 'AdminZTE',
-// 	'password' => 'a4b3c2d1',
-// 	'database' => 'datafill_test',
-// 	'dbdriver' => 'mysqli',
-// 	'dbprefix' => '',
-// 	'pconnect' => FALSE,
-// 	'db_debug' => (ENVIRONMENT !== 'production'),
-// 	'cache_on' => FALSE,
-// 	'cachedir' => '',
-// 	'char_set' => 'utf8',
-// 	'dbcollat' => 'utf8_general_ci',
-// 	'swap_pre' => '',
-// 	'encrypt' => FALSE,
-// 	'compress' => FALSE,
-// 	'stricton' => FALSE,
-// 	'failover' => array(),
-// 	'save_queries' => TRUE
-// );
+$db['prueba'] = array(
+	'dsn'	=> '',
+	'hostname' => 'zte-col.cws6f2qsxddy.us-west-2.rds.amazonaws.com',
+	'username' => 'AdminZTE',
+	'password' => 'a4b3c2d1',
+	'database' => 'datafill_test',
+	'dbdriver' => 'mysqli',
+	'dbprefix' => '',
+	'pconnect' => FALSE,
+	'db_debug' => (ENVIRONMENT !== 'production'),
+	'cache_on' => FALSE,
+	'cachedir' => '',
+	'char_set' => 'utf8',
+	'dbcollat' => 'utf8_general_ci',
+	'swap_pre' => '',
+	'encrypt' => FALSE,
+	'compress' => FALSE,
+	'stricton' => FALSE,
+	'failover' => array(),
+	'save_queries' => TRUE
+);
 
 /*======================================servidor cliente======================================*/
 $db['servidor'] = array(

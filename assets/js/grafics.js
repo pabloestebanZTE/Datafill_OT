@@ -181,7 +181,8 @@ $(function () {
                     {title: "Orden", data: "orden"},
                     {title: "Id", data: "id"},
                     {title: "Cant", data: "cant"},
-                    {title: "Proyecto", data: "proyecto"},//llamo una funcion para pintar este campo
+                    {title: "Proyecto", data: "proyecto"},
+                    {title: "Solicitante", data: "ingeSol"},
                     {title: "F_Asignación", data: "f_asignacion"},
                     {title: "F_Ejecución", data: "f_ejecucion"},
                     {title: "Ingeniero", data: "ingeniero"},

@@ -170,7 +170,7 @@
         if(mensaje == "ok"){
           swal({
             title: "Bien hecho!",
-            text: "Actividad aignada satisfactoriamente",
+            text: "Actividad asignada satisfactoriamente",
             type: "success",
             confirmButtonText: "Ok"
           });
@@ -259,6 +259,14 @@
      </header>
 <!--      fin header         -->
      <br><br><br><br>
+
+<div class="container center">
+  <button type="button" class="btn btn-primary" id="proximos">Proximos <span class="badge">7</span></button>
+  <button type="button" class="btn btn-warning" id="hoy">hoy <span class="badge">3</span></button>    
+  <button type="button" class="btn btn-danger" id="expirados">expirados <span class="badge">5</span></button>   
+</div>
+
+
 <a href="<?= URL::to('Grafics/getGrafics'); ?>" data-toggle="tooltip" title="Ver Graficas"><img src="<?= URL::to('assets/img/grafics.gif'); ?>" alt="graficas"  class="botonIcon"></a>
 <!-- menu sticky -->
 <div class="contenedor closed" id="content_fixed">
@@ -430,32 +438,38 @@
         <div class="container" style="display: none" id="formulario">
           <h2>Cerrar Actividades</h2>
             <div class="form-group" >
-              <label class="control-label col-sm-2" for="email">Link Drive OT :</label>
+              <label class="control-label col-sm-2" for="link">Link Drive Env :</label>
               <div class="col-sm-10" id="enlace">
                 <input type="input" class="form-control m-b-5" id="link" placeholder="Link Drive" name="link" >
               </div>
             </div><br>
+            <div class="form-group" >
+              <label class="control-label col-sm-2" for="link2">Link Drive Eje :</label>
+              <div class="col-sm-10" id="enlace">
+                <input type="input" class="form-control m-b-5" id="link2" placeholder="Link Drive evidencia ejecución" name="link2}" >
+              </div>
+            </div><br>
             <div class="form-group">
-              <label class="control-label col-sm-2" for="email">Fecha Inicio Real:</label>
+              <label class="control-label col-sm-2" for="fInicior">Fecha Inicio Real:</label>
               <div class="col-sm-10">
                 <input type="date" class="form-control m-b-5" id="fInicior" placeholder="Fecha Inicio Real" name="fInicior" >
               </div>
             </div><br>
             <div class="form-group">
-              <label class="control-label col-sm-2" for="email">Fecha Fin Real:</label>
+              <label class="control-label col-sm-2" for="fFinr">Fecha Fin Real:</label>
               <div class="col-sm-10">
                 <input type="date" class="form-control m-b-5" id="fFinr" placeholder="Fecha Fin Real" name="fFinr" >
               </div>
             </div><br>
             <div class="form-group">
-              <label class="control-label col-sm-2" for="pwd">CRQ:</label>
+              <label class="control-label col-sm-2" for="crq">CRQ:</label>
               <div class="col-sm-10">          
                 <input type="text" class="form-control m-b-5" id="crq" placeholder="CRQ" name="crq">
               </div>
             </div><br>
 
             <div class="form-group m-b-5">
-            <label class="control-label col-sm-2" for="pwd">Estado:</label>
+            <label class="control-label col-sm-2" for="state">Estado:</label>
               <div class="col-sm-10"> 
                 <select class="form-control m-b-5" id="state" name="state" >
                   <option value="">seleccione estado</option>
@@ -466,7 +480,7 @@
             </div><br>
 
             <div class="form-group m-b-5">
-              <label class="control-label col-sm-2" for="pwd">Observaciones de Cierrre:</label>
+              <label class="control-label col-sm-2" for="observacionesCierre">Observaciones de Cierrre:</label>
                 <div class="col-sm-10">
                    <textarea class="form-control m-b-5" rows="2" id="observacionesCierre" name="observacionesCierre" placeholder="Observaciones de Cierre"></textarea>
                 </div>
@@ -495,14 +509,45 @@
   </div>
   <!-- <script src="//cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.6.3/js/bootstrap-select.min.js"></script> -->
     <?php
+
+    $var = array (
+    1,
+    2,
+    5,
+    8,
+    array(2,3,  array(1,2))
+    );
+ 
+function recorrido($arg){
+    $suma = 0;
+    foreach ($arg as $key => $value) {
+        if (is_array($value)){
+            $array2 = $arg[$key];
+            $suma = $suma + recorrido($array2);
+        }else {
+            $suma = $suma + $value;
+        }
+    }
+    return $suma;
+}
+ 
+$total = recorrido($var);
+echo $total;
+
+
+
+
       if (isset($message)) {
           echo '<script type="text/javascript">showMessage("'.$message.'");</script>';        
       }
     ?>
+<script type="text/javascript">var baseurl = "<?php echo URL::base(); ?>";</script>
     <!-- DataTables -->
 <script src="<?= URL::to('assets/plugins/datatables/jquery.dataTables.min.js'); ?>"></script>
 <script src="<?= URL::to('assets/plugins/datatables/dataTables.bootstrap.min.js'); ?>"></script>
 <!-- llenar tablas -->
-<script type="text/javascript" src="<?= URL::to('assets/js/listServices.js?v= time() '); ?>"></script>
+<script type="text/javascript" src="<?= URL::to('assets/js/services/listServices.js?v= time() '); ?>"></script>
+<!-- alertas de proximidad de tiempo -->
+<script type="text/javascript" src="<?= URL::to('assets/js/services/ModalTiempos.js'); ?>"></script>
 </body>
 </html>

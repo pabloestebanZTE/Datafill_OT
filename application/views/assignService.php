@@ -24,10 +24,13 @@
         <link rel="stylesheet" href="<?= URL::to('assets/plugins/sweetalert-master/dist/sweetalert.css'); ?>" />
         <script type="text/javascript" src="<?= URL::to('assets/plugins/sweetalert-master/dist/sweetalert.min.js'); ?>"></script>
 
+        <!-- Push.js   -->
+        <script src="<?= URL::to('assets/js/push.min.js'); ?>"></script> 
+
         <link href='http://fonts.googleapis.com/css?family=Open+Sans' rel='stylesheet' type='text/css' />
 
        <script>         
-
+       baseurl = "<?php echo URL::base(); ?>";
           function showMessage(mensaje){
            if(mensaje == "error"){
             swal({
@@ -38,6 +41,8 @@
             });
            } 
           }
+
+
 
        </script>
     
@@ -414,19 +419,51 @@ echo "</div>";
   <div class="for-full-back " id="footer">
       Zolid By ZTE Colombia | All Right Reserved
   </div>
-  <script type="text/javascript"> Cufon.now(); </script>
+  <!-- <script type="text/javascript"> Cufon.now(); </script> -->
 
   <script>
     $(document).ready(function() {
       tabs.init();
     })
   </script>
+
   <?php
       if (isset($error)) {
         if($error == "error"){
           echo '<script type="text/javascript">showMessage("error");</script>';
         }
       }
-    ?>
+      if (isset($message)) {
+
+        echo '<script type="text/javascript">';
+        echo 'pushMessage("'.$message.'");';
+      }
+
+  ?>
+         function pushMessage(mensaje){         
+
+            if (mensaje == "ok") {
+              Push.create( "Bien hecho!", {
+                      body: "Actividad asignada satisfactoriamente",
+                      icon: baseurl + '/assets/img/logoblue.png',
+                      timeout: 6000,
+                      onClick: function () {
+                          window.focus();
+                          this.close();
+                      }
+              });
+            }else if(mensaje == "error"){
+              Push.create( "error!", {
+                      body: "Actividades ya existentes ",
+                      icon: baseurl + '/assets/img/error.png',
+                      timeout: 6000,
+                      onClick: function () {
+                          window.focus();
+                          this.close();
+                      }
+              });
+            }
+          }      
+        </script>
 </body>
 </html>

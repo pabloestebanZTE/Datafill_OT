@@ -176,9 +176,14 @@
           echo "</div>";
 
               echo "<div id='ultimate'>";
-                echo "<p>LINK</p>";
+                echo "<p>Link Drive Env</p>";
               echo "</div>";
-                echo "<input type='text' name='link' id='link' class='form-control' value='' placeholder='Digite el link'style='display: center; color: white; background-color: #333;'>";
+                echo "<input type='text' name='link' id='link' class='form-control' value='' placeholder='link'style='display: center; color: white; background-color: #333;'>";
+
+                echo "<div id='ultimate'>";
+                echo "<p>Link Drive Eje</p>";
+              echo "</div>";
+                echo "<input type='text' name='link2' id='link2' class='form-control' value='' placeholder='Link Drive evidencia ejecución'style='display: center; color: white; background-color: #333;'>";
               
               echo "<div id='ultimate'>";
                 echo "<p>Fecha inicio real</p>";

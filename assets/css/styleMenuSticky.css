@@ -399,3 +399,9 @@ filter: progid:DXImageTransform.Microsoft.BasicImage(rotation=3);
 	margin-top:1px;
 	box-shadow: inset 0px 1px 4px #207be5;
 }
+.center {
+	text-align: center;
+}
+.center button {
+	margin: 0px 5px 0px 5px;
+}

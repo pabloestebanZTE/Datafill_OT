@@ -23,6 +23,8 @@
         public $CRQ;
         public $quantity;
         public $region;
+        public $link1;
+        public $link2;
 
 		public function __construct(){
 
@@ -120,6 +122,14 @@
 
     public function setCRQ($CRQ){$this->CRQ = $CRQ;}
 
+    public function getLink1(){return $this->link1;}
+
+    public function setLink1($link1){$this->link1 = $link1;}
+
+    public function getLink2(){return $this->link2;}
+
+    public function setLink2($link2){$this->link2 = $link2;}
+
 		public function createServiceS($id, $duration, $idClaro, $description, $dateStartP, $dateFinishP, $dateCreation, $dateForecast, $order, $site, $service, $user, $claroDescription, $ingSol, $proyecto, $estado, $CRQ){
 			$this->setId($id);
 			$this->setDuration($duration);
@@ -140,12 +150,14 @@
 			$this->setCRQ($CRQ);
         }
 //camilo--------------------------------------------------------------------------------------
-        public function closeService($dateStartR, $dateFinishR, $CRQ, $estado, $cierreDescription){
+        public function closeService($dateStartR, $dateFinishR, $CRQ, $estado, $cierreDescription, $link1, $link2){
             $this->setDateStartR($dateStartR);
             $this->setDateFinishR($dateFinishR);
             $this->setCRQ($CRQ);
             $this->setEstado($estado);
             $this->setCierreDescription($cierreDescription);
+            $this->setLink1($link1);
+            $this->setLink2($link2);
         }
 //-----------------------------------------------------------------------------------------------
 

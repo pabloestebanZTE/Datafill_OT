@@ -169,10 +169,11 @@
              }
           }          
 //CAMILO-------------------------------------------------INSERTA DATOS DE CIERRE
-          public function updateClose($close){
+          public function  updateClose($close){
            $dbConnection = new configdb_model();
            $session = $dbConnection->openSession();
-           $sql = "UPDATE specific_service SET D_DATE_START_R = STR_TO_DATE('".$close->getDateStartR()."', '%Y-%m-%d'),  D_DATE_FINISH_R = STR_TO_DATE('".$close->getDateFinishR()."', '%Y-%m-%d'),  N_ESTADO = '".$close->getEstado()."', N_CRQ = '".$close->getCRQ()."', N_CIERRE_DESCRIPTION = '".$close->getCierreDescription()."' WHERE K_IDCLARO = '".$close->getIdClaro()."';";
+           $sql = "UPDATE specific_service SET D_DATE_START_R = STR_TO_DATE('".$close->getDateStartR()."', '%Y-%m-%d'),  D_DATE_FINISH_R = STR_TO_DATE('".$close->getDateFinishR()."', '%Y-%m-%d'),  N_ESTADO = '".$close->getEstado()."', N_CRQ = '".$close->getCRQ()."', N_CIERRE_DESCRIPTION = '".$close->getCierreDescription()."', N_LINK_SEND ='".$close->getLink1()."', N_LINK_EXECUTE = '".$close->getLink2()."' WHERE K_IDCLARO = '".$close->getIdClaro()."';";
+           // echo $sql;
            $session->query($sql);
           }
 //---------------------------------------------------------------------------------------
@@ -467,7 +468,8 @@
             ss.D_DATE_START_P as f_asignacion, 
             ss.D_CLARO_F as f_ejecucion, 
             concat(u.N_NAME, ' ', u.N_LASTNAME) as ingeniero, 
-            ss.N_ESTADO as estado
+            ss.N_ESTADO as estado, 
+            ss.N_ING_SOL as ingeSol
 
             from specific_service ss
             inner join service s
@@ -476,6 +478,39 @@
             on ss.K_IDUSER = u.K_IDUSER
             ".$where."
         ");
+        return $query->result();
+      }
+
+      public function getAllProximas(){
+        $query = $this->db->query("
+          select
+            s.N_TYPE as tipo, 
+            ss.K_IDORDER as orden, 
+            ss.K_IDCLARO as id, 
+            ss.n_cantidad as cantidad, 
+            ss.N_PROYECTO as proyecto, 
+            ss.N_ING_SOL as solicitante, 
+            ss.D_DATE_START_P as asignacion, 
+            ss.D_CLARO_F as ejecucion,
+            concat(u.N_NAME,' ',u.N_LASTNAME) as ingeniero,
+            ss.N_ESTADO as estado,
+            ss.N_LINK_SEND as link1,
+            ss.N_LINK_EXECUTE as link2
+
+          FROM
+             specific_service ss
+             inner join service s
+             on ss.K_IDSERVICE = s.K_IDSERVICE
+             inner join user u 
+             on ss.K_IDUSER = u.K_IDUSER
+
+          where               
+             ss.N_ESTADO != 'Ejecutado' and
+             ss.N_ESTADO != 'Cancelado' and
+             (ss.N_LINK_SEND is null or ss.N_LINK_EXECUTE is null) 
+             
+        ");
+
         return $query->result();
       }
 
