@@ -14,12 +14,12 @@ class SpecialServices extends CI_Controller {
   //funcion que retorna todas las actividades no ejecutadas ni canceladas
   //para el control de tiempo de envio de evidencias dependiendo el tipo de trabajo
   public function getProximas(){
-    header('Content-Type: text/plain');
+    // header('Content-Type: text/plain');
       //trae todas las actividades != ejecutado o cancelado y que tengan null link1 o link2
       $all = $this->dao_service_model->getAllProximas();
       
           //creo los arreglo proximas, hoy y vencidas q voy a llenar al final segun validacion
-          $proximas = []; $hoy = []; $vencidas = [];
+          $respuesta['proximas'] = []; $respuesta['hoy'] = []; $respuesta['vencidas'] = [];
     
       foreach ($all as $value) {
           // Creé la fecha envio 1 y fecha envio 2 que son la fechas limites para enviar evidencias
@@ -87,26 +87,22 @@ class SpecialServices extends CI_Controller {
 
           //comparo si las fechas de envio son igual a ayer para llenar arreglo proximas
           if ($value->fEnvio1 == $fMañana || $value->fEnvio2 == $fMañana) {
-            array_push($proximas, $value);
+            array_push($respuesta['proximas'], $value);
           }
           //comparo si las fechas de envio son igual a fecha actual para llenar arreglo hoy
           if ($value->fEnvio1 == $fActual || $value->fEnvio2 == $fActual) {
-            array_push($hoy, $value);
+            array_push($respuesta['hoy'], $value);
           }
           //comparo si las fechas de envio son mayor a fecha actual para llenar arreglo vencidas
           if ($fActual > $value->fEnvio1 || $fActual > $value->fEnvio2) {
-            array_push($vencidas, $value);
+            array_push($respuesta['vencidas'], $value);
             // echo "string";
             // print_r($value->fEnvio1);
           }
 
       }
-      
-          // print_r($vencidas);
-          // print_r($proximas);
-          // print_r($hoy);
 
-
+      echo json_encode($respuesta);
   }
   //Funcion para sumar o restar dias a una fecha dada
   public function sumarORestarDiasAFecha($fechaBase, $dias, $operador){

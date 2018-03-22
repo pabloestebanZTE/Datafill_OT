@@ -10,7 +10,6 @@
         <link href="<?= URL::to('assets/plugins/datatables/dataTables.bootstrap2.css'); ?>" rel="stylesheet">
         <link rel="icon" href="http://cellaron.com/media/wysiwyg/zte-mwc-2015-8-l-124x124.png">
         <!--   BOOTSTRAP    -->
-
         <link href="<?= URL::to('assets/css/bootstrap.min.css'); ?>" rel="stylesheet">
         <!--   HEADER CSS    -->
         <link href="<?= URL::to('assets/css/styleHeader.css'); ?>" rel="stylesheet" />

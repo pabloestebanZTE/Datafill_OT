@@ -97,7 +97,6 @@ $(function () {
 
         //-------------Pintando un href...-------------
         getLinkOrden: function(obj){
-            // console.log(obj);
 
             var href = "";
             href += '<a class="link-ver-actividades" title="Ver actividades">' + obj.id + '</a><br><br>';
@@ -106,6 +105,14 @@ $(function () {
                 
             }
             return href;
+        },
+
+        getPrioridad: function(obj){
+            if (obj.prioridad == 'Alta') {
+                return "<spam style='color:red'>"+obj.prioridad+"</spam>";
+            }
+
+            return obj.prioridad;
         },
 
         getDescription: function(obj){
@@ -145,6 +152,7 @@ $(function () {
                     {title: "Region", data: "services.0.region"},
                     {title: "Ingenieros Asignados", data: vista.getEngs},
                     {title: "Descripción de la orden", data: vista.getDescription},
+                    {title: "Prioridad", data: vista.getPrioridad},// Cantidad de actividades
                     {title: "#", data: "services.length"},// Cantidad de actividades
                     {title: "Progress", data: vista.getProgress},// barras de progreso
                 ],

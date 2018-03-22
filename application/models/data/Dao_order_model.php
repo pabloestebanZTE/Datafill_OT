@@ -28,39 +28,7 @@ class Dao_order_model extends CI_Model {
 
     //==============RETORNA TODAS LAS ORDENES CON SUS ACTIVIDADES... SI ROLL ES ING SOLO LAS DE EL=============
     public function getAllOrders() {
-        //SI EL ROLL ES DE INGENIER SOLO LO FILTRA POR LAS OT DEL ING LOGUEADO
-        /*   if ($_SESSION["role"] == 1 || $_SESSION["role"] == 2 || $_SESSION["role"] == 3) {
-          $dbConnection = new configdb_model();
-          $session = $dbConnection->openSession();
-          //VERIFICAMOS LAS  ACTIVIDADES ASIGNADAS AL ING
-          $sql = "SELECT * FROM specific_service WHERE K_IDUSER = ".$_SESSION['id'].";";
-          if ($session != "false"){
-          $result = $session->query($sql);
-          if ($result->num_rows >0) {
-          $i = 0;
-          while ($row = $result->fetch_assoc()) {
-          //TRAEMOS LAS ORDENES DEL ING DEPENDIENDO EL KIDORDER DE TODAS SUS ACTIVIDADES
-          $sql2 = "SELECT * FROM ot WHERE K_IDORDER = ".$row['K_IDORDER'].";";
-          $result2 = $session->query($sql2);
-          $row2 = $result2->fetch_assoc();
-          //CREAMOS EL OBJETO Y AÑADIDAMOS A LAS OT CADA UNA DE LAS ACTIVIDADES ASIGNADAS
-          $order = new order_model;
-          $order->createOrder($row['K_IDORDER'], $row['N_NAME'], $row['D_DATE_CREATION']);
-          $order->setLink($row['N_DRIVE']);
-          $sercicios = $this->dao_service_model->getServiceByIdOrder($row['K_IDORDER']);
-          $order->services = $sercicios;
-          $answer[$i] = $order;
-          $i++;
-          }
-          //PUEDEN EXISTIR ORDENES DUPLICADAS... ELIMINAMOS TODAS LAS DUPLICADAS
-          $duplicates = array_values(array_map("unserialize", array_unique(array_map("serialize", $answer))));
-          return $duplicates;
-          }
-          }
-          //SI EL ROL ES DISTINTO A INGENIERO RETORNAMOS TODAS LAS ORDENES CON SUS ACTIVIDADES
-          }
-         */
-        // else{    
+           
         $dbConnection = new configdb_model();
         $session = $dbConnection->openSession();
         $start = $_GET['start'];
@@ -70,7 +38,7 @@ class Dao_order_model extends CI_Model {
         $answer = [];
 
         //Parametrizando el ordenamiento:
-        $columns = ["K_IDORDER", "D_DATE_CREATION", "N_ING_SOL", "D_FORECAST", "D_DATE_START_P", "N_PROYECTO", "n_region", "N_NAME", "N_LASTNAME", "N_CLARO_DESCRIPTION", "PERCENTAGE"];
+        $columns = [ "K_IDORDER", "D_DATE_CREATION", "N_ING_SOL", "D_FORECAST", "N_PROYECTO", "n_region", "N_NAME","N_PRIORIDAD", "N_CLARO_DESCRIPTION", "N_PRIORIDAD","PERCENTAGE","PERCENTAGE"];
 
         //Algoritmo para obtener la consulta de ordenamiento...
         $orderBy = null;
@@ -112,6 +80,7 @@ class Dao_order_model extends CI_Model {
         $typeSQL = isset($_GET['typeSQL']) ? (($_GET["typeSQL"] == "GDATOS") ? "se.N_PROYECTO LIKE '%GDATOS%'" : "se.N_PROYECTO NOT LIKE '%GDATOS%'") : "se.N_PROYECTO NOT LIKE '%GDATOS%'";
 
         $whereIngeniero = "";
+
         if ($_SESSION["role"] == 1 || $_SESSION["role"] == 2 || $_SESSION["role"] == 3) {
             $whereIngeniero = " and u.K_IDUSER = " . $_SESSION['id'];
         }
@@ -120,12 +89,13 @@ class Dao_order_model extends CI_Model {
 
         if ($search) {
             //Se obtienen los registros por límite de x a 10...
-            $sqlIni = "select ot.K_IDORDER, $SQL_PERCENTAGE ot.N_DRIVE, ot.D_DATE_CREATION, se.N_ING_SOL, se.D_FORECAST, se.D_DATE_START_P, se.N_PROYECTO, se.n_region, u.N_NAME, u.N_LASTNAME, se.N_CLARO_DESCRIPTION, se.D_CLARO_F 
+            $sqlIni = "select ot.K_IDORDER, ot.N_PRIORIDAD, $SQL_PERCENTAGE ot.N_DRIVE, ot.D_DATE_CREATION, se.N_ING_SOL, se.D_FORECAST, se.D_DATE_START_P, se.N_PROYECTO, se.n_region, u.N_NAME, u.N_LASTNAME, se.N_CLARO_DESCRIPTION, se.D_CLARO_F 
                   from ot inner join specific_service se
                   on ot.K_IDORDER = se.K_IDORDER  
                   inner join user u 
                   on u.K_IDUSER = se.K_IDUSER 
                   WHERE " . $typeSQL . $whereIngeniero . " AND (ot.K_IDORDER LIKE '%" . $search . "%' 
+                  OR ot.N_PRIORIDAD LIKE '%" . $search . "%'                   
                   OR ot.D_DATE_CREATION LIKE '%" . $search . "%' 
                   OR se.N_ING_SOL LIKE '%" . $search . "%' 
                   OR se.D_FORECAST LIKE '%" . $search . "%' 
@@ -152,6 +122,7 @@ class Dao_order_model extends CI_Model {
                         $order = new order_model;
                         $order->createOrder($row['K_IDORDER'], $row['N_NAME'], $row['D_DATE_CREATION']);
                         $order->setLink($row['N_DRIVE']);
+                        $order->setPrioridad($row['N_PRIORIDAD']);
 
                         $sercicios = $this->dao_service_model->getServiceByIdOrder($row['K_IDORDER']);
                         $order->services = $sercicios;
@@ -162,8 +133,9 @@ class Dao_order_model extends CI_Model {
             }
         } else {
             //Si no se está filtrando se realiza la consulta normalmnete limitada de x a 10...                    
-            $sqlIni = "select ot.K_IDORDER, $SQL_PERCENTAGE ot.N_DRIVE, ot.D_DATE_CREATION, se.N_ING_SOL, se.D_FORECAST, se.D_DATE_START_P, se.N_PROYECTO, se.n_region, u.N_NAME, u.N_LASTNAME, se.N_CLARO_DESCRIPTION, se.D_CLARO_F 
-                  from ot inner join specific_service se
+            $sqlIni = "select ot.K_IDORDER, ot.N_PRIORIDAD, $SQL_PERCENTAGE ot.N_DRIVE, ot.D_DATE_CREATION, se.N_ING_SOL, se.D_FORECAST, se.D_DATE_START_P, se.N_PROYECTO, se.n_region, u.N_NAME, u.N_LASTNAME, se.N_CLARO_DESCRIPTION, se.D_CLARO_F 
+                  from ot 
+                  inner join specific_service se
                   on ot.K_IDORDER = se.K_IDORDER 
                   inner join user u 
                   on u.K_IDUSER = se.K_IDUSER WHERE " . $typeSQL . $whereIngeniero . " group by ot.K_IDORDER";
@@ -181,6 +153,7 @@ class Dao_order_model extends CI_Model {
                         $order = new order_model;
                         $order->createOrder($row['K_IDORDER'], $row['N_NAME'], $row['D_DATE_CREATION']);
                         $order->setLink($row['N_DRIVE']);
+                        $order->setPrioridad($row['N_PRIORIDAD']);
 
                         $sercicios = $this->dao_service_model->getServiceByIdOrder($row['K_IDORDER']);
                         $order->services = $sercicios;

@@ -167,6 +167,26 @@
 
         }
 
+
+        //==============================================================================================
+        public function getExistIdRF($id){
+            $query = $this->db->get_where('rf', array('K_ID' => $id));            
+            return $query->row();
+        }
+
+        public function insertRfRow($data){
+            $this->db->insert('rf', $data);
+            $error = $this->db->error();
+            if ($error['message']) {
+                print_r($error);
+                return "error";
+            }
+
+
+        }
+
+
+
   }
 
 ?>

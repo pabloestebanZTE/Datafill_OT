@@ -167,7 +167,7 @@ $(function () {
         },
 
         printTableModal: function(data){
-            console.log(data);
+            // console.log(data);
             if(vista.tableModal){
                 var tabla = vista.tableModal;
                 tabla.clear().draw();

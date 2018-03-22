@@ -172,7 +172,7 @@
           public function  updateClose($close){
            $dbConnection = new configdb_model();
            $session = $dbConnection->openSession();
-           $sql = "UPDATE specific_service SET D_DATE_START_R = STR_TO_DATE('".$close->getDateStartR()."', '%Y-%m-%d'),  D_DATE_FINISH_R = STR_TO_DATE('".$close->getDateFinishR()."', '%Y-%m-%d'),  N_ESTADO = '".$close->getEstado()."', N_CRQ = '".$close->getCRQ()."', N_CIERRE_DESCRIPTION = '".$close->getCierreDescription()."', N_LINK_SEND ='".$close->getLink1()."', N_LINK_EXECUTE = '".$close->getLink2()."' WHERE K_IDCLARO = '".$close->getIdClaro()."';";
+           $sql = "UPDATE specific_service SET D_DATE_START_R = STR_TO_DATE('".$close->getDateStartR()."', '%Y-%m-%d'),  D_DATE_FINISH_R = STR_TO_DATE('".$close->getDateFinishR()."', '%Y-%m-%d'),  N_ESTADO = '".$close->getEstado()."', N_CRQ = '".$close->getCRQ()."', N_CIERRE_DESCRIPTION = '".$close->getCierreDescription()."' WHERE K_IDCLARO = '".$close->getIdClaro()."';";
            // echo $sql;
            $session->query($sql);
           }
@@ -217,7 +217,9 @@
                        $sService->setCierreDescription($row['N_CIERRE_DESCRIPTION']); 
                        $sService->setQuantity($row['n_cantidad']);
                        $sService->setRegion($row['n_region']);
-                       $sService->setDateFinishClaro($row['D_CLARO_F']);                    
+                       $sService->setDateFinishClaro($row['D_CLARO_F']);
+                       $sService->setLink1($row['N_LINK_SEND']);                    
+                       $sService->setLink2($row['N_LINK_EXECUTE']);                    
                        $answer[$i] = $sService;
                        $i++;
                     } 
@@ -482,6 +484,8 @@
       }
 
       public function getAllProximas(){
+        $user = ($_SESSION['role'] == 4) ? "": " and (ss.K_IDUSER= ".$_SESSION['id'].")";
+
         $query = $this->db->query("
           select
             s.N_TYPE as tipo, 
@@ -507,11 +511,29 @@
           where               
              ss.N_ESTADO != 'Ejecutado' and
              ss.N_ESTADO != 'Cancelado' and
-             (ss.N_LINK_SEND is null or ss.N_LINK_EXECUTE is null) 
+             (ss.N_LINK_SEND is null or ss.N_LINK_EXECUTE is null or ss.N_LINK_SEND = '' or ss.N_LINK_EXECUTE = '') ".$user."
              
         ");
 
         return $query->result();
+      }
+
+      public function updateLink1($actividad, $link, $columna){
+        $data = array(
+                $columna => $link,
+        );
+        $this->db->where('K_IDCLARO', $actividad);
+        $this->db->update('specific_service', $data);
+
+        $error = $this->db->error();
+        if ($error['message']) {
+          print_r($error);
+          return "error";
+        }else {
+          return "exitoso";
+        }
+
+
       }
 
 

@@ -7,9 +7,9 @@ form{
   left: 50%;
   margin-top: -100px;
   margin-left: -250px;
-  width: 500px;
+  width: 508px;
   height: 200px;
-  border: 4px dashed #fff;
+  border: 4px solid #fff;
 }
 form p{
   width: 100%;

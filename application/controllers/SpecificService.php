@@ -266,17 +266,18 @@
 
       public function cancelByMail(){
         //diferencio de que formato de correo viene
-        $dic = str_replace(array("\n", "\r", "\t"), '', explode("\n", $_POST['cancelacion'])[4]);
+        $dic = str_replace(array("\n", "\r", "\t"), '', explode("\n", $_POST['actividades'])[4]);
+
         if ($dic != "ID:") {//comparo el formato
            //verificacion si viene de correo cancelacion
-            $_POST['cancelacion'] = str_replace("\t", "\n", $_POST['cancelacion']);
-            $clav1 = explode("\n", $_POST['cancelacion'])[8];
+            $_POST['actividades'] = str_replace("\t", "\n", $_POST['actividades']);
+            $clav1 = explode("\n", $_POST['actividades'])[8];
             $clave1 = str_replace(array("\n", "\r", "\t"), '', $clav1);
-            $clav2 = explode("\n", $_POST['cancelacion'])[23];
+            $clav2 = explode("\n", $_POST['actividades'])[23];
             $clave2 = str_replace(array("\n", "\r", "\t"), '', $clav2);
             //si es de cancelacion ejecuta la accion
             if ($clave1 == "Fecha de creación:" && $clave2 != "Fecha ejecución") {
-              $orden = explode("Servicios unitarios", $_POST['cancelacion']); 
+              $orden = explode("Servicios unitarios", $_POST['actividades']); 
               $cancelar['ot'] = str_replace(array("\n", "\r", "\t", " "), '', explode("\n", $orden[0])[3]);
               $cancelar['solicitante'] = explode("\n", $orden[0])[5];
               $cancelar['descripcion'] = explode("\n", $orden[0])[7];
@@ -301,14 +302,14 @@
             }
         }  else {
           //verificacion si viene de correo cancelacion
-            $_POST['cancelacion'] = str_replace("\t", "\n", $_POST['cancelacion']);
-            $clav1 = explode("\n", $_POST['cancelacion'])[16];
+            $_POST['actividades'] = str_replace("\t", "\n", $_POST['actividades']);
+            $clav1 = explode("\n", $_POST['actividades'])[16];
             $clave1 = str_replace(array("\n", "\r", "\t"), '', $clav1);
-            $clav2 = explode("\n", $_POST['cancelacion'])[40];
+            $clav2 = explode("\n", $_POST['actividades'])[40];
             $clave2 = str_replace(array("\n", "\r", "\t"), '', $clav2);
             //si es de cancelacion ejecuta la accion
             if ($clave1 == "Fecha de creación:" && $clave2 != "Fecha ejecución") {
-              $orden = explode("Servicios unitarios", $_POST['cancelacion']); 
+              $orden = explode("Servicios unitarios", $_POST['actividades']); 
               $cancelar['ot'] = str_replace(array("\n", "\r", "\t", " "), '', explode("\n", $orden[0])[6]);
               $cancelar['solicitante'] = explode("\n", $orden[0])[10];
               $cancelar['descripcion'] = explode("\n", $orden[0])[14];
@@ -335,12 +336,12 @@
       }
 
       public function executeByExcel(){
-        $dic = str_replace(array("\n", "\r", "\t"), '', explode("\n", $_POST['ejecucion'])[40]);
+        $dic = str_replace(array("\n", "\r", "\t"), '', explode("\n", $_POST['actividades'])[40]);
         if ($dic != "Fecha ejecución") {
-              $_POST['ejecucion'] = str_replace("\t", "\n", $_POST['ejecucion']);
-              $clave = str_replace(array("\n", "\r", "\t"), '',explode("\n", $_POST['ejecucion'])[23]);
+              $_POST['actividades'] = str_replace("\t", "\n", $_POST['actividades']);
+              $clave = str_replace(array("\n", "\r", "\t"), '',explode("\n", $_POST['actividades'])[23]);
               if ($clave == "Fecha ejecución") {          
-                $orden = explode("Servicios unitarios", $_POST['ejecucion']);
+                $orden = explode("Servicios unitarios", $_POST['actividades']);
                 $ejecutar['ot'] = str_replace(array("\n", "\r", "\t", " "), '', explode("\n", $orden[0])[3]);
                 $ejecutar['solicitante'] = explode("\n", $orden[0])[5];
                 $ejecutar['descripcion'] = explode("\n", $orden[0])[7];
@@ -367,11 +368,11 @@
                 $this->load->view('assignService', $answer);
               }
         } else {
-            // print_r(str_replace(array("\n", "\r", "\t"), '', explode("\n", $_POST['ejecucion'])));
-            $_POST['ejecucion'] = str_replace("\t", "\n", $_POST['ejecucion']);
-              $clave = str_replace(array("\n", "\r", "\t"), '',explode("\n", $_POST['ejecucion'])[40]);
+            // print_r(str_replace(array("\n", "\r", "\t"), '', explode("\n", $_POST['actividades'])));
+            $_POST['actividades'] = str_replace("\t", "\n", $_POST['actividades']);
+              $clave = str_replace(array("\n", "\r", "\t"), '',explode("\n", $_POST['actividades'])[40]);
               if ($clave == "Fecha ejecución") {          
-                $orden = explode("Servicios unitarios", $_POST['ejecucion']);
+                $orden = explode("Servicios unitarios", $_POST['actividades']);
                 // print_r(str_replace(array("\n", "\r", "\t", " "), '', explode("\n", $orden[0])));
                 $ejecutar['ot'] = str_replace(array("\n", "\r", "\t", " "), '', explode("\n", $orden[0])[6]);
                 $ejecutar['solicitante'] = explode("\n", $orden[0])[10];
@@ -443,7 +444,7 @@
         }
         for ($i=0; $i < count($_POST['checkbox']); $i++) { 
           $close = new service_spec_model;
-          $close->closeService($_POST['fInicior'], $_POST['fFinr'], $_POST['crq'], $_POST['state'], $_POST['observacionesCierre'], $_POST['link'], $_POST['link2']);
+          $close->closeService($_POST['fInicior'], $_POST['fFinr'], $_POST['crq'], $_POST['state'], $_POST['observacionesCierre'], $_POST['link']);
           $close->setIdClaro($_POST['checkbox'][$i]);
           // print_r($close);
           // echo "<br><br><br>";
@@ -517,6 +518,7 @@
             $j = 0;
             try
             {
+
               $Spreadsheet = new SpreadsheetReader($Filepath);
               $BaseMem = memory_get_usage();
               $Sheets = $Spreadsheet -> Sheets();
@@ -563,6 +565,32 @@
 
          return $array['excel'];
       }
+
+      public function updateLinkFormModal(){
+          $actualizados = [];//arreglo q lleno con los id de los registros actualizados
+          foreach ($_POST as $key => $value) {
+              // solo tomo lk1 y lk2 del post y que no vengan vacios
+              if ((substr_count($key, '_lk1') == 1 || substr_count($key, '_lk2') == 1) && ($value != "")) {
+                    //si el indice viene del link 1 _lk1
+                    if (substr_count($key, '_lk1')) {
+                       $columna = "N_LINK_SEND";//nombre de la columna a editar en la base de datos
+                       $actividad = str_replace("_lk1", "", $key);
+                    } else if (substr_count($key, '_lk2')) {
+                       $columna = "N_LINK_EXECUTE";
+                       $actividad = str_replace("_lk2", "", $key);
+                    }
+                    //funcion para actualizar, le paso el id de la actividad, el link y la columna de la bd deseada
+                    //retorna exitoso o error
+                    $respuesta = $this->dao_service_model->updateLink1($actividad, $value, $columna);    
+
+                    if ($respuesta == 'exitoso') {
+                        // si se actualizó añade ese indice al arreglo de actualizados
+                        array_push($actualizados, $key);
+                    }
+              }
+          }
+          echo json_encode($actualizados);
+     }
 
 //------------------------------RF------------------------------------------------------------------------
       public function upLoadRF(){

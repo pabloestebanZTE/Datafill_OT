@@ -147,17 +147,18 @@
 			$this->setIngSol($ingSol);
 			$this->setProyecto($proyecto);
 			$this->setEstado($estado);
-			$this->setCRQ($CRQ);
+            $this->setCRQ($CRQ);
+            $this->setLink1($link1);
+			$this->setLink2($link2);
         }
 //camilo--------------------------------------------------------------------------------------
-        public function closeService($dateStartR, $dateFinishR, $CRQ, $estado, $cierreDescription, $link1, $link2){
+        public function closeService($dateStartR, $dateFinishR, $CRQ, $estado, $cierreDescription){
             $this->setDateStartR($dateStartR);
             $this->setDateFinishR($dateFinishR);
             $this->setCRQ($CRQ);
             $this->setEstado($estado);
             $this->setCierreDescription($cierreDescription);
-            $this->setLink1($link1);
-            $this->setLink2($link2);
+            
         }
 //-----------------------------------------------------------------------------------------------
 

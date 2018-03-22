@@ -18,7 +18,7 @@
 
 
 </head>
-<body>
+<body data-base="<?= URL::base() ?>">
     <!-- Navigation -->
     <header>
         <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
@@ -62,11 +62,12 @@
             </div>
         </nav>
      </header><br><br><br><br>
+
 <!--      fin header         -->
-<form method="post" enctype="multipart/form-data" action="<?= URL::to('SpecificService/upLoadRF'); ?>">
-  <input type="file" name="idarchivo">
-  <p>Arrastra tu archivo aquí o haz clic en esta área.</p>
-<button type="submit" class="btn btn-primary" onclick = "enableSelect();this.form.action = '<?= URL::to('SpecificService/upLoadRF'); ?>'">UpLoad  <span class="glyphicon glyphicon-ok"></span></button>
+<form method="post" enctype="multipart/form-data" id="formFileUpload">
+    <input type="file" name="idarchivo">
+    <p>Arrastra tu archivo aquí o haz clic en esta área.</p>
+    <button id="btnUploadFile" type="submit" class="btn btn-primary" >UpLoad  <span class="glyphicon glyphicon-ok"></span></button>
 </form>
 
 <script src="<?= URL::to('assets/plugins/jQuery/jquery-2.2.3.min.js'); ?>"></script>
@@ -74,13 +75,24 @@
 <script src="<?= URL::to('assets/plugins/datatables/jquery.dataTables.min.js'); ?>"></script>
 <script src="<?= URL::to('assets/plugins/datatables/dataTables.bootstrap.min.js'); ?>"></script>
 
+<script src="<?= URL::to("assets/js/utils/app.global.js") ?>" type="text/javascript"></script>
+<script src="<?= URL::to("assets/js/utils/app.dom.js") ?>" type="text/javascript"></script>
+<!-- sweet alert -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/limonte-sweetalert2/7.0.3/sweetalert2.all.min.js"></script>
+<!-- para cargar los archivos excel xlsx -->
+<script src="<?= URL::to("assets/js/services/loadInformation.js") ?>" type="text/javascript"></script>
+
 <script>
   $(document).ready(function(){
   $('form input').change(function () {
     $('form p').text(this.files.length + " file(s) selected");
   });
 });
+
+
 </script>
+
+
 
 </body>
 </html>
