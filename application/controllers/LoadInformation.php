@@ -7,6 +7,7 @@ class LoadInformation extends CI_Controller {
     function __construct() {
         parent::__construct();
         $this->load->model('data/Dao_rf_model');
+        $this->load->helper('camilo');
     }
 
     public function uploadfile() {
@@ -117,25 +118,19 @@ class LoadInformation extends CI_Controller {
                 $highestRow = 0;
                 $row = $request->index;
                 $limit = $row + $request->limit;
-                $idTicket = 0;
-                $imported = 0;
-                $inconsistencies = 0;
-                $inconsistenciesFull = [];
-                $cellInconsistencies = [];
+                $inserts = 0;
+                $errorInsert = [];
+                $errorUpdate = [];
+                $errorNoChange = [];
+                $actualizar = 0;
+                $actualizados = 0;
                
 
+                //fecha Actual
+                date_default_timezone_set("America/Bogota");
+                 $fActual = date('Y-m-d');
                 //Inicializamos un objeto de PHPExcel para escritura...
-//                $objPHPWriter = $this->createErrorsFileExcel();
 
-                // print_r($this->getDatePHPExcel($sheet, 'A' . $row));
-                // echo "<br>";
-                // print_r($row);
-                // echo "<br>";
-                // print_r($limit);
-                // echo "<br>";
-                // print_r($row);
-                // $rowWriter = 1;
-                // $letras = ["A","B","C","D","E","F","G","H","I","J","K","L","M","N","O","P","Q","R","S","T","U","V"];
                 //while para recorrer filas del excel...
                 while ($this->getValueCell($sheet, 'L' . $row) > 0 && ($row < $limit)) {
                     $data = array();
@@ -143,51 +138,127 @@ class LoadInformation extends CI_Controller {
                     $exist = $this->Dao_rf_model->getExistIdRF($this->getValueCell($sheet, 'L' . $row));
                     // si existe...
                     if ($exist) {
+                        // header('Content-Type: text/plain');
+                        $arrayBD = (array) $exist;
+                        $dataExcel = array(
+                            'D_DATE_S'        =>    $this->getDatePHPExcel  ($sheet, 'A' . $row),
+                            'N_REQUESTED_BY'  =>    $this->getValueCell     ($sheet, 'B' . $row),
+                            'N_STATUS'        =>    $this->getValueCell     ($sheet, 'C' . $row),
+                            'N_TYPE'          =>    $this->getValueCell     ($sheet, 'D' . $row),
+                            'N_ELEMENT'       =>    $this->getValueCell     ($sheet, 'E' . $row),
+                            'D_DATE_ASSGINED' =>    $this->getDatePHPExcel  ($sheet, 'F' . $row),
+/*retorna el id  del asig*/ 'K_ASSIGNED_TO'   =>    $this->getIdByNameRF($this->getValueCell($sheet,'B'.$row)),
+                            'D_DATE_SENT'     =>    $this->getDatePHPExcel  ($sheet, 'H' . $row),
+                            'N_FILE'          =>    $this->getValueCell     ($sheet, 'I' . $row),
+                            'N_OBSERVATIONS'  =>    $this->getValueCell     ($sheet, 'J' . $row),
+                            'N_MODULE'        =>    $this->getValueCell     ($sheet, 'K' . $row),
+                            'K_ID'            =>    $this->getValueCell     ($sheet, 'L' . $row),
+                            'N_REMEDY'        =>    $this->getValueCell     ($sheet, 'M' . $row),
+                            'N_ORDER_W'       =>    $this->getValueCell     ($sheet, 'N' . $row),
+                            'D_BILL'          =>    $this->getDatePHPExcel  ($sheet, 'O' . $row),
+                            'N_MONTH_B'       =>    $this->getValueCell     ($sheet, 'P' . $row),
+                            'D_REVIEW'        =>    $this->getDatePHPExcel  ($sheet, 'Q' . $row),
+                            'D_RAW'           =>    $this->getDatePHPExcel  ($sheet, 'R' . $row),
+                            'D_OTGDRT'        =>    $this->getDatePHPExcel  ($sheet, 'S' . $row),
+                            'N_idBSS'         =>    $this->getValueCell     ($sheet, 'U' . $row),
+                            'N_TIPO'          =>    $this->getTypeEmpty($this->getValueCell     ($sheet, 'D' . $row) ,$this->getValueCell($sheet, 'V' . $row))
+                            );
+                        $cambioStatusMod = [];
+                        $updates = [];
+                        // Recorro el array de lo q viene en excel
+                        foreach ($dataExcel as $key => $value) {
+                            // si la celda de db es != a la celda de excel
+                            if ($arrayBD[$key] != $dataExcel[$key]) {
+                                
+                                $insert = array(
+                                    'K_IDORDER' => $arrayBD['K_ID'],
+                                    'N_OLD'     => $arrayBD[$key],
+                                    'N_NEW'     => $dataExcel[$key],
+                                    'N_COLUMN'  => $key,
+                                    'D_DATE_MOD'=> $fActual
+                                    );
+
+                            $this->Dao_rf_model->insertLogRow($insert);
+                            //voy creando el arreglo con las modificaciones que hayan
+                            $updates[$key] = $dataExcel[$key];                              
+                            } 
+                           
+                            // Si en la comparacion hubo alguna modificacion
+                            if (count($updates) >0)  {
+                                $updates['N_STATUS_MOD'] = 1;
+                                $updates['K_ID'] = $arrayBD['K_ID'];
+                                // print_r("cambios");
+                            }
+                            // si son iguales
+                             else {
+                                if ($arrayBD['N_STATUS_MOD'] != 2) {
+                                    $cambioStatusMod['N_STATUS_MOD'] = 2;
+                                    $cambioStatusMod['K_ID'] = $arrayBD['K_ID'];
+                                }
+                            }
+                        }
+                        // si no hay ningun cambio
+                        if ($cambioStatusMod) {
+                            $sinCambios = $this->Dao_rf_model->updateRfStatusMod($cambioStatusMod);
+                            // capturo el error si no se actualizo + el id
+                            if ($sinCambios != 1) {
+                                array_push($errorNoChange, array($sinCambios, $this->getValueCell     ($sheet, 'L' . $row) ));
+                            }
+                        }
+                        if ($updates) {
+
+                            $actualizar = $this->Dao_rf_model->updateRfMod($updates);
+                            // Si se actualizó  el estado a sin cambios retorna 1 
+                            if ($actualizar === 1) {
+                                $actualizados++;
+                            }
+                            // si retorna error lo captura, + el id 
+                            else {
+                                 array_push($errorUpdate, array($actualizar, $this->getValueCell     ($sheet, 'L' . $row) ));
+                            }
+
+
+                        }
+                    }
                     //si no existe lo inserto en la db tabla rf
-                    }else {
+                    else {
                         //LLENO EL ARRAY LETRAS CON LOS VARORES DE LA FILA DEL EXCEL EN LA QUE VA EL WHILE
                         $data = array(
-                            'D_DATE_S' => $this->getDatePHPExcel($sheet, 'A' . $row),
-                            'N_REQUESTED_BY' => $this->getValueCell($sheet, 'B' . $row),
-                            'N_STATUS' => $this->getValueCell($sheet, 'C' . $row),
-                            'N_TYPE' => $this->getValueCell($sheet, 'D' . $row),
-                            'N_ELEMENT' => $this->getValueCell($sheet, 'E' . $row),
-                            'D_DATE_ASSGINED' => $this->getDatePHPExcel($sheet, 'F' . $row),
-                            'K_ASSIGNED_TO' => $this->getValueCell($sheet, 'G' . $row),
-                            'D_DATE_SENT' => $this->getDatePHPExcel($sheet, 'H' . $row),
-                            'N_FILE' => $this->getValueCell($sheet, 'I' . $row),
-                            'N_OBSERVATIONS' => $this->getValueCell($sheet, 'J' . $row),
-                            'N_MODULE' => $this->getValueCell($sheet, 'K' . $row),
-                            'K_ID' => $this->getValueCell($sheet, 'L' . $row),
-                            'N_REMEDY' => $this->getValueCell($sheet, 'M' . $row),
-                            'N_ORDER_W' => $this->getValueCell($sheet, 'N' . $row),
-                            'D_BILL' => $this->getDatePHPExcel($sheet, 'O' . $row),
-                            'N_MONTH_B' => $this->getValueCell($sheet, 'P' . $row),
-                            'D_REVIEW' => $this->getDatePHPExcel($sheet, 'Q' . $row),
-                            'D_RAW' => $this->getDatePHPExcel($sheet, 'R' . $row),
-                            'D_OTGDRT' => $this->getDatePHPExcel($sheet, 'S' . $row),
-                            'N_idBSS' => $this->getValueCell($sheet, 'U' . $row),
-                            'N_TIPO' => $this->getValueCell($sheet, 'V' . $row)
-                                  );
+                            'D_DATE_S'        =>    $this->getDatePHPExcel  ($sheet, 'A' . $row),
+                            'N_REQUESTED_BY'  =>    $this->getValueCell     ($sheet, 'B' . $row),
+                            'N_STATUS'        =>    $this->getValueCell     ($sheet, 'C' . $row),
+                            'N_TYPE'          =>    $this->getValueCell     ($sheet, 'D' . $row),
+                            'N_ELEMENT'       =>    $this->getValueCell     ($sheet, 'E' . $row),
+                            'D_DATE_ASSGINED' =>    $this->getDatePHPExcel  ($sheet, 'F' . $row),
+/*retorna el id  del asig*/ 'K_ASSIGNED_TO'   =>    $this->getIdByNameRF($this->getValueCell($sheet,'B'.$row)),
+                            'D_DATE_SENT'     =>    $this->getDatePHPExcel  ($sheet, 'H' . $row),
+                            'N_FILE'          =>    $this->getValueCell     ($sheet, 'I' . $row),
+                            'N_OBSERVATIONS'  =>    $this->getValueCell     ($sheet, 'J' . $row),
+                            'N_MODULE'        =>    $this->getValueCell     ($sheet, 'K' . $row),
+                            'K_ID'            =>    $this->getValueCell     ($sheet, 'L' . $row),
+                            'N_REMEDY'        =>    $this->getValueCell     ($sheet, 'M' . $row),
+                            'N_ORDER_W'       =>    $this->getValueCell     ($sheet, 'N' . $row),
+                            'D_BILL'          =>    $this->getDatePHPExcel  ($sheet, 'O' . $row),
+                            'N_MONTH_B'       =>    $this->getValueCell     ($sheet, 'P' . $row),
+                            'D_REVIEW'        =>    $this->getDatePHPExcel  ($sheet, 'Q' . $row),
+                            'D_RAW'           =>    $this->getDatePHPExcel  ($sheet, 'R' . $row),
+                            'D_OTGDRT'        =>    $this->getDatePHPExcel  ($sheet, 'S' . $row),
+                            'N_idBSS'         =>    $this->getValueCell     ($sheet, 'U' . $row),
+                            'N_TIPO'          =>    $this->getTypeEmpty($this->getValueCell     ($sheet, 'D' . $row) ,$this->getValueCell($sheet, 'V' . $row)),
+                            'N_STATUS_MOD'    =>    0
+                            );
+                        //inserto la fila en la base de datos
+                        $insert = $this->Dao_rf_model->insertRfRow($data);
 
-                        $this->Dao_rf_model->insertRfRow($data);
-
-
-
+                        //si retorna 1 se insertó bien y lo sumo en contador
+                        if ($insert === 1) {
+                            $inserts ++;
+                        }
+                        // si no se insertó retotno el error y lo guardo en un array multidimencional + el id de la orden
+                        else{
+                            array_push($errorInsert, array($insert, $this->getValueCell     ($sheet, 'L' . $row) ));
+                        }
                     }
-
-
-
-
-
-
-
-
-
-
-
-
-
 
                     $row++;
                 }
@@ -196,16 +267,16 @@ class LoadInformation extends CI_Controller {
                     $response->setCode(2);
                 }
 
-                $filename = null;
 
                 $response->setData([
-                    "id" => $idTicket,
-                    "imported" => $imported,
-                    "inconsistencies" => $inconsistencies,
-                    "inconsistenciesFull" => $inconsistenciesFull,
-                    "data" => $this->objs,
-                    "errors_filename" => $filename,
-                    "row" => ($row - $request->index)
+                    "nuevos"                   => $inserts,
+                    "Actualizados"             => $actualizados,
+                    "No hay cambio"            => ($row - $request->index) - $actualizados - $inserts,
+                    "error de insercion"       => $errorInsert,
+                    "error al Actualizar"      => $errorUpdate,
+                    "error act a sin cambios"  => $errorNoChange,
+                    "row"                      => ($row - $request->index),
+                    "data"                     => $this->objs
                 ]);
             } catch (DeplynException $ex) {
                 $response = new Response(EMessages::ERROR, "Error al procesar el archivo.");
@@ -215,7 +286,8 @@ class LoadInformation extends CI_Controller {
         }
 
         $this->json($response);
-    }
+        // $this->load->view('viewRF');
+     }
 
     /**
      * @param $sheet
@@ -237,7 +309,57 @@ class LoadInformation extends CI_Controller {
             $date = date("Y-m-d H:i:s", PHPExcel_Shared_Date::ExcelToPHP($date));
             $date = Hash::addHours($date, 5);
         }
+        if ($date == "NULLED") {
+            $date = "0000-00-00 00:00:00";
+        }
         return $date;
+    }
+
+    //retorna el id del ing asignado envio nombre de ing solicitante
+    private function getIdByNameRF($nombre){
+        $solicitantes = ["Juan Carlos Leon Sanchez",
+                         "Carlos Alberto Cordoba Gaviria",
+                         "Carlos Felipe Velasquez",
+                         "Deissy Bibiana Rosero"
+        ];
+        $asignado = comparationsNames($solicitantes, $nombre);  
+
+        switch ($asignado) {
+            case 'Juan Carlos Leon Sanchez':
+                $id = "1016028754";
+                break;
+
+            case 'Carlos Alberto Cordoba Gaviria':
+                $id = "1016028754";
+                break;
+
+            case 'Carlos Felipe Velasquez':
+                $id = "1016028754";
+                break;
+
+            case 'Deissy Bibiana Rosero':
+                $id = "1016028754";
+                break;
+
+            default:
+                $id = "1030565500";
+                break;
+        }
+
+        return $id;
+    }
+
+    // si viene el tipo vacio lo calcula
+    private function getTypeEmpty($calculo, $type){
+        if ($type == "") {
+           if (substr_count($calculo, "1900") == 1) {
+                $type = "D3";
+           }
+           else if (substr_count($calculo, "850") == 1) {
+               $type = "D4";
+            }
+        }
+        return $type;
     }
 
    

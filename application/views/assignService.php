@@ -193,26 +193,7 @@
             echo "}";
           echo "}";
         echo "</script>";
-// echo "<br><br><br>";
 
-// $cadena = "cualquier cosa";
-// $long = strlen($cadena);
-
-
-// for ($i=0; $i < $long ; $i++) {
-//   echo $cadena;
-//   $cadena = primeraAlFinal($cadena);
-//   echo "<br>";
-// }
-
-// function primeraAlFinal($cadena){
-//   $array = str_split($cadena);
-//   array_push($array, $array[0]);
-//   unset($array[0]);
-
-//   return implode("", $array);
-
-// }
 
 
   ?>

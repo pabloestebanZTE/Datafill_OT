@@ -107,7 +107,8 @@ var vista = {
                     if (response.code == 2) {
                         swal("Importado", "Se ha importado toda la información del archivo correctamente.", "success")
                                 .then(function () {
-                                    location.reload();
+                                    // location.reload();
+                                    window.location.href = baseurl + "/RF/viewRF";
                                 });
                         return;
                     }

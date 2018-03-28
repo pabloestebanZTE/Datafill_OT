@@ -1,29 +1,28 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <title>Ver RF</title>
+    <title>RF</title>
+        <meta charset="utf-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
-        <meta http-equiv="content-type" content="text/html; charsetutf-8"/>
         <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-        <!--   ICONO PAGINA    -->
+        <!-- font awesone -->
+        <link rel="stylesheet" href="<?= URL::to('assets/plugins/font-awesome/css/font-awesome.min.css') ?>"/>
+        <!-- datatables -->
         <link rel="icon" href="http://cellaron.com/media/wysiwyg/zte-mwc-2015-8-l-124x124.png">
-        <!--   botones tabla    -->
-        <link rel="stylesheet" href="<?= URL::to('assets/css/botonesStyle.css'); ?>" type="text/css" media="all">
         <!--   BOOTSTRAP    -->
-        <link href="<?= URL::to('assets/css/bootstrap.css'); ?>" rel="stylesheet" />
-        <link href="<?= URL::to('assets/plugins/datatables/dataTables.bootstrap.css'); ?>" rel="stylesheet">
-        <link href="<?= URL::to('assets/css/bootstrap.min.css'); ?>" rel="stylesheet">
+        <link href="<?= URL::to('assets/css/bootstrap.min.css'); ?>" rel="stylesheet"> 
         <!--   HEADER CSS    -->
         <link href="<?= URL::to('assets/css/styleHeader.css'); ?>" rel="stylesheet" />
-
-        <script src="<?= URL::to('assets/js/jquery-2.1.1.min.js'); ?>"></script>
-        <script src="<?= URL::to('assets/js/bootstrap.js'); ?>"></script>
-
-        <script type="text/javascript" src="<?= URL::to('assets/js/tabs.js'); ?>"></script>
+        <!-- Modal Cami -->
+        <link href="<?= URL::to('assets/css/styleModalCami.css'); ?>" rel="stylesheet" />
+        <link rel="stylesheet" type="text/css" href="<?= URL::to('assets/plugins/datatables/css/jquery.dataTables.min.css'); ?>">        
+        <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/buttons/1.5.1/css/buttons.dataTables.min.css">
+        <script type="text/javascript" src="<?= URL::to('assets/plugins/jQuery/jquery-3.1.1.js'); ?>"></script>
 
 </head>
-<body>
-<header>
+<body data-url="<?= URL::base(); ?>">
+    <!-- Navigation -->
+    <header>
         <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
             <div class="container">
                 <div class="navbar-header">
@@ -43,11 +42,11 @@
                         <li class="cam"><a href="<?= URL::to('user/principalView'); ?>">Home</a>
                         </li>
                         <li class="cam"><a href="#services">Servicios</a>
-                            <ul>
-                                <li><a href="<?= URL::to('Service/assignService'); ?>">Agendar Actividad</a></li>
-                                <li><a href="<?= URL::to('Service/listServices'); ?>">Ver Actividades</a></li>
-                                <li><a href="https://accounts.google.com/ServiceLogin/signinchooser?passive=1209600&continue=https%3A%2F%2Faccounts.google.com%2FManageAccount&followup=https%3A%2F%2Faccounts.google.com%2FManageAccount&flowName=GlifWebSignIn&flowEntry=ServiceLogin" title="drive" target='_blank'>Drive</a></li>
-                            </ul>
+                        <ul>
+                            <li><a href="<?= URL::to('Service/assignService'); ?>">Agendar Actividad</a></li>
+                            <li><a href="<?= URL::to('Service/listServices'); ?>">Ver Actividades</a></li>
+                            <li><a href="https://accounts.google.com/ServiceLogin/signinchooser?passive=1209600&continue=https%3A%2F%2Faccounts.google.com%2FManageAccount&followup=https%3A%2F%2Faccounts.google.com%2FManageAccount&flowName=GlifWebSignIn&flowEntry=ServiceLogin" title="drive" target='_blank'>Drive</a></li>
+                        </ul>
                         </li>
                         <li class="cam"><a href="#services">RF</a>
                             <ul>
@@ -57,1258 +56,104 @@
                         </li>
                          <li class="cam"><a href="<?= URL::to('Grafics/getGrafics'); ?>">Graficas</a>
                         </li>
-                        </li>
                          <li class="cam"><a href="<?= URL::to('welcome/index'); ?>">Salir</a>
                         </li>
                     </ul>
                 </div>
             </div>
         </nav>
-     </header>
+     </header><br><br><br><br>
+<!--      fin header         -->
 
-<?php
- echo "<div class='wrapper tabs'>";
-        $meses[1] = 'Enero';
-        $meses[2] = 'Febrero';
-        $meses[3] = 'Marzo';
-        $meses[4] = 'Abril';
-        $meses[5] = 'Mayo';
-        $meses[6] = 'Junio';
-        $meses[7] = 'Julio';
-        $meses[8] = 'Agosto';
-        $meses[9] = 'Septiembre';
-        $meses[10] = 'Octubre';
-        $meses[11] = 'Noviembre';
-        $meses[12] = 'Diciembre';
+<div class="container">
+<h1 class="h1">RF</h1><hr>
 
-    echo "<ul class='nav'>";
-      echo "<center>";
-      for ($p = 1; $p <= count($meses); $p++){
-        if ($p == 1){
-          echo "<li class='selected'><a href='#tab".$p."'><center>".$meses[$p]."</center></a></li>";
-        } else {
-          echo "<li><a href='#tab".$p."'><center>".$meses[$p]."</center></a></li>";
-        }
-      }
-      echo "</center>";
-    echo "</ul>";
-        //----------------------tabla 1-------------------------------
-        echo "<div class='tab-content' id='tab1'><br>";
-            echo "<div>";
-              echo "<h3>RF</h3>";
-              echo "<table id='demo1' cellpadding='0' cellspacing='0' style='font-size: 9px'>";
-                echo "<thead>";
-                  echo "<tr style='background-color: #207BE5; color: white'>";
-                    echo "<th>Fecha Solicitada</th>";
-                    echo "<th>Solicitada por</th>";
-                    echo "<th>Estado</th>";
-                    echo "<th>Tipo</th>";
-                    echo "<th>Elemento</th>";
-                    echo "<th>Fecha Asignada</th>";
-                    echo "<th>Asignada_a</th>";
-                    echo "<th>Fecha Enviada</th>";
-                    echo "<th>Archivo</th>";
-                    echo "<th>Obs</th>";
-                    echo "<th>Modulo</th>";
-                    echo "<th>id</th>";
-                    echo "<th>Remedy</th>";
-                    echo "<th>Peso Orden</th>";
-                    echo "<th>Fecha Facturacion</th>";
-                    echo "<th>Mes Facturacion</th>";
-                    echo "<th>Fecha Revision</th>";
-                    echo "<th>Fecha Crudo</th>";
-                    echo "<th>Fecha OTGDRT</th>";
-                    echo "<th>idBSS</th>";
-                    echo "<th>Codigo</th>";
-                  echo "</tr>";
-                echo "</thead>";
-                echo "<tbody>";
-                for ($i=0; $i <count($rf) ; $i++) {
-                  if (explode("-",$rf[$i]->getDateRequested())[1] == 1) {
-                    echo "<tr style='background-color: ".$rf[$i]->getColor().";'>";
-                        echo "<td>".$rf[$i]->getDateRequested()."</td>";
-                        echo "<td>".$rf[$i]->getRequestedBy()."</td>";
-                        echo "<td>".$rf[$i]->getStatus()."</td>";
-                        echo "<td>".$rf[$i]->getType()."</td>";
-                        echo "<td>".$rf[$i]->getElement()."</td>";
-                        echo "<td>".$rf[$i]->getDateAssigned()."</td>";
-                        echo "<td>".$rf[$i]->getAssignedTo()."</td>";
-                        echo "<td>".$rf[$i]->getDateSent()."</td>";
-                        echo "<td>".$rf[$i]->getFile()."</td>";
-                        echo "<td>".$rf[$i]->getObs()."</td>";
-                        echo "<td>".$rf[$i]->getModule()."</td>";
-                        echo "<td>".$rf[$i]->getId()."</td>";
-                        echo "<td>".$rf[$i]->getRemedy()."</td>";
-                        echo "<td>".$rf[$i]->getWeightOrder()."</td>";
-                        echo "<td>".$rf[$i]->getDateBilling()."</td>";
-                        echo "<td>".$rf[$i]->getMonthBilling()."</td>";
-                        echo "<td>".$rf[$i]->getDateReview()."</td>";
-                        echo "<td>".$rf[$i]->getDateRaw()."</td>";
-                        echo "<td>".$rf[$i]->getDateOTGDRT()."</td>";
-                        echo "<td>".$rf[$i]->getIdBSS()."</td>";
-                        echo "<td>".$rf[$i]->getCode()."</td>";
-                      echo "</tr>";
-                  }
-                }
-                 echo "<tfoot>";
-                  echo "<tr style='background-color: #207BE5; color: white'>";
-                    echo "<th>Fecha Solicitada</th>";
-                    echo "<th>Solicitada por</th>";
-                    echo "<th>Estado</th>";
-                    echo "<th>Tipo</th>";
-                    echo "<th>Elemento</th>";
-                    echo "<th>Fecha Asignada</th>";
-                    echo "<th>Asignada_a</th>";
-                    echo "<th>Fecha Enviada</th>";
-                    echo "<th>Archivo</th>";
-                    echo "<th>Obs</th>";
-                    echo "<th>Modulo</th>";
-                    echo "<th>id</th>";
-                    echo "<th>Remedy</th>";
-                    echo "<th>Peso Orden</th>";
-                    echo "<th>Fecha Facturacion</th>";
-                    echo "<th>Mes Facturacion</th>";
-                    echo "<th>Fecha Revision</th>";
-                    echo "<th>Fecha Crudo</th>";
-                    echo "<th>Fecha OTGDRT</th>";
-                    echo "<th>idBSS</th>";
-                    echo "<th>Codigo</th>";
-                  echo "</tr>";
-                echo "</tfoot>";
-              echo "</table>";
-            echo "</div>";
-           echo "</div>";
-         //-------------------fin tabla 1-----------------------
+<div class="container" align="center">
+    <button type="button" class="btn btn-primary" id="nuevos"><i class="fa fa-fw fa-plus"></i> Nuevos <span id="nuevosBadge" class="badge">...</span></button>
+    <button type="button" class="btn btn-warning" id="cambios"><i class="fa fa-fw fa-refresh"></i> Cambios <span id="cambiosBadge" class="badge">...</span></button>    
+</div>
 
-  //----------------------tabla 2-------------------------------
-    echo "<div class='tab-content' id='tab2'><br>";
-        echo "<div>";
-          echo "<h3>RF</h3>";
-          echo "<table id='demo2' cellpadding='0' cellspacing='0' style='font-size: 9px'>";
-            echo "<thead>";
-              echo "<tr style='background-color: #207BE5; color: white'>";
-                echo "<th>Fecha Solicitada</th>";
-                echo "<th>Solicitada por</th>";
-                echo "<th>Estado</th>";
-                echo "<th>Tipo</th>";
-                echo "<th>Elemento</th>";
-                echo "<th>Fecha Asignada</th>";
-                echo "<th>Asignada_a</th>";
-                echo "<th>Fecha Enviada</th>";
-                echo "<th>Archivo</th>";
-                echo "<th>Obs</th>";
-                echo "<th>Modulo</th>";
-                echo "<th>id</th>";
-                echo "<th>Remedy</th>";
-                echo "<th>Peso Orden</th>";
-                echo "<th>Fecha Facturacion</th>";
-                echo "<th>Mes Facturacion</th>";
-                echo "<th>Fecha Revision</th>";
-                echo "<th>Fecha Crudo</th>";
-                echo "<th>Fecha OTGDRT</th>";
-                echo "<th>idBSS</th>";
-                echo "<th>Codigo</th>";
-              echo "</tr>";
-            echo "</thead>";
-            echo "<tbody>";
-            for ($i=0; $i <count($rf) ; $i++) {
-              if (explode("-",$rf[$i]->getDateRequested())[1] == 2) {
-                echo "<tr style='background-color: ".$rf[$i]->getColor().";'>";
-                    echo "<td>".$rf[$i]->getDateRequested()."</td>";
-                    echo "<td>".$rf[$i]->getRequestedBy()."</td>";
-                    echo "<td>".$rf[$i]->getStatus()."</td>";
-                    echo "<td>".$rf[$i]->getType()."</td>";
-                    echo "<td>".$rf[$i]->getElement()."</td>";
-                    echo "<td>".$rf[$i]->getDateAssigned()."</td>";
-                    echo "<td>".$rf[$i]->getAssignedTo()."</td>";
-                    echo "<td>".$rf[$i]->getDateSent()."</td>";
-                    echo "<td>".$rf[$i]->getFile()."</td>";
-                    echo "<td>".$rf[$i]->getObs()."</td>";
-                    echo "<td>".$rf[$i]->getModule()."</td>";
-                    echo "<td>".$rf[$i]->getId()."</td>";
-                    echo "<td>".$rf[$i]->getRemedy()."</td>";
-                    echo "<td>".$rf[$i]->getWeightOrder()."</td>";
-                    echo "<td>".$rf[$i]->getDateBilling()."</td>";
-                    echo "<td>".$rf[$i]->getMonthBilling()."</td>";
-                    echo "<td>".$rf[$i]->getDateReview()."</td>";
-                    echo "<td>".$rf[$i]->getDateRaw()."</td>";
-                    echo "<td>".$rf[$i]->getDateOTGDRT()."</td>";
-                    echo "<td>".$rf[$i]->getIdBSS()."</td>";
-                    echo "<td>".$rf[$i]->getCode()."</td>";
-                  echo "</tr>";
-              }
-            }
-             echo "<tfoot>";
-              echo "<tr style='background-color: #207BE5; color: white'>";
-                echo "<th>Fecha Solicitada</th>";
-                echo "<th>Solicitada por</th>";
-                echo "<th>Estado</th>";
-                echo "<th>Tipo</th>";
-                echo "<th>Elemento</th>";
-                echo "<th>Fecha Asignada</th>";
-                echo "<th>Asignada_a</th>";
-                echo "<th>Fecha Enviada</th>";
-                echo "<th>Archivo</th>";
-                echo "<th>Obs</th>";
-                echo "<th>Modulo</th>";
-                echo "<th>id</th>";
-                echo "<th>Remedy</th>";
-                echo "<th>Peso Orden</th>";
-                echo "<th>Fecha Facturacion</th>";
-                echo "<th>Mes Facturacion</th>";
-                echo "<th>Fecha Revision</th>";
-                echo "<th>Fecha Crudo</th>";
-                echo "<th>Fecha OTGDRT</th>";
-                echo "<th>idBSS</th>";
-                echo "<th>Codigo</th>";
-              echo "</tr>";
-            echo "</tfoot>";
-          echo "</table>";
-        echo "</div>";
-       echo "</div>";
-     //-------------------fin tabla 2-----------------------
+ <!-- Modal tabla actividades rf nuevas-->
+ <div class="modal fade" id="ModalEventosNuevos" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+  <div class="modal-dialog modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><img src="<?= URL::to('assets/img/close.ico'); ?>" alt="cerrar" class="modalImage" ></button>
+        <h4 class="modal-title" id="titleEvent">Modal tabla nuevas</h4>
+      </div>
+      <div class="modal-body" id="cuerpoModal">   
 
-   //----------------------tabla 3-------------------------------
-     echo "<div class='tab-content' id='tab3'><br>";
-         echo "<div>";
-           echo "<h3>RF</h3>";
-           echo "<table id='demo3' cellpadding='0' cellspacing='0' style='font-size: 9px'>";
-             echo "<thead>";
-               echo "<tr style='background-color: #207BE5; color: white'>";
-                 echo "<th>Fecha Solicitada</th>";
-                 echo "<th>Solicitada por</th>";
-                 echo "<th>Estado</th>";
-                 echo "<th>Tipo</th>";
-                 echo "<th>Elemento</th>";
-                 echo "<th>Fecha Asignada</th>";
-                 echo "<th>Asignada_a</th>";
-                 echo "<th>Fecha Enviada</th>";
-                 echo "<th>Archivo</th>";
-                 echo "<th>Obs</th>";
-                 echo "<th>Modulo</th>";
-                 echo "<th>id</th>";
-                 echo "<th>Remedy</th>";
-                 echo "<th>Peso Orden</th>";
-                 echo "<th>Fecha Facturacion</th>";
-                 echo "<th>Mes Facturacion</th>";
-                 echo "<th>Fecha Revision</th>";
-                 echo "<th>Fecha Crudo</th>";
-                 echo "<th>Fecha OTGDRT</th>";
-                 echo "<th>idBSS</th>";
-                 echo "<th>Codigo</th>";
-               echo "</tr>";
-             echo "</thead>";
-             echo "<tbody>";
-             for ($i=0; $i <count($rf) ; $i++) {
-               if (explode("-",$rf[$i]->getDateRequested())[1] == 3) {
-                 echo "<tr style='background-color: ".$rf[$i]->getColor().";'>";
-                     echo "<td>".$rf[$i]->getDateRequested()."</td>";
-                     echo "<td>".$rf[$i]->getRequestedBy()."</td>";
-                     echo "<td>".$rf[$i]->getStatus()."</td>";
-                     echo "<td>".$rf[$i]->getType()."</td>";
-                     echo "<td>".$rf[$i]->getElement()."</td>";
-                     echo "<td>".$rf[$i]->getDateAssigned()."</td>";
-                     echo "<td>".$rf[$i]->getAssignedTo()."</td>";
-                     echo "<td>".$rf[$i]->getDateSent()."</td>";
-                     echo "<td>".$rf[$i]->getFile()."</td>";
-                     echo "<td>".$rf[$i]->getObs()."</td>";
-                     echo "<td>".$rf[$i]->getModule()."</td>";
-                     echo "<td>".$rf[$i]->getId()."</td>";
-                     echo "<td>".$rf[$i]->getRemedy()."</td>";
-                     echo "<td>".$rf[$i]->getWeightOrder()."</td>";
-                     echo "<td>".$rf[$i]->getDateBilling()."</td>";
-                     echo "<td>".$rf[$i]->getMonthBilling()."</td>";
-                     echo "<td>".$rf[$i]->getDateReview()."</td>";
-                     echo "<td>".$rf[$i]->getDateRaw()."</td>";
-                     echo "<td>".$rf[$i]->getDateOTGDRT()."</td>";
-                     echo "<td>".$rf[$i]->getIdBSS()."</td>";
-                     echo "<td>".$rf[$i]->getCode()."</td>";
-                   echo "</tr>";
-               }
-             }
-              echo "<tfoot>";
-               echo "<tr style='background-color: #207BE5; color: white'>";
-                 echo "<th>Fecha Solicitada</th>";
-                 echo "<th>Solicitada por</th>";
-                 echo "<th>Estado</th>";
-                 echo "<th>Tipo</th>";
-                 echo "<th>Elemento</th>";
-                 echo "<th>Fecha Asignada</th>";
-                 echo "<th>Asignada_a</th>";
-                 echo "<th>Fecha Enviada</th>";
-                 echo "<th>Archivo</th>";
-                 echo "<th>Obs</th>";
-                 echo "<th>Modulo</th>";
-                 echo "<th>id</th>";
-                 echo "<th>Remedy</th>";
-                 echo "<th>Peso Orden</th>";
-                 echo "<th>Fecha Facturacion</th>";
-                 echo "<th>Mes Facturacion</th>";
-                 echo "<th>Fecha Revision</th>";
-                 echo "<th>Fecha Crudo</th>";
-                 echo "<th>Fecha OTGDRT</th>";
-                 echo "<th>idBSS</th>";
-                 echo "<th>Codigo</th>";
-               echo "</tr>";
-             echo "</tfoot>";
-          echo "</table>";
-       echo "</div>";
-      echo "</div>";
-      //-------------------fin tabla 3-----------------------
+        <table id="tableEventos" class='table table-bordered table-striped' width='100%'>
 
-    //----------------------tabla 4-------------------------------
-      echo "<div class='tab-content' id='tab4'><br>";
-          echo "<div>";
-            echo "<h3>RF</h3>";
-            echo "<table id='demo4' cellpadding='0' cellspacing='0' style='font-size: 9px'>";
-              echo "<thead>";
-                echo "<tr style='background-color: #207BE5; color: white'>";
-                  echo "<th>Fecha Solicitada</th>";
-                  echo "<th>Solicitada por</th>";
-                  echo "<th>Estado</th>";
-                  echo "<th>Tipo</th>";
-                  echo "<th>Elemento</th>";
-                  echo "<th>Fecha Asignada</th>";
-                  echo "<th>Asignada_a</th>";
-                  echo "<th>Fecha Enviada</th>";
-                  echo "<th>Archivo</th>";
-                  echo "<th>Obs</th>";
-                  echo "<th>Modulo</th>";
-                  echo "<th>id</th>";
-                  echo "<th>Remedy</th>";
-                  echo "<th>Peso Orden</th>";
-                  echo "<th>Fecha Facturacion</th>";
-                  echo "<th>Mes Facturacion</th>";
-                  echo "<th>Fecha Revision</th>";
-                  echo "<th>Fecha Crudo</th>";
-                  echo "<th>Fecha OTGDRT</th>";
-                  echo "<th>idBSS</th>";
-                  echo "<th>Codigo</th>";
-                echo "</tr>";
-              echo "</thead>";
-              echo "<tbody>";
-              for ($i=0; $i <count($rf) ; $i++) {
-                if (explode("-",$rf[$i]->getDateRequested())[1] == 4) {
-                  echo "<tr style='background-color: ".$rf[$i]->getColor().";'>";
-                      echo "<td>".$rf[$i]->getDateRequested()."</td>";
-                      echo "<td>".$rf[$i]->getRequestedBy()."</td>";
-                      echo "<td>".$rf[$i]->getStatus()."</td>";
-                      echo "<td>".$rf[$i]->getType()."</td>";
-                      echo "<td>".$rf[$i]->getElement()."</td>";
-                      echo "<td>".$rf[$i]->getDateAssigned()."</td>";
-                      echo "<td>".$rf[$i]->getAssignedTo()."</td>";
-                      echo "<td>".$rf[$i]->getDateSent()."</td>";
-                      echo "<td>".$rf[$i]->getFile()."</td>";
-                      echo "<td>".$rf[$i]->getObs()."</td>";
-                      echo "<td>".$rf[$i]->getModule()."</td>";
-                      echo "<td>".$rf[$i]->getId()."</td>";
-                      echo "<td>".$rf[$i]->getRemedy()."</td>";
-                      echo "<td>".$rf[$i]->getWeightOrder()."</td>";
-                      echo "<td>".$rf[$i]->getDateBilling()."</td>";
-                      echo "<td>".$rf[$i]->getMonthBilling()."</td>";
-                      echo "<td>".$rf[$i]->getDateReview()."</td>";
-                      echo "<td>".$rf[$i]->getDateRaw()."</td>";
-                      echo "<td>".$rf[$i]->getDateOTGDRT()."</td>";
-                      echo "<td>".$rf[$i]->getIdBSS()."</td>";
-                      echo "<td>".$rf[$i]->getCode()."</td>";
-                    echo "</tr>";
-                }
-              }
-               echo "<tfoot>";
-                echo "<tr style='background-color: #207BE5; color: white'>";
-                  echo "<th>Fecha Solicitada</th>";
-                  echo "<th>Solicitada por</th>";
-                  echo "<th>Estado</th>";
-                  echo "<th>Tipo</th>";
-                  echo "<th>Elemento</th>";
-                  echo "<th>Fecha Asignada</th>";
-                  echo "<th>Asignada_a</th>";
-                  echo "<th>Fecha Enviada</th>";
-                  echo "<th>Archivo</th>";
-                  echo "<th>Obs</th>";
-                  echo "<th>Modulo</th>";
-                  echo "<th>id</th>";
-                  echo "<th>Remedy</th>";
-                  echo "<th>Peso Orden</th>";
-                  echo "<th>Fecha Facturacion</th>";
-                  echo "<th>Mes Facturacion</th>";
-                  echo "<th>Fecha Revision</th>";
-                  echo "<th>Fecha Crudo</th>";
-                  echo "<th>Fecha OTGDRT</th>";
-                  echo "<th>idBSS</th>";
-                  echo "<th>Codigo</th>";
-                echo "</tr>";
-              echo "</tfoot>";
-          echo "</table>";
-        echo "</div>";
-       echo "</div>";
-       //-------------------fin tabla 4-----------------------
+        </table>
 
-     //----------------------tabla 5-------------------------------
-       echo "<div class='tab-content' id='tab5'><br>";
-           echo "<div>";
-             echo "<h3>RF</h3>";
-             echo "<table id='demo5' cellpadding='0' cellspacing='0' style='font-size: 9px'>";
-               echo "<thead>";
-                 echo "<tr style='background-color: #207BE5; color: white'>";
-                   echo "<th>Fecha Solicitada</th>";
-                   echo "<th>Solicitada por</th>";
-                   echo "<th>Estado</th>";
-                   echo "<th>Tipo</th>";
-                   echo "<th>Elemento</th>";
-                   echo "<th>Fecha Asignada</th>";
-                   echo "<th>Asignada_a</th>";
-                   echo "<th>Fecha Enviada</th>";
-                   echo "<th>Archivo</th>";
-                   echo "<th>Obs</th>";
-                   echo "<th>Modulo</th>";
-                   echo "<th>id</th>";
-                   echo "<th>Remedy</th>";
-                   echo "<th>Peso Orden</th>";
-                   echo "<th>Fecha Facturacion</th>";
-                   echo "<th>Mes Facturacion</th>";
-                   echo "<th>Fecha Revision</th>";
-                   echo "<th>Fecha Crudo</th>";
-                   echo "<th>Fecha OTGDRT</th>";
-                   echo "<th>idBSS</th>";
-                   echo "<th>Codigo</th>";
-                 echo "</tr>";
-               echo "</thead>";
-               echo "<tbody>";
-               for ($i=0; $i <count($rf) ; $i++) {
-                 if (explode("-",$rf[$i]->getDateRequested())[1] == 5) {
-                   echo "<tr style='background-color: ".$rf[$i]->getColor().";'>";
-                       echo "<td>".$rf[$i]->getDateRequested()."</td>";
-                       echo "<td>".$rf[$i]->getRequestedBy()."</td>";
-                       echo "<td>".$rf[$i]->getStatus()."</td>";
-                       echo "<td>".$rf[$i]->getType()."</td>";
-                       echo "<td>".$rf[$i]->getElement()."</td>";
-                       echo "<td>".$rf[$i]->getDateAssigned()."</td>";
-                       echo "<td>".$rf[$i]->getAssignedTo()."</td>";
-                       echo "<td>".$rf[$i]->getDateSent()."</td>";
-                       echo "<td>".$rf[$i]->getFile()."</td>";
-                       echo "<td>".$rf[$i]->getObs()."</td>";
-                       echo "<td>".$rf[$i]->getModule()."</td>";
-                       echo "<td>".$rf[$i]->getId()."</td>";
-                       echo "<td>".$rf[$i]->getRemedy()."</td>";
-                       echo "<td>".$rf[$i]->getWeightOrder()."</td>";
-                       echo "<td>".$rf[$i]->getDateBilling()."</td>";
-                       echo "<td>".$rf[$i]->getMonthBilling()."</td>";
-                       echo "<td>".$rf[$i]->getDateReview()."</td>";
-                       echo "<td>".$rf[$i]->getDateRaw()."</td>";
-                       echo "<td>".$rf[$i]->getDateOTGDRT()."</td>";
-                       echo "<td>".$rf[$i]->getIdBSS()."</td>";
-                       echo "<td>".$rf[$i]->getCode()."</td>";
-                     echo "</tr>";
-                 }
-               }
-                echo "<tfoot>";
-                 echo "<tr style='background-color: #207BE5; color: white'>";
-                   echo "<th>Fecha Solicitada</th>";
-                   echo "<th>Solicitada por</th>";
-                   echo "<th>Estado</th>";
-                   echo "<th>Tipo</th>";
-                   echo "<th>Elemento</th>";
-                   echo "<th>Fecha Asignada</th>";
-                   echo "<th>Asignada_a</th>";
-                   echo "<th>Fecha Enviada</th>";
-                   echo "<th>Archivo</th>";
-                   echo "<th>Obs</th>";
-                   echo "<th>Modulo</th>";
-                   echo "<th>id</th>";
-                   echo "<th>Remedy</th>";
-                   echo "<th>Peso Orden</th>";
-                   echo "<th>Fecha Facturacion</th>";
-                   echo "<th>Mes Facturacion</th>";
-                   echo "<th>Fecha Revision</th>";
-                   echo "<th>Fecha Crudo</th>";
-                   echo "<th>Fecha OTGDRT</th>";
-                   echo "<th>idBSS</th>";
-                   echo "<th>Codigo</th>";
-                 echo "</tr>";
-               echo "</tfoot>";
-            echo "</table>";
-         echo "</div>";
-        echo "</div>";
-        //-------------------fin tabla 5-----------------------
+      </div>
+      <div class="modal-footer">
+        <h4 class="foot">Zolid By ZTE Colombia | All Right Reserved</h4>
+        <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar  <i class="glyphicon glyphicon-chevron-up"></i></button>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- fin modal actividades nuevas -->
+<!-- Modal tabla actividades rf cambios-->
+ <div class="modal fade" id="ModalEventosCambios" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+  <div class="modal-dialog modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><img src="<?= URL::to('assets/img/close.ico'); ?>" alt="cerrar" class="modalImage" ></button>
+        <h4 class="modal-title" id="titleEvent">Modal tabla Cambios</h4>
+      </div>
+      <div class="modal-body" id="cuerpoModal">  
 
-      //----------------------tabla 6-------------------------------
-        echo "<div class='tab-content' id='tab6'><br>";
-            echo "<div>";
-              echo "<h3>RF</h3>";
-              echo "<table id='demo6' cellpadding='0' cellspacing='0' style='font-size: 9px'>";
-                echo "<thead>";
-                  echo "<tr style='background-color: #207BE5; color: white'>";
-                    echo "<th>Fecha Solicitada</th>";
-                    echo "<th>Solicitada por</th>";
-                    echo "<th>Estado</th>";
-                    echo "<th>Tipo</th>";
-                    echo "<th>Elemento</th>";
-                    echo "<th>Fecha Asignada</th>";
-                    echo "<th>Asignada_a</th>";
-                    echo "<th>Fecha Enviada</th>";
-                    echo "<th>Archivo</th>";
-                    echo "<th>Obs</th>";
-                    echo "<th>Modulo</th>";
-                    echo "<th>id</th>";
-                    echo "<th>Remedy</th>";
-                    echo "<th>Peso Orden</th>";
-                    echo "<th>Fecha Facturacion</th>";
-                    echo "<th>Mes Facturacion</th>";
-                    echo "<th>Fecha Revision</th>";
-                    echo "<th>Fecha Crudo</th>";
-                    echo "<th>Fecha OTGDRT</th>";
-                    echo "<th>idBSS</th>";
-                    echo "<th>Codigo</th>";
-                  echo "</tr>";
-                echo "</thead>";
-                echo "<tbody>";
-                for ($i=0; $i <count($rf) ; $i++) {
-                  if (explode("-",$rf[$i]->getDateRequested())[1] == 6) {
-                    echo "<tr style='background-color: ".$rf[$i]->getColor().";'>";
-                        echo "<td>".$rf[$i]->getDateRequested()."</td>";
-                        echo "<td>".$rf[$i]->getRequestedBy()."</td>";
-                        echo "<td>".$rf[$i]->getStatus()."</td>";
-                        echo "<td>".$rf[$i]->getType()."</td>";
-                        echo "<td>".$rf[$i]->getElement()."</td>";
-                        echo "<td>".$rf[$i]->getDateAssigned()."</td>";
-                        echo "<td>".$rf[$i]->getAssignedTo()."</td>";
-                        echo "<td>".$rf[$i]->getDateSent()."</td>";
-                        echo "<td>".$rf[$i]->getFile()."</td>";
-                        echo "<td>".$rf[$i]->getObs()."</td>";
-                        echo "<td>".$rf[$i]->getModule()."</td>";
-                        echo "<td>".$rf[$i]->getId()."</td>";
-                        echo "<td>".$rf[$i]->getRemedy()."</td>";
-                        echo "<td>".$rf[$i]->getWeightOrder()."</td>";
-                        echo "<td>".$rf[$i]->getDateBilling()."</td>";
-                        echo "<td>".$rf[$i]->getMonthBilling()."</td>";
-                        echo "<td>".$rf[$i]->getDateReview()."</td>";
-                        echo "<td>".$rf[$i]->getDateRaw()."</td>";
-                        echo "<td>".$rf[$i]->getDateOTGDRT()."</td>";
-                        echo "<td>".$rf[$i]->getIdBSS()."</td>";
-                        echo "<td>".$rf[$i]->getCode()."</td>";
-                      echo "</tr>";
-                  }
-                }
-                 echo "<tfoot>";
-                  echo "<tr style='background-color: #207BE5; color: white'>";
-                    echo "<th>Fecha Solicitada</th>";
-                    echo "<th>Solicitada por</th>";
-                    echo "<th>Estado</th>";
-                    echo "<th>Tipo</th>";
-                    echo "<th>Elemento</th>";
-                    echo "<th>Fecha Asignada</th>";
-                    echo "<th>Asignada_a</th>";
-                    echo "<th>Fecha Enviada</th>";
-                    echo "<th>Archivo</th>";
-                    echo "<th>Obs</th>";
-                    echo "<th>Modulo</th>";
-                    echo "<th>id</th>";
-                    echo "<th>Remedy</th>";
-                    echo "<th>Peso Orden</th>";
-                    echo "<th>Fecha Facturacion</th>";
-                    echo "<th>Mes Facturacion</th>";
-                    echo "<th>Fecha Revision</th>";
-                    echo "<th>Fecha Crudo</th>";
-                    echo "<th>Fecha OTGDRT</th>";
-                    echo "<th>idBSS</th>";
-                    echo "<th>Codigo</th>";
-                  echo "</tr>";
-                echo "</tfoot>";
-            echo "</table>";
-          echo "</div>";
-         echo "</div>";
-         //-------------------fin tabla 6-----------------------
+            <div class="tab-content">
 
-       //----------------------tabla 7-------------------------------
-         echo "<div class='tab-content' id='tab7'><br>";
-             echo "<div>";
-               echo "<h3>RF</h3>";
-               echo "<table id='demo7' cellpadding='0' cellspacing='0' style='font-size: 9px'>";
-                 echo "<thead>";
-                   echo "<tr style='background-color: #207BE5; color: white'>";
-                     echo "<th>Fecha Solicitada</th>";
-                     echo "<th>Solicitada por</th>";
-                     echo "<th>Estado</th>";
-                     echo "<th>Tipo</th>";
-                     echo "<th>Elemento</th>";
-                     echo "<th>Fecha Asignada</th>";
-                     echo "<th>Asignada_a</th>";
-                     echo "<th>Fecha Enviada</th>";
-                     echo "<th>Archivo</th>";
-                     echo "<th>Obs</th>";
-                     echo "<th>Modulo</th>";
-                     echo "<th>id</th>";
-                     echo "<th>Remedy</th>";
-                     echo "<th>Peso Orden</th>";
-                     echo "<th>Fecha Facturacion</th>";
-                     echo "<th>Mes Facturacion</th>";
-                     echo "<th>Fecha Revision</th>";
-                     echo "<th>Fecha Crudo</th>";
-                     echo "<th>Fecha OTGDRT</th>";
-                     echo "<th>idBSS</th>";
-                     echo "<th>Codigo</th>";
-                   echo "</tr>";
-                 echo "</thead>";
-                 echo "<tbody>";
-                 for ($i=0; $i <count($rf) ; $i++) {
-                   if (explode("-",$rf[$i]->getDateRequested())[1] == 7) {
-                     echo "<tr style='background-color: ".$rf[$i]->getColor().";'>";
-                         echo "<td>".$rf[$i]->getDateRequested()."</td>";
-                         echo "<td>".$rf[$i]->getRequestedBy()."</td>";
-                         echo "<td>".$rf[$i]->getStatus()."</td>";
-                         echo "<td>".$rf[$i]->getType()."</td>";
-                         echo "<td>".$rf[$i]->getElement()."</td>";
-                         echo "<td>".$rf[$i]->getDateAssigned()."</td>";
-                         echo "<td>".$rf[$i]->getAssignedTo()."</td>";
-                         echo "<td>".$rf[$i]->getDateSent()."</td>";
-                         echo "<td>".$rf[$i]->getFile()."</td>";
-                         echo "<td>".$rf[$i]->getObs()."</td>";
-                         echo "<td>".$rf[$i]->getModule()."</td>";
-                         echo "<td>".$rf[$i]->getId()."</td>";
-                         echo "<td>".$rf[$i]->getRemedy()."</td>";
-                         echo "<td>".$rf[$i]->getWeightOrder()."</td>";
-                         echo "<td>".$rf[$i]->getDateBilling()."</td>";
-                         echo "<td>".$rf[$i]->getMonthBilling()."</td>";
-                         echo "<td>".$rf[$i]->getDateReview()."</td>";
-                         echo "<td>".$rf[$i]->getDateRaw()."</td>";
-                         echo "<td>".$rf[$i]->getDateOTGDRT()."</td>";
-                         echo "<td>".$rf[$i]->getIdBSS()."</td>";
-                         echo "<td>".$rf[$i]->getCode()."</td>";
-                       echo "</tr>";
-                   }
-                 }
-                  echo "<tfoot>";
-                   echo "<tr style='background-color: #207BE5; color: white'>";
-                     echo "<th>Fecha Solicitada</th>";
-                     echo "<th>Solicitada por</th>";
-                     echo "<th>Estado</th>";
-                     echo "<th>Tipo</th>";
-                     echo "<th>Elemento</th>";
-                     echo "<th>Fecha Asignada</th>";
-                     echo "<th>Asignada_a</th>";
-                     echo "<th>Fecha Enviada</th>";
-                     echo "<th>Archivo</th>";
-                     echo "<th>Obs</th>";
-                     echo "<th>Modulo</th>";
-                     echo "<th>id</th>";
-                     echo "<th>Remedy</th>";
-                     echo "<th>Peso Orden</th>";
-                     echo "<th>Fecha Facturacion</th>";
-                     echo "<th>Mes Facturacion</th>";
-                     echo "<th>Fecha Revision</th>";
-                     echo "<th>Fecha Crudo</th>";
-                     echo "<th>Fecha OTGDRT</th>";
-                     echo "<th>idBSS</th>";
-                     echo "<th>Codigo</th>";
-                   echo "</tr>";
-                 echo "</tfoot>";
-              echo "</table>";
-           echo "</div>";
-          echo "</div>";
-          //-------------------fin tabla 7-----------------------
+                <div id="Matriz" class="tab-pane fade in active">
+                   <h3>TABLA CAMBIOS</h3>
+                   <table id="tableEventos" class='table table-bordered table-striped' width='100%'>
+                </div>
 
-        //----------------------tabla 8-------------------------------
-          echo "<div class='tab-content' id='tab8'><br>";
-              echo "<div>";
-                echo "<h3>RF</h3>";
-                echo "<table id='demo8' cellpadding='0' cellspacing='0' style='font-size: 9px'>";
-                  echo "<thead>";
-                    echo "<tr style='background-color: #207BE5; color: white'>";
-                      echo "<th>Fecha Solicitada</th>";
-                      echo "<th>Solicitada por</th>";
-                      echo "<th>Estado</th>";
-                      echo "<th>Tipo</th>";
-                      echo "<th>Elemento</th>";
-                      echo "<th>Fecha Asignada</th>";
-                      echo "<th>Asignada_a</th>";
-                      echo "<th>Fecha Enviada</th>";
-                      echo "<th>Archivo</th>";
-                      echo "<th>Obs</th>";
-                      echo "<th>Modulo</th>";
-                      echo "<th>id</th>";
-                      echo "<th>Remedy</th>";
-                      echo "<th>Peso Orden</th>";
-                      echo "<th>Fecha Facturacion</th>";
-                      echo "<th>Mes Facturacion</th>";
-                      echo "<th>Fecha Revision</th>";
-                      echo "<th>Fecha Crudo</th>";
-                      echo "<th>Fecha OTGDRT</th>";
-                      echo "<th>idBSS</th>";
-                      echo "<th>Codigo</th>";
-                    echo "</tr>";
-                  echo "</thead>";
-                  echo "<tbody>";
-                  for ($i=0; $i <count($rf) ; $i++) {
-                    if (explode("-",$rf[$i]->getDateRequested())[1] == 8) {
-                      echo "<tr style='background-color:".$rf[$i]->getColor().";'>";//".$rf[$i]->getColor()."
-                          echo "<td>".$rf[$i]->getDateRequested()."</td>";
-                          echo "<td>".$rf[$i]->getRequestedBy()."</td>";
-                          echo "<td>".$rf[$i]->getStatus()."</td>";
-                          echo "<td>".$rf[$i]->getType()."</td>";
-                          echo "<td>".$rf[$i]->getElement()."</td>";
-                          echo "<td>".$rf[$i]->getDateAssigned()."</td>";
-                          echo "<td>".$rf[$i]->getAssignedTo()."</td>";
-                          echo "<td>".$rf[$i]->getDateSent()."</td>";
-                          echo "<td>".$rf[$i]->getFile()."</td>";
-                          echo "<td>".$rf[$i]->getObs()."</td>";
-                          echo "<td>".$rf[$i]->getModule()."</td>";
-                          echo "<td>".$rf[$i]->getId()."</td>";
-                          echo "<td>".$rf[$i]->getRemedy()."</td>";
-                          echo "<td>".$rf[$i]->getWeightOrder()."</td>";
-                          echo "<td>".$rf[$i]->getDateBilling()."</td>";
-                          echo "<td>".$rf[$i]->getMonthBilling()."</td>";
-                          echo "<td>".$rf[$i]->getDateReview()."</td>";
-                          echo "<td>".$rf[$i]->getDateRaw()."</td>";
-                          echo "<td>".$rf[$i]->getDateOTGDRT()."</td>";
-                          echo "<td>".$rf[$i]->getIdBSS()."</td>";
-                          echo "<td>".$rf[$i]->getCode()."</td>";
-                        echo "</tr>";
-                    }
-                  }
-                   echo "<tfoot>";
-                    echo "<tr style='background-color: #207BE5; color: white'>";
-                      echo "<th>Fecha Solicitada</th>";
-                      echo "<th>Solicitada por</th>";
-                      echo "<th>Estado</th>";
-                      echo "<th>Tipo</th>";
-                      echo "<th>Elemento</th>";
-                      echo "<th>Fecha Asignada</th>";
-                      echo "<th>Asignada_a</th>";
-                      echo "<th>Fecha Enviada</th>";
-                      echo "<th>Archivo</th>";
-                      echo "<th>Obs</th>";
-                      echo "<th>Modulo</th>";
-                      echo "<th>id</th>";
-                      echo "<th>Remedy</th>";
-                      echo "<th>Peso Orden</th>";
-                      echo "<th>Fecha Facturacion</th>";
-                      echo "<th>Mes Facturacion</th>";
-                      echo "<th>Fecha Revision</th>";
-                      echo "<th>Fecha Crudo</th>";
-                      echo "<th>Fecha OTGDRT</th>";
-                      echo "<th>idBSS</th>";
-                      echo "<th>Codigo</th>";
-                    echo "</tr>";
-                  echo "</tfoot>";
-              echo "</table>";
-            echo "</div>";
-           echo "</div>";
-           //-------------------fin tabla 8-----------------------
+                <div id="Inventario" class="tab-pane fade">
+                      <h3>TABLA LOG</h3>
+                      <table id="tableLog" class='table table-bordered table-striped' width='100%'></table>
+                </div>
 
-         //----------------------tabla 9-------------------------------
-           echo "<div class='tab-content' id='tab9'><br>";
-               echo "<div>";
-                 echo "<h3>RF</h3>";
-                 echo "<table id='demo9' cellpadding='0' cellspacing='0' style='font-size: 9px'>";
-                   echo "<thead>";
-                     echo "<tr style='background-color: #207BE5; color: white'>";
-                       echo "<th>Fecha Solicitada</th>";
-                       echo "<th>Solicitada por</th>";
-                       echo "<th>Estado</th>";
-                       echo "<th>Tipo</th>";
-                       echo "<th>Elemento</th>";
-                       echo "<th>Fecha Asignada</th>";
-                       echo "<th>Asignada_a</th>";
-                       echo "<th>Fecha Enviada</th>";
-                       echo "<th>Archivo</th>";
-                       echo "<th>Obs</th>";
-                       echo "<th>Modulo</th>";
-                       echo "<th>id</th>";
-                       echo "<th>Remedy</th>";
-                       echo "<th>Peso Orden</th>";
-                       echo "<th>Fecha Facturacion</th>";
-                       echo "<th>Mes Facturacion</th>";
-                       echo "<th>Fecha Revision</th>";
-                       echo "<th>Fecha Crudo</th>";
-                       echo "<th>Fecha OTGDRT</th>";
-                       echo "<th>idBSS</th>";
-                       echo "<th>Codigo</th>";
-                     echo "</tr>";
-                   echo "</thead>";
-                   echo "<tbody>";
-                   for ($i=0; $i <count($rf) ; $i++) {
-                     if (explode("-",$rf[$i]->getDateRequested())[1] == 9) {
-                       echo "<tr style='background-color:".$rf[$i]->getColor().";'>";//".$rf[$i]->getColor()."
-                           echo "<td>".$rf[$i]->getDateRequested()."</td>";
-                           echo "<td>".$rf[$i]->getRequestedBy()."</td>";
-                           echo "<td>".$rf[$i]->getStatus()."</td>";
-                           echo "<td>".$rf[$i]->getType()."</td>";
-                           echo "<td>".$rf[$i]->getElement()."</td>";
-                           echo "<td>".$rf[$i]->getDateAssigned()."</td>";
-                           echo "<td>".$rf[$i]->getAssignedTo()."</td>";
-                           echo "<td>".$rf[$i]->getDateSent()."</td>";
-                           echo "<td>".$rf[$i]->getFile()."</td>";
-                           echo "<td>".$rf[$i]->getObs()."</td>";
-                           echo "<td>".$rf[$i]->getModule()."</td>";
-                           echo "<td>".$rf[$i]->getId()."</td>";
-                           echo "<td>".$rf[$i]->getRemedy()."</td>";
-                           echo "<td>".$rf[$i]->getWeightOrder()."</td>";
-                           echo "<td>".$rf[$i]->getDateBilling()."</td>";
-                           echo "<td>".$rf[$i]->getMonthBilling()."</td>";
-                           echo "<td>".$rf[$i]->getDateReview()."</td>";
-                           echo "<td>".$rf[$i]->getDateRaw()."</td>";
-                           echo "<td>".$rf[$i]->getDateOTGDRT()."</td>";
-                           echo "<td>".$rf[$i]->getIdBSS()."</td>";
-                           echo "<td>".$rf[$i]->getCode()."</td>";
-                         echo "</tr>";
-                     }
-                   }
-                    echo "<tfoot>";
-                     echo "<tr style='background-color: #207BE5; color: white'>";
-                       echo "<th>Fecha Solicitada</th>";
-                       echo "<th>Solicitada por</th>";
-                       echo "<th>Estado</th>";
-                       echo "<th>Tipo</th>";
-                       echo "<th>Elemento</th>";
-                       echo "<th>Fecha Asignada</th>";
-                       echo "<th>Asignada_a</th>";
-                       echo "<th>Fecha Enviada</th>";
-                       echo "<th>Archivo</th>";
-                       echo "<th>Obs</th>";
-                       echo "<th>Modulo</th>";
-                       echo "<th>id</th>";
-                       echo "<th>Remedy</th>";
-                       echo "<th>Peso Orden</th>";
-                       echo "<th>Fecha Facturacion</th>";
-                       echo "<th>Mes Facturacion</th>";
-                       echo "<th>Fecha Revision</th>";
-                       echo "<th>Fecha Crudo</th>";
-                       echo "<th>Fecha OTGDRT</th>";
-                       echo "<th>idBSS</th>";
-                       echo "<th>Codigo</th>";
-                     echo "</tr>";
-                   echo "</tfoot>";
-                echo "</table>";
-             echo "</div>";
-            echo "</div>";
-            //-------------------fin tabla 9-----------------------
-             //----------------------tabla 10-------------------------------
-           echo "<div class='tab-content' id='tab10'><br>";
-               echo "<div>";
-                 echo "<h3>RF</h3>";
-                 echo "<table id='demo10' cellpadding='0' cellspacing='0' style='font-size: 9px'>";
-                   echo "<thead>";
-                     echo "<tr style='background-color: #207BE5; color: white'>";
-                       echo "<th>Fecha Solicitada</th>";
-                       echo "<th>Solicitada por</th>";
-                       echo "<th>Estado</th>";
-                       echo "<th>Tipo</th>";
-                       echo "<th>Elemento</th>";
-                       echo "<th>Fecha Asignada</th>";
-                       echo "<th>Asignada_a</th>";
-                       echo "<th>Fecha Enviada</th>";
-                       echo "<th>Archivo</th>";
-                       echo "<th>Obs</th>";
-                       echo "<th>Modulo</th>";
-                       echo "<th>id</th>";
-                       echo "<th>Remedy</th>";
-                       echo "<th>Peso Orden</th>";
-                       echo "<th>Fecha Facturacion</th>";
-                       echo "<th>Mes Facturacion</th>";
-                       echo "<th>Fecha Revision</th>";
-                       echo "<th>Fecha Crudo</th>";
-                       echo "<th>Fecha OTGDRT</th>";
-                       echo "<th>idBSS</th>";
-                       echo "<th>Codigo</th>";
-                     echo "</tr>";
-                   echo "</thead>";
-                   echo "<tbody>";
-                   for ($i=0; $i <count($rf) ; $i++) {
-                     if (explode("-",$rf[$i]->getDateRequested())[1] == 10) {
-                       echo "<tr style='background-color:".$rf[$i]->getColor().";'>";//".$rf[$i]->getColor()."
-                           echo "<td>".$rf[$i]->getDateRequested()."</td>";
-                           echo "<td>".$rf[$i]->getRequestedBy()."</td>";
-                           echo "<td>".$rf[$i]->getStatus()."</td>";
-                           echo "<td>".$rf[$i]->getType()."</td>";
-                           echo "<td>".$rf[$i]->getElement()."</td>";
-                           echo "<td>".$rf[$i]->getDateAssigned()."</td>";
-                           echo "<td>".$rf[$i]->getAssignedTo()."</td>";
-                           echo "<td>".$rf[$i]->getDateSent()."</td>";
-                           echo "<td>".$rf[$i]->getFile()."</td>";
-                           echo "<td>".$rf[$i]->getObs()."</td>";
-                           echo "<td>".$rf[$i]->getModule()."</td>";
-                           echo "<td>".$rf[$i]->getId()."</td>";
-                           echo "<td>".$rf[$i]->getRemedy()."</td>";
-                           echo "<td>".$rf[$i]->getWeightOrder()."</td>";
-                           echo "<td>".$rf[$i]->getDateBilling()."</td>";
-                           echo "<td>".$rf[$i]->getMonthBilling()."</td>";
-                           echo "<td>".$rf[$i]->getDateReview()."</td>";
-                           echo "<td>".$rf[$i]->getDateRaw()."</td>";
-                           echo "<td>".$rf[$i]->getDateOTGDRT()."</td>";
-                           echo "<td>".$rf[$i]->getIdBSS()."</td>";
-                           echo "<td>".$rf[$i]->getCode()."</td>";
-                         echo "</tr>";
-                     }
-                   }
-                    echo "<tfoot>";
-                     echo "<tr style='background-color: #207BE5; color: white'>";
-                       echo "<th>Fecha Solicitada</th>";
-                       echo "<th>Solicitada por</th>";
-                       echo "<th>Estado</th>";
-                       echo "<th>Tipo</th>";
-                       echo "<th>Elemento</th>";
-                       echo "<th>Fecha Asignada</th>";
-                       echo "<th>Asignada_a</th>";
-                       echo "<th>Fecha Enviada</th>";
-                       echo "<th>Archivo</th>";
-                       echo "<th>Obs</th>";
-                       echo "<th>Modulo</th>";
-                       echo "<th>id</th>";
-                       echo "<th>Remedy</th>";
-                       echo "<th>Peso Orden</th>";
-                       echo "<th>Fecha Facturacion</th>";
-                       echo "<th>Mes Facturacion</th>";
-                       echo "<th>Fecha Revision</th>";
-                       echo "<th>Fecha Crudo</th>";
-                       echo "<th>Fecha OTGDRT</th>";
-                       echo "<th>idBSS</th>";
-                       echo "<th>Codigo</th>";
-                     echo "</tr>";
-                   echo "</tfoot>";
-                echo "</table>";
-             echo "</div>";
-            echo "</div>";
-            //-------------------fin tabla 10-----------------------
-             //----------------------tabla 11-------------------------------
-           echo "<div class='tab-content' id='tab11'><br>";
-               echo "<div>";
-                 echo "<h3>RF</h3>";
-                 echo "<table id='demo11' cellpadding='0' cellspacing='0' style='font-size: 9px'>";
-                   echo "<thead>";
-                     echo "<tr style='background-color: #207BE5; color: white'>";
-                       echo "<th>Fecha Solicitada</th>";
-                       echo "<th>Solicitada por</th>";
-                       echo "<th>Estado</th>";
-                       echo "<th>Tipo</th>";
-                       echo "<th>Elemento</th>";
-                       echo "<th>Fecha Asignada</th>";
-                       echo "<th>Asignada_a</th>";
-                       echo "<th>Fecha Enviada</th>";
-                       echo "<th>Archivo</th>";
-                       echo "<th>Obs</th>";
-                       echo "<th>Modulo</th>";
-                       echo "<th>id</th>";
-                       echo "<th>Remedy</th>";
-                       echo "<th>Peso Orden</th>";
-                       echo "<th>Fecha Facturacion</th>";
-                       echo "<th>Mes Facturacion</th>";
-                       echo "<th>Fecha Revision</th>";
-                       echo "<th>Fecha Crudo</th>";
-                       echo "<th>Fecha OTGDRT</th>";
-                       echo "<th>idBSS</th>";
-                       echo "<th>Codigo</th>";
-                     echo "</tr>";
-                   echo "</thead>";
-                   echo "<tbody>";
-                   for ($i=0; $i <count($rf) ; $i++) {
-                     if (explode("-",$rf[$i]->getDateRequested())[1] == 11) {
-                       echo "<tr style='background-color:".$rf[$i]->getColor().";'>";//".$rf[$i]->getColor()."
-                           echo "<td>".$rf[$i]->getDateRequested()."</td>";
-                           echo "<td>".$rf[$i]->getRequestedBy()."</td>";
-                           echo "<td>".$rf[$i]->getStatus()."</td>";
-                           echo "<td>".$rf[$i]->getType()."</td>";
-                           echo "<td>".$rf[$i]->getElement()."</td>";
-                           echo "<td>".$rf[$i]->getDateAssigned()."</td>";
-                           echo "<td>".$rf[$i]->getAssignedTo()."</td>";
-                           echo "<td>".$rf[$i]->getDateSent()."</td>";
-                           echo "<td>".$rf[$i]->getFile()."</td>";
-                           echo "<td>".$rf[$i]->getObs()."</td>";
-                           echo "<td>".$rf[$i]->getModule()."</td>";
-                           echo "<td>".$rf[$i]->getId()."</td>";
-                           echo "<td>".$rf[$i]->getRemedy()."</td>";
-                           echo "<td>".$rf[$i]->getWeightOrder()."</td>";
-                           echo "<td>".$rf[$i]->getDateBilling()."</td>";
-                           echo "<td>".$rf[$i]->getMonthBilling()."</td>";
-                           echo "<td>".$rf[$i]->getDateReview()."</td>";
-                           echo "<td>".$rf[$i]->getDateRaw()."</td>";
-                           echo "<td>".$rf[$i]->getDateOTGDRT()."</td>";
-                           echo "<td>".$rf[$i]->getIdBSS()."</td>";
-                           echo "<td>".$rf[$i]->getCode()."</td>";
-                         echo "</tr>";
-                     }
-                   }
-                    echo "<tfoot>";
-                     echo "<tr style='background-color: #207BE5; color: white'>";
-                       echo "<th>Fecha Solicitada</th>";
-                       echo "<th>Solicitada por</th>";
-                       echo "<th>Estado</th>";
-                       echo "<th>Tipo</th>";
-                       echo "<th>Elemento</th>";
-                       echo "<th>Fecha Asignada</th>";
-                       echo "<th>Asignada_a</th>";
-                       echo "<th>Fecha Enviada</th>";
-                       echo "<th>Archivo</th>";
-                       echo "<th>Obs</th>";
-                       echo "<th>Modulo</th>";
-                       echo "<th>id</th>";
-                       echo "<th>Remedy</th>";
-                       echo "<th>Peso Orden</th>";
-                       echo "<th>Fecha Facturacion</th>";
-                       echo "<th>Mes Facturacion</th>";
-                       echo "<th>Fecha Revision</th>";
-                       echo "<th>Fecha Crudo</th>";
-                       echo "<th>Fecha OTGDRT</th>";
-                       echo "<th>idBSS</th>";
-                       echo "<th>Codigo</th>";
-                     echo "</tr>";
-                   echo "</tfoot>";
-                echo "</table>";
-             echo "</div>";
-            echo "</div>";
-            //-------------------fin tabla 11-----------------------
-             //----------------------tabla 12-------------------------------
-           echo "<div class='tab-content' id='tab12'><br>";
-               echo "<div>";
-                 echo "<h3>RF</h3>";
-                 echo "<table id='demo12' cellpadding='0' cellspacing='0' style='font-size: 9px'>";
-                   echo "<thead>";
-                     echo "<tr style='background-color: #207BE5; color: white'>";
-                       echo "<th>Fecha Solicitada</th>";
-                       echo "<th>Solicitada por</th>";
-                       echo "<th>Estado</th>";
-                       echo "<th>Tipo</th>";
-                       echo "<th>Elemento</th>";
-                       echo "<th>Fecha Asignada</th>";
-                       echo "<th>Asignada_a</th>";
-                       echo "<th>Fecha Enviada</th>";
-                       echo "<th>Archivo</th>";
-                       echo "<th>Obs</th>";
-                       echo "<th>Modulo</th>";
-                       echo "<th>id</th>";
-                       echo "<th>Remedy</th>";
-                       echo "<th>Peso Orden</th>";
-                       echo "<th>Fecha Facturacion</th>";
-                       echo "<th>Mes Facturacion</th>";
-                       echo "<th>Fecha Revision</th>";
-                       echo "<th>Fecha Crudo</th>";
-                       echo "<th>Fecha OTGDRT</th>";
-                       echo "<th>idBSS</th>";
-                       echo "<th>Codigo</th>";
-                     echo "</tr>";
-                   echo "</thead>";
-                   echo "<tbody>";
-                   for ($i=0; $i <count($rf) ; $i++) {
-                     if (explode("-",$rf[$i]->getDateRequested())[1] == 12) {
-                       echo "<tr style='background-color:".$rf[$i]->getColor().";'>";//".$rf[$i]->getColor()."
-                           echo "<td>".$rf[$i]->getDateRequested()."</td>";
-                           echo "<td>".$rf[$i]->getRequestedBy()."</td>";
-                           echo "<td>".$rf[$i]->getStatus()."</td>";
-                           echo "<td>".$rf[$i]->getType()."</td>";
-                           echo "<td>".$rf[$i]->getElement()."</td>";
-                           echo "<td>".$rf[$i]->getDateAssigned()."</td>";
-                           echo "<td>".$rf[$i]->getAssignedTo()."</td>";
-                           echo "<td>".$rf[$i]->getDateSent()."</td>";
-                           echo "<td>".$rf[$i]->getFile()."</td>";
-                           echo "<td>".$rf[$i]->getObs()."</td>";
-                           echo "<td>".$rf[$i]->getModule()."</td>";
-                           echo "<td>".$rf[$i]->getId()."</td>";
-                           echo "<td>".$rf[$i]->getRemedy()."</td>";
-                           echo "<td>".$rf[$i]->getWeightOrder()."</td>";
-                           echo "<td>".$rf[$i]->getDateBilling()."</td>";
-                           echo "<td>".$rf[$i]->getMonthBilling()."</td>";
-                           echo "<td>".$rf[$i]->getDateReview()."</td>";
-                           echo "<td>".$rf[$i]->getDateRaw()."</td>";
-                           echo "<td>".$rf[$i]->getDateOTGDRT()."</td>";
-                           echo "<td>".$rf[$i]->getIdBSS()."</td>";
-                           echo "<td>".$rf[$i]->getCode()."</td>";
-                         echo "</tr>";
-                     }
-                   }
-                    echo "<tfoot>";
-                     echo "<tr style='background-color: #207BE5; color: white'>";
-                       echo "<th>Fecha Solicitada</th>";
-                       echo "<th>Solicitada por</th>";
-                       echo "<th>Estado</th>";
-                       echo "<th>Tipo</th>";
-                       echo "<th>Elemento</th>";
-                       echo "<th>Fecha Asignada</th>";
-                       echo "<th>Asignada_a</th>";
-                       echo "<th>Fecha Enviada</th>";
-                       echo "<th>Archivo</th>";
-                       echo "<th>Obs</th>";
-                       echo "<th>Modulo</th>";
-                       echo "<th>id</th>";
-                       echo "<th>Remedy</th>";
-                       echo "<th>Peso Orden</th>";
-                       echo "<th>Fecha Facturacion</th>";
-                       echo "<th>Mes Facturacion</th>";
-                       echo "<th>Fecha Revision</th>";
-                       echo "<th>Fecha Crudo</th>";
-                       echo "<th>Fecha OTGDRT</th>";
-                       echo "<th>idBSS</th>";
-                       echo "<th>Codigo</th>";
-                     echo "</tr>";
-                   echo "</tfoot>";
-                echo "</table>";
-             echo "</div>";
-            echo "</div>";
-            //-------------------fin tabla 12-----------------------
-?>
- <!--  <script type="text/javascript"> Cufon.now(); </script> -->
-   <script src="<?= URL::to('assets/plugins/tableFilter/tablefilter.js'); ?>"></script>
-  <link rel="stylesheet" type="text/css" href="<?= URL::to('assets/plugins/tableFilter/style/tablefilter.css'); ?>">
-  <script data-config>
-    var filtersConfig = {
-      base_path: '<?= URL::to('assets/plugins/tableFilter/'); ?>',
-      filters_row_index: 1,
-      alternate_rows: true,
-      grid_cont_css_class: 'grd-main-cont',
-      grid_tblHead_cont_css_class: 'grd-head-cont',
-      grid_tbl_cont_css_class: 'grd-cont',
-      loader: true
-    };
-      var tf1 = new TableFilter('demo1', filtersConfig);
-      tf1.init();
-  </script>
-  <script data-config>
-    var filtersConfig = {
-      base_path: '<?= URL::to('assets/plugins/tableFilter/'); ?>',
-      filters_row_index: 1,
-      alternate_rows: true,
-      grid_cont_css_class: 'grd-main-cont',
-      grid_tblHead_cont_css_class: 'grd-head-cont',
-      grid_tbl_cont_css_class: 'grd-cont',
-      loader: true
-    };
-      var tf1 = new TableFilter('demo2', filtersConfig);
-      tf1.init();
-  </script>
-  <script data-config>
-    var filtersConfig = {
-      base_path: '<?= URL::to('assets/plugins/tableFilter/'); ?>',
-      filters_row_index: 1,
-      alternate_rows: true,
-      grid_cont_css_class: 'grd-main-cont',
-      grid_tblHead_cont_css_class: 'grd-head-cont',
-      grid_tbl_cont_css_class: 'grd-cont',
-      loader: true
-    };
-      var tf1 = new TableFilter('demo3', filtersConfig);
-      tf1.init();
-  </script>
-  <script data-config>
-    var filtersConfig = {
-      base_path: '<?= URL::to('assets/plugins/tableFilter/'); ?>',
-      filters_row_index: 1,
-      alternate_rows: true,
-      grid_cont_css_class: 'grd-main-cont',
-      grid_tblHead_cont_css_class: 'grd-head-cont',
-      grid_tbl_cont_css_class: 'grd-cont',
-      loader: true
-    };
-      var tf1 = new TableFilter('demo4', filtersConfig);
-      tf1.init();
-  </script>
-  <script data-config>
-    var filtersConfig = {
-      base_path: '<?= URL::to('assets/plugins/tableFilter/'); ?>',
-      filters_row_index: 1,
-      alternate_rows: true,
-      grid_cont_css_class: 'grd-main-cont',
-      grid_tblHead_cont_css_class: 'grd-head-cont',
-      grid_tbl_cont_css_class: 'grd-cont',
-      loader: true
-    };
-      var tf1 = new TableFilter('demo5', filtersConfig);
-      tf1.init();
-  </script>
-  <script data-config>
-    var filtersConfig = {
-      base_path: '<?= URL::to('assets/plugins/tableFilter/'); ?>',
-      filters_row_index: 1,
-      alternate_rows: true,
-      grid_cont_css_class: 'grd-main-cont',
-      grid_tblHead_cont_css_class: 'grd-head-cont',
-      grid_tbl_cont_css_class: 'grd-cont',
-      loader: true
-    };
-      var tf1 = new TableFilter('demo6', filtersConfig);
-      tf1.init();
-  </script>
-  <script data-config>
-    var filtersConfig = {
-      base_path: '<?= URL::to('assets/plugins/tableFilter/'); ?>',
-      filters_row_index: 1,
-      alternate_rows: true,
-      grid_cont_css_class: 'grd-main-cont',
-      grid_tblHead_cont_css_class: 'grd-head-cont',
-      grid_tbl_cont_css_class: 'grd-cont',
-      loader: true
-    };
-      var tf1 = new TableFilter('demo7', filtersConfig);
-      tf1.init();
-  </script>
-  <script data-config>
-    var filtersConfig = {
-      base_path: '<?= URL::to('assets/plugins/tableFilter/'); ?>',
-      filters_row_index: 1,
-      alternate_rows: true,
-      grid_cont_css_class: 'grd-main-cont',
-      grid_tblHead_cont_css_class: 'grd-head-cont',
-      grid_tbl_cont_css_class: 'grd-cont',
-      loader: true
-    };
-      var tf1 = new TableFilter('demo8', filtersConfig);
-      tf1.init();
-  </script>
-  <script data-config>
-    var filtersConfig = {
-      base_path: '<?= URL::to('assets/plugins/tableFilter/'); ?>',
-      filters_row_index: 1,
-      alternate_rows: true,
-      grid_cont_css_class: 'grd-main-cont',
-      grid_tblHead_cont_css_class: 'grd-head-cont',
-      grid_tbl_cont_css_class: 'grd-cont',
-      loader: true
-    };
-      var tf1 = new TableFilter('demo9', filtersConfig);
-      tf1.init();
-  </script>
-  <script data-config>
-    var filtersConfig = {
-      base_path: '<?= URL::to('assets/plugins/tableFilter/'); ?>',
-      filters_row_index: 1,
-      alternate_rows: true,
-      grid_cont_css_class: 'grd-main-cont',
-      grid_tblHead_cont_css_class: 'grd-head-cont',
-      grid_tbl_cont_css_class: 'grd-cont',
-      loader: true
-    };
-      var tf1 = new TableFilter('demo10', filtersConfig);
-      tf1.init();
-  </script>
-  <script data-config>
-    var filtersConfig = {
-      base_path: '<?= URL::to('assets/plugins/tableFilter/'); ?>',
-      filters_row_index: 1,
-      alternate_rows: true,
-      grid_cont_css_class: 'grd-main-cont',
-      grid_tblHead_cont_css_class: 'grd-head-cont',
-      grid_tbl_cont_css_class: 'grd-cont',
-      loader: true
-    };
-      var tf1 = new TableFilter('demo11', filtersConfig);
-      tf1.init();
-  </script>
-  <script data-config>
-    var filtersConfig = {
-      base_path: '<?= URL::to('assets/plugins/tableFilter/'); ?>',
-      filters_row_index: 1,
-      alternate_rows: true,
-      grid_cont_css_class: 'grd-main-cont',
-      grid_tblHead_cont_css_class: 'grd-head-cont',
-      grid_tbl_cont_css_class: 'grd-cont',
-      loader: true
-    };
-      var tf1 = new TableFilter('demo12', filtersConfig);
-      tf1.init();
-  </script>
+            </div> 
 
-  <script>
-    $(document).ready(function() {
-      tabs.init();
-    })
-  </script>
+       
+
+        </table>
+
+      </div>
+      <div class="modal-footer">
+        <h4 class="foot">Zolid By ZTE Colombia | All Right Reserved</h4>
+        <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar  <i class="glyphicon glyphicon-chevron-up"></i></button>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- fin modal actividades rf cambios -->
+
+
+
+
+
+
+
+
+
+  <!-- tABLA RF -->
+  <table id="tableRF" class='table table-bordered table-striped table-hover' width='100%'></table>
+
+</div> <br><br><br>    
+<!-- FOOTER -->
+<div class="for-full-back " id="footer">Zolid By ZTE Colombia | All Right Reserved</div>
+      <!-- DataTables -->
+<script type="text/javascript" src="https://cdn.datatables.net/1.10.16/js/jquery.dataTables.min.js"></script>
+<script type="text/javascript" src="https://cdn.datatables.net/buttons/1.5.1/js/dataTables.buttons.min.js"></script>
+<script src="<?= URL::to("assets/plugins/datatables/js/datatables.colvis.js") ?>" type="text/javascript"></script>
+
+<script type="text/javascript">var baseurl = "<?php echo URL::base(); ?>";</script>
+<script type="text/javascript" src="<?= URL::to('assets/js/services/rf.js'); ?>"></script>
 </body>
 </html>

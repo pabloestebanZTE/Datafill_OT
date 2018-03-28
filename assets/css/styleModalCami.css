@@ -67,3 +67,48 @@
     font-size:11px
 }
 
+
+
+/*estilos de los botones definidos del datatables */
+/*================================================*/
+
+.dt-button.buttons-columnVisibility{
+    background: #FFF !important;
+    box-shadow: unset !important;
+    border: 0px !important;
+    text-align: left;
+    position: relative;
+    padding-left: 30px;
+}
+.dt-button.buttons-columnVisibility span:before{
+    display: inline-block;
+    font: normal normal normal 14px/1 FontAwesome;
+    font-size: inherit;
+    text-rendering: auto;
+    -webkit-font-smoothing: antialiased;
+    position: absolute;
+    top: 10px;
+    left: 15px;
+    content: "\f096";
+}
+.dt-button.buttons-columnVisibility.active span:before{    
+    content: "\f046";        
+}
+.dt-button.buttons-columnVisibility span{
+    margin-left: 5px;
+}
+.dt-button.buttons-columnVisibility:hover{
+    background-color: #f3f3f3 !important;
+}
+
+.dt-button-collection{
+    width: 270px !important;            
+    padding: 0px !important;
+    margin-top: -10px !important;
+}
+
+.dt-button-background{
+    background-color: transparent !important;
+    display: none;
+    opacity: 0;
+}

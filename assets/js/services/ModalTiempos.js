@@ -30,7 +30,7 @@ $(function () {
                         mostrar.onClickVerActividadHoy(obj.hoy);
                     });
 
-                    //al darle clic al boton hoy y envimos solo las actividades para entregar hoy
+                    //al darle clic al boton hoy y envimos solo las actividades para entregar vencidas
                     $('#expirados').on('click', function(){
                         mostrar.onClickVerActividadVencida(obj.vencidas);
                     });

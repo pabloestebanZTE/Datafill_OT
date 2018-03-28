@@ -7,6 +7,7 @@
         public function __construct(){
             $this->load->model('data/configdb_model');
             $this->load->model('rf_model');
+            $this->load->model('data/dao_rf_model');
         }
 
         public function updateRF($rf){
@@ -169,22 +170,98 @@
 
 
         //==============================================================================================
+        // llama el primer elemento dependiendo el id rf
         public function getExistIdRF($id){
             $query = $this->db->get_where('rf', array('K_ID' => $id));            
             return $query->row();
         }
 
+
+        // inserta en tabla rf todos los campos (hay q enviarle a data el arreglo ya creado)
         public function insertRfRow($data){
+            //inserta el arreglo
             $this->db->insert('rf', $data);
+            // capturar error de insercion
+            $error = $this->db->error();
+            if ($error['message']) {
+                // print_r($error);
+                return $error;
+            }else{
+                return 1;
+            }
+        }
+
+        // inserta en tabla Log todos los campos (hay q enviarle a data el arreglo ya creado)
+        public function insertLogRow($data){
+            //inserta el arreglo
+            $this->db->insert('log', $data);
+            // capturar error de insercion
             $error = $this->db->error();
             if ($error['message']) {
                 print_r($error);
                 return "error";
             }
 
-
         }
 
+        // actualiza en tabla rf enviados los campos (hay q enviarle a data el arreglo ya creado)
+        public function updateRfStatusMod($data){            
+            $query = $this->db->query("UPDATE rf SET N_STATUS_MOD = ".$data['N_STATUS_MOD']."  WHERE K_ID = ".$data['K_ID'].";");
+            $error = $this->db->error();
+            if ($error['message']) {
+                // print_r($error);
+                return $error;
+            }else{
+                return 1;
+            }
+        }
+
+        public function updateRfMod($data){
+
+            $this->db->where('K_ID', $data['K_ID']);
+            $this->db->update('rf', $data);
+            // $this->db->last_query();
+            $error = $this->db->error();
+            if ($error['message']) {
+                // print_r($error);
+                return $error;
+            }else{
+                return 1;
+            }
+            
+        }
+
+        // llama todsas las actividades de rf
+        public function getAllActivitiesRF(){
+            $query = $this->db->get('rf');
+            return $query->result();
+        }
+
+        // Llama todas las actividades de rf nuevas 
+        public function getRFNews(){
+            $query = $this->db->get_where('rf', array('N_STATUS_MOD'=>0));
+            return $query->result();
+        }
+
+        // Llama todas las actividades actualizadas (estado 1 "cambio")
+        public function getRFChanges(){
+            $query = $this->db->get_where('rf', array('N_STATUS_MOD'=>1));
+            return $query->result();
+        }
+
+        // Lama todo lode log que en rf este en estado 1 "cambio"
+        public function getLogChangesInStatus1(){
+            $query = $this->db->query("
+                    SELECT log.* 
+                    FROM 
+                    log
+                    inner join rf
+                    on log.K_IDORDER = rf.K_ID
+                    where
+                    rf.N_STATUS_MOD = 1
+                ");
+            return $query->result();
+        }
 
 
   }

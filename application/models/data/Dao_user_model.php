@@ -158,5 +158,26 @@
           }
           return $answer;
         }
+
+        public function getAllUsers(){
+          $query = $this->db->get('user');
+          return $query->result();
+
+        }
+
+        public function getAllUsersQuery(){
+
+           $query = $this->db->query("SELECT * FROM user;");
+           return $query->result();
+
+        }
+
+
+
+
+       
+
+
+
     }
 ?>

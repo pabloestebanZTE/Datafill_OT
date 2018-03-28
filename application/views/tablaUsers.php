@@ -1,24 +1,22 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <title>Ejecutar con Excel</title>
+    <title>Ejecutar</title>
         <meta charset="utf-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
         <!--   ICONO PAGINA    -->
         <link rel="icon" href="http://cellaron.com/media/wysiwyg/zte-mwc-2015-8-l-124x124.png">
         <!--   BOOTSTRAP    -->
-        <link href="<?= URL::to('assets/css/bootstrap.css" rel="stylesheet'); ?>" />
+        <link href="<?= URL::to('assets/css/bootstrap.css'); ?>" rel="stylesheet" />
         <link href="<?= URL::to('assets/plugins/datatables/dataTables.bootstrap.css'); ?>" rel="stylesheet">
         <link href="<?= URL::to('assets/css/bootstrap.min.css'); ?>" rel="stylesheet">
         <!--   HEADER CSS    -->
         <link href="<?= URL::to('assets/css/styleHeader.css'); ?>" rel="stylesheet" />
-        <!--   INPUTFILE CSS    -->
-        <link href="<?= URL::to('assets/css/inputFile.css'); ?>" rel="stylesheet" />
 
 
 </head>
-<body data-base="<?= URL::base() ?>">
+<body>
     <!-- Navigation -->
     <header>
         <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
@@ -62,36 +60,76 @@
             </div>
         </nav>
      </header><br><br><br><br>
-
 <!--      fin header         -->
-<form method="post" enctype="multipart/form-data" id="formFileUpload">
-    <input type="file" name="idarchivo">
-    <p>Arrastra tu archivo aquí o haz clic en esta área.</p>
-    <button id="btnUploadFile" type="submit" class="btn btn-primary" >UpLoad  <span class="glyphicon glyphicon-ok"></span></button>
-</form>
-<script type="text/javascript">var baseurl = "<?php echo URL::base(); ?>";</script>
-<script src="<?= URL::to('assets/plugins/jQuery/jquery-2.2.3.min.js'); ?>"></script>
-<!-- DataTables -->
-<script src="<?= URL::to('assets/plugins/datatables/jquery.dataTables.min.js'); ?>"></script>
-<script src="<?= URL::to('assets/plugins/datatables/dataTables.bootstrap.min.js'); ?>"></script>
 
-<script src="<?= URL::to("assets/js/utils/app.global.js") ?>" type="text/javascript"></script>
-<script src="<?= URL::to("assets/js/utils/app.dom.js") ?>" type="text/javascript"></script>
-<!-- sweet alert -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/limonte-sweetalert2/7.0.3/sweetalert2.all.min.js"></script>
-<!-- para cargar los archivos excel xlsx -->
-<script src="<?= URL::to("assets/js/services/loadInformation.js") ?>" type="text/javascript"></script>
+
+
+<div class="container">
+
+<table border="1" class="table table-striped" id="tabla_usuarios">
+    <thead>
+        <tr>
+            <th>cedf</th>
+            <th>xxxxxxx</th>
+            <th>xxxxxxx</th>
+            <th>xxxxxxx</th>
+            <th>xxxxxxx</th>
+            <th>xxxxxxx</th>
+            <th>xxxxxxx</th>
+            <th>xxxxxxx</th>
+        </tr>
+<?php 
+    for ($i=0; $i < count($usuarios); $i++) { 
+       
+        echo "<tr>";
+            echo "<th>". $usuarios[$i]->K_IDUSER ."</th>";
+            echo "<th>". $usuarios[$i]->K_IDROLE ."</th>";
+            echo "<th>". $usuarios[$i]->N_NAME ."</th>";
+            echo "<th>". $usuarios[$i]->K_IDUSER ."</th>";
+            echo "<th>". $usuarios[$i]->K_IDUSER ."</th>";
+            echo "<th>". $usuarios[$i]->K_IDUSER ."</th>";
+            echo "<th>". $usuarios[$i]->K_IDUSER ."</th>";
+            echo "<th>". $usuarios[$i]->K_IDUSER ."</th>";
+        echo "</tr>";
+        
+    }
+
+?>
+          
+</div>
+
+    </thead>
+
+
+</table>
+
 
 <script>
-  $(document).ready(function(){
-  $('form input').change(function () {
-    $('form p').text(this.files.length + " file(s) selected");
+  $(function () {
+    
+    $('#tabla_usuarios').DataTable({
+      "paging": true,
+      "lengthChange": false,
+      "searching": false,
+      "ordering": true,
+      "info": true,
+      "autoWidth": false
+    });
   });
-});
-
-
 </script>
 
+
+
+
+
+
+
+  <!--footer-->
+  <div class="for-full-back " id="footer">
+      Zolid By ZTE Colombia | All Right Reserved
+  </div>
+<script src="<?= URL::to('assets/plugins/jQuery/jquery-2.2.3.min.js'); ?>"></script>
+<script src="<?= URL::to('assets/plugins/datatables/dataTables.bootstrap.min.js'); ?>"></script>
 
 
 </body>

@@ -536,6 +536,28 @@
 
       }
 
+      public function getservicesX(){
+        $query = $this->db->query("
+              SELECT 
+              concat(u.N_NAME, ' ', u.N_LASTNAME) as nombre,
+              s.N_NAME as Sitio,
+              sp.K_IDORDER as Orden,
+              sp.D_DATE_START_P as 'Fecha inicio',
+              sp.N_ESTADO as Estado
+
+              FROM 
+              specific_service sp
+
+              inner join site s
+              on sp.K_IDSITE = s.K_IDSITE
+              inner join user u
+              on sp.K_IDUSER = u.K_IDUSER
+              limit 400 , 200");
+
+          return $query->result();
+
+      }
+
 
 
 
