@@ -1,0 +1,279 @@
+
+/*estilos de los botones definidos del datatables */
+/*================================================*/
+
+.dt-button.buttons-columnVisibility{
+    background: #FFF !important;
+    box-shadow: unset !important;
+    border: 0px !important;
+    text-align: left;
+    position: relative;
+    padding-left: 30px;
+    z-index: -10;
+}
+.dt-button.buttons-columnVisibility span:before{
+    display: inline-block;
+    font: normal normal normal 14px/1 FontAwesome;
+    font-size: inherit;
+    text-rendering: auto;
+    -webkit-font-smoothing: antialiased;
+    position: absolute;
+    top: 10px;
+    left: 15px;
+    content: "\f096";
+    z-index: -10;
+}
+.dt-button.buttons-columnVisibility.active span:before{    
+    content: "\f046";        
+    z-index: -10;
+}
+.dt-button.buttons-columnVisibility span{
+    margin-left: 5px;
+    z-index: -10;
+}
+.dt-button.buttons-columnVisibility:hover{
+    background-color: #f3f3f3 !important;
+    z-index: -10;
+}
+
+.dt-button-collection{
+    width: 270px !important;            
+    padding: 0px !important;
+    margin-top: -10px !important;
+    z-index: -10;
+}
+
+.dt-button-background{
+    background-color: transparent !important;
+    display: none;
+    opacity: 0;
+    z-index: -10;
+}
+
+
+
+
+.color_nuevo {
+	color: #068900;
+}
+
+.color_cambio {
+	color: #000eff;
+}
+
+#cambios {
+	background-color: rgba(32, 123, 229, 0.8);
+	color: #fff;
+}
+#cambios:hover {
+	background-color: rgba(32, 123, 229, 1);
+	color: #fff;
+}
+
+
+.lg-cntr{
+	overflow: hidden;
+	width: 95%;
+}
+
+table#tableRF, table#tableEventos, table#tableEventosChanges{
+  display: block !important;;
+  width: 100% !important;
+  
+}
+table#tableRF th, table#tableEventos th, table#tableEventosChanges th{
+  font-size: 10px;
+  background-color:#207be5;
+  color:#fff;
+  border: 1px solid #545458;
+  text-shadow: .5px 0.5px 0px #000; 
+}
+table#tableRF td, table#tableEventos td, table#tableEventosChanges td{
+  font-size: 10px;
+}
+
+
+table#tableRF td:nth-child(1), table#tableEventos td:nth-child(1), table#tableEventosChanges td:nth-child(1){    
+  max-width: 25px !important;
+}
+table#tableRF td:nth-child(2), table#tableEventos td:nth-child(2), table#tableEventosChanges td:nth-child(2){    
+  max-width: 25px !important;
+}
+
+table#tableRF td:nth-child(3), table#tableEventos td:nth-child(3), table#tableEventosChanges td:nth-child(3){    
+  max-width: 25px !important;
+}
+
+/*table#tableRF td:nth-child(4), table#tableEventos td:nth-child(4), table#tableEventosChanges td:nth-child(4){    
+  max-width: 185px !important;
+}
+*/
+table#tableRF td:nth-child(5), table#tableEventos td:nth-child(5), table#tableEventosChanges td:nth-child(5){    
+  max-width: 25px !important;
+}
+
+table#tableRF td:nth-child(6), table#tableEventos td:nth-child(6), table#tableEventosChanges td:nth-child(6){    
+  max-width: 100px !important;
+}
+
+table#tableRF td:nth-child(7), table#tableEventos td:nth-child(7), table#tableEventosChanges td:nth-child(7){    
+  max-width: 25px !important;
+}
+
+table#tableRF td:nth-child(8), table#tableEventos td:nth-child(8), table#tableEventosChanges td:nth-child(8){    
+  max-width: 25px !important;
+}
+
+table#tableRF td:nth-child(9), table#tableEventos td:nth-child(9), table#tableEventosChanges td:nth-child(9){    
+  max-width: 25px !important;
+}
+
+table#tableRF td:nth-child(10), table#tableEventos td:nth-child(10), table#tableEventosChanges td:nth-child(10){    
+  max-width: 25px !important;
+}
+
+table#tableRF td:nth-child(11), table#tableEventos td:nth-child(11), table#tableEventosChanges td:nth-child(11){    
+  max-width: 25px !important;
+}
+
+table#tableRF td:nth-child(12), table#tableEventos td:nth-child(12), table#tableEventosChanges td:nth-child(12){    
+  max-width: 25px !important;
+}
+
+table#tableRF td:nth-child(13), table#tableEventos td:nth-child(13), table#tableEventosChanges td:nth-child(13){    
+  max-width: 25px !important;
+}
+
+
+
+
+table#tableRF td:nth-child(14), table#tableEventos td:nth-child(14), table#tableEventosChanges td:nth-child(14){    
+  max-width: 25px !important;
+}
+table#tableRF td:nth-child(15), table#tableEventos td:nth-child(15), table#tableEventosChanges td:nth-child(15){      
+  max-width: 25px !important;
+}
+table#tableRF td:nth-child(16), table#tableEventos td:nth-child(16), table#tableEventosChanges td:nth-child(16){
+  max-width: 25px !important;
+  word-wrap: break-word;
+}
+table#tableRF td:nth-child(17), table#tableEventos td:nth-child(17), table#tableEventosChanges td:nth-child(17){
+  max-width: 25px !important;
+  word-wrap: break-word;
+}
+table#tableRF td:nth-child(18), table#tableEventos td:nth-child(18), table#tableEventosChanges td:nth-child(18){
+  max-width: 25px !important;
+  word-wrap: break-word;
+}
+table#tableRF td:nth-child(19), table#tableEventos td:nth-child(19), table#tableEventosChanges td:nth-child(19){
+  max-width: 25px !important;
+  word-wrap: break-word;
+}
+table#tableRF td:nth-child(20), table#tableEventos td:nth-child(20), table#tableEventosChanges td:nth-child(20){
+  max-width: 25px !important;
+  word-wrap: break-word;
+}
+table#tableRF td:nth-child(21), table#tableEventos td:nth-child(21), table#tableEventosChanges td:nth-child(21){
+  max-width: 25px !important;
+  word-wrap: break-word;
+}
+table#tableRF td:nth-child(22), table#tableEventos td:nth-child(22), table#tableEventosChanges td:nth-child(22){
+  max-width: 25px !important;
+  word-wrap: break-word;
+}
+
+
+
+/*estilos de los botones definidos del datatables */
+/*================================================*/
+
+.dt-button.buttons-columnVisibility{
+    background: #FFF !important;
+    box-shadow: unset !important;
+    border: 0px !important;
+    text-align: left;
+    position: relative;
+    padding-left: 30px;
+    z-index: -10;
+}
+.dt-button.buttons-columnVisibility span:before{
+    display: inline-block;
+    font: normal normal normal 14px/1 FontAwesome;
+    font-size: inherit;
+    text-rendering: auto;
+    -webkit-font-smoothing: antialiased;
+    position: absolute;
+    top: 10px;
+    left: 15px;
+    content: "\f096";
+    z-index: -10;
+}
+.dt-button.buttons-columnVisibility.active span:before{    
+    content: "\f046";        
+    z-index: -10;
+}
+.dt-button.buttons-columnVisibility span{
+    margin-left: 5px;
+    z-index: -10;
+}
+.dt-button.buttons-columnVisibility:hover{
+    background-color: #f3f3f3 !important;
+    z-index: -10;
+}
+
+.dt-button-collection{
+    width: 270px !important;            
+    padding: 0px !important;
+    margin-top: -10px !important;
+    z-index: -10;
+}
+
+.dt-button-background{
+    background-color: transparent !important;
+    display: none;
+    opacity: 0;
+    z-index: -10;
+}
+
+
+
+
+.color_nuevo {
+	color: #068900;
+}
+
+.color_cambio {
+	color: #000eff;
+}
+
+#cambios {
+	background-color: rgba(32, 123, 229, 0.8);
+	color: #fff;
+}
+#cambios:hover {
+	background-color: rgba(32, 123, 229, 1);
+	color: #fff;
+}
+
+
+/* #id_container{
+	overflow: auto;
+	width: 1292px;
+} */
+
+
+
+
+/***********************************TABLA ESTANDAR CAMILO***********************************/
+.tableCami th {
+	background-color:#207be5;
+	color:#fff;
+	border: 1px solid #545458;
+	text-shadow: .5px 0.5px 0px #000; 
+	text-align: center;
+}
+
+.tableCami td {
+	
+	text-align: center;
+}

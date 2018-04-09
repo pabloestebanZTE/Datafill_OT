@@ -233,34 +233,120 @@
 
         // llama todsas las actividades de rf
         public function getAllActivitiesRF(){
-            $query = $this->db->get('rf');
+            $where = ($_SESSION['role'] == 4) ? '' : 'where K_ASSIGNED_TO = '. $_SESSION['id'];
+            $query = $this->db->query('SELECT 
+                                        DISTINCT rf.K_ID,
+                                        rf.D_DATE_S,
+                                        rf.N_REQUESTED_BY,
+                                        rf.N_STATUS,
+                                        rf.N_TYPE,
+                                        rf.N_ELEMENT,
+                                        rf.D_DATE_ASSGINED,
+                                        rf.K_ASSIGNED_TO,
+                                        rf.D_DATE_SENT,
+                                        rf.N_FILE,
+                                        rf.N_OBSERVATIONS,
+                                        rf.N_MODULE,
+                                        rf.N_REMEDY,
+                                        rf.N_ORDER_W,
+                                        rf.D_BILL,
+                                        rf.N_MONTH_B,
+                                        rf.D_RAW,
+                                        rf.D_REVIEW,
+                                        rf.D_OTGDRT,
+                                        rf.N_idBSS,
+                                        rf.N_TIPO,
+                                        rf.N_COLOR,
+                                        rf.N_STATUS_MOD,
+                                        log.K_IDORDER
+                                        FROM rf
+                                        LEFT JOIN log
+                                        ON rf.K_ID = log.K_IDORDER
+                                        ' .  $where . ' 
+                                        order by rf.D_DATE_ASSGINED desc'
+                                    );
+
             return $query->result();
         }
 
         // Llama todas las actividades de rf nuevas 
         public function getRFNews(){
-            $query = $this->db->get_where('rf', array('N_STATUS_MOD'=>0));
+            $and = ($_SESSION['role'] == 4) ? '' : 'AND K_ASSIGNED_TO = '. $_SESSION['id'];
+            // $query = $this->db->get_where('rf', array('N_STATUS_MOD'=>0));
+            $query = $this->db->query('
+                                        SELECT 
+                                        * 
+                                        FROM datafill_ot.rf
+                                        WHERE N_STATUS_MOD = 0 
+                                        '.$and
+                                     );
+
             return $query->result();
         }
 
         // Llama todas las actividades actualizadas (estado 1 "cambio")
         public function getRFChanges(){
-            $query = $this->db->get_where('rf', array('N_STATUS_MOD'=>1));
+            $and = ($_SESSION['role'] == 4) ? '' : 'AND K_ASSIGNED_TO = '. $_SESSION['id'];
+            // $query = $this->db->get_where('rf', array('N_STATUS_MOD'=>1));
+            $query = $this->db->query('
+                                        SELECT 
+                                        * 
+                                        FROM datafill_ot.rf
+                                        WHERE N_STATUS_MOD = 1 
+                                        '.$and
+                                     );
+
             return $query->result();
         }
 
         // Lama todo lode log que en rf este en estado 1 "cambio"
         public function getLogChangesInStatus1(){
+            $and = ($_SESSION['role'] == 4) ? '' : 'AND rf.K_ASSIGNED_TO = '. $_SESSION['id'];
             $query = $this->db->query("
-                    SELECT log.* 
-                    FROM 
-                    log
-                    inner join rf
-                    on log.K_IDORDER = rf.K_ID
-                    where
-                    rf.N_STATUS_MOD = 1
-                ");
+                                        SELECT log.* 
+                                        FROM 
+                                        log
+                                        INNER JOIN rf
+                                        ON log.K_IDORDER = rf.K_ID
+                                        WHERE
+                                        rf.N_STATUS_MOD = 1
+                                        " . $and
+                                     );
             return $query->result();
+        }
+
+        //Retorna todo el historial de log de un id
+        public function getLogById($id){
+            $query = $this->db->get_where('log', array('K_IDORDER'=>$id));
+            return $query->result();
+        }
+
+        // Retorna cant tipo y fecha ejec de actividades rf
+        public function cant_by_month_rf($mes){
+            if ($mes == 12) {
+            $where = "AND 
+                      (D_BILL >= '2018-12-01' AND
+                      D_BILL < '2019-01-01')";
+            }else{
+            $where = "AND 
+                      (D_BILL >= '2018-".$mes."-01' AND
+                      D_BILL < '2018-".($mes + 1)."-01')";
+            }
+
+
+            $query = $this->db->query("
+                  SELECT 
+                  COUNT(N_TIPO) AS cant,
+                  N_TIPO AS tipo,
+                  D_BILL AS f_ejecucion
+                  FROM 
+                  rf
+                  WHERE 
+                  (N_MONTH_B != '' AND D_BILL != '0000-00-00 00:00:00') 
+                  ".$where."                   
+                  GROUP BY N_TIPO, D_BILL
+            ");
+            return $query->result();           
         }
 
 

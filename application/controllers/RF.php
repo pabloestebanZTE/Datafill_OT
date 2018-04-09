@@ -26,6 +26,14 @@
         echo json_encode($data);
       }
 
+      // Llama los log por id 
+      public function getLogById(){
+        $id = $this->input->post('id');
+        $data = $this->Dao_rf_model->getLogById($id);
+        echo json_encode($data);
+      }
+
+
       public function viewRF(){
         $this->load->view('viewRF');
       }

@@ -308,8 +308,7 @@
     <button type="button" class="btn btn-danger" id="expirados">expirados <span id="expiradosBadge" class="badge">...</span></button>   
   </div>
 
-
-  <a href="<?= URL::to('Grafics/getGrafics'); ?>" data-toggle="tooltip" title="Ver Graficas"><img src="<?= URL::to('assets/img/grafics.gif'); ?>" alt="graficas"  class="botonIcon"></a>
+  <!-- <a href="<?= URL::to('Grafics/getGrafics'); ?>" data-toggle="tooltip" title="Ver Graficas"><img src="<?= URL::to('assets/img/grafics.gif'); ?>" alt="graficas"  class="botonIcon"></a> -->
   <!-- menu sticky -->
   <div class="contenedor closed" id="content_fixed">
     <div id="btn_fixed" >
@@ -365,14 +364,37 @@
           <a class="mes" href="<?= URL::to('Report/thisMonthReport?mesSel=12&id='.$_SESSION["id"].'&&role='.$_SESSION["role"].''); ?>">Diciembre</a>
         </div>
       </div>
-      <div class="menu-fixed2">
+
+<?php
+  if ($_SESSION["role"] == 4) {
+    
+        echo '<div class="dropdown">';
+          echo '<button class="btn btn-secondary dropdown-toggle boton2" type="button" id="porMes" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">PROYECCIÓN</button>';
+          echo '<div class="dropdown-menu per" aria-labelledby="dropdownMenuButton">';
+            echo '<a class="mes" href="'.URL::to("Report/billing_report?mesSel=01").'">Enero</a>';
+            echo '<a class="mes" href="'.URL::to("Report/billing_report?mesSel=02").'">Febrero</a>';
+            echo '<a class="mes" href="'.URL::to("Report/billing_report?mesSel=03").'">Marzo</a>';
+            echo '<a class="mes" href="'.URL::to("Report/billing_report?mesSel=04").'">Abril</a>';
+            echo '<a class="mes" href="'.URL::to("Report/billing_report?mesSel=05").'">Mayo</a>';
+            echo '<a class="mes" href="'.URL::to("Report/billing_report?mesSel=06").'">Junio</a>';
+            echo '<a class="mes" href="'.URL::to("Report/billing_report?mesSel=07").'">Julio</a>';
+            echo '<a class="mes" href="'.URL::to("Report/billing_report?mesSel=08").'">Agosto</a>';
+            echo '<a class="mes" href="'.URL::to("Report/billing_report?mesSel=09").'">Septiembre</a>';
+            echo '<a class="mes" href="'.URL::to("Report/billing_report?mesSel=10").'">Octubre</a>';
+            echo '<a class="mes" href="'.URL::to("Report/billing_report?mesSel=11").'">Noviembre</a>';
+            echo '<a class="mes" href="'.URL::to("Report/billing_report?mesSel=12").'">Diciembre</a>';
+          echo '</div>';
+        echo '</div>';
+  }
+ ?>
+     <!--  <div class="menu-fixed2">
        <ul>
          <li class="total2" title="progreso total de la orden"><span>% Total Progreso</span></li>
          <li class="ejecutado2" title="ejecutadas de la orden"><span>% ejecutadas</span></li>
          <li class="enviado2" title="enviadas de la orden"><span>% enviadas</span></li>
          <li class="cancelado2" title="canceladas de la orden"><span>% cancelado</span></li>
        </ul>
-     </div>
+     </div> -->
    </div>
  </div>
 

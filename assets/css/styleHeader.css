@@ -140,3 +140,25 @@ table#tableGDATOS th{
   margin-bottom: 2%;
   text-shadow: 1px 1px 1px #207be5;
 }
+
+.panelCami {
+    height: 40px;
+    
+    padding-top: 0;
+}
+
+.navCami li a{
+    padding: 8px 25px;
+    background-color: transparent;
+}
+
+.navCami li a:hover{
+    padding: 8px 25px;
+    background-color: #337ab7;
+    color:#fff;
+}
+
+.navCami li a:active{
+    padding: 8px 25px;
+    background-color: rgba(51, 122, 183, 0.79);  
+}

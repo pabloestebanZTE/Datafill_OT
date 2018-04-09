@@ -88,27 +88,11 @@
     	
     }
 
-    if(!function_exists('sumarORestarDiasAFecha')){
-		    //Funcion para sumar o restar dias a una fecha dada
-    		//recibe 3 parametros; la fecha, los dias a sumar o restar, y el operador "+" o "-"
-    		//Retorna la fecha exacta con los dias sumados o restados
-		  function sumarORestarDiasAFecha($fechaBase, $dias, $operador){
-		    if ($operador == '+') {
-		      $operacion = 'add';
-		    }else {
-		      $operacion = 'sub';
-		    }
-		      $fecha = new DateTime($fechaBase);
-		      $fecha->$operacion(new DateInterval('P'.$dias.'D'));
-		      return $fecha->format('Y-m-d');
-		  }
-    	
-    }
 
     if(!function_exists('habilPostFinSemana')){
-		    //Funcion para validar si una fecha es sabado o domingo
-    		//recibe 1 parametro; la fecha a calvular
-    		//Retorna la fecha del lunes proximo
+		    //Funcion q valida si una fecha dada es sabado o domingo para retornar sigte dia habil
+    		//recibe 1 parametro; la fecha a calcular
+    		//Retorna la fecha del lunes proximo si no es fincho retorna la misma fecha
 		  function habilPostFinSemana($fecha){
 		    $fecha = new DateTime($fecha);
 		    //cambio formato para obtener el dia de la semana y compararlo
@@ -129,11 +113,59 @@
     	
     }
 
+    if(!function_exists('dia_espanol')){
+		    //Funcion q validar una fecha dada para devolverdia en español
+    		//recibe 1 parametro; la fecha a calcular
+    		//Retorna el dia en español
+		  function dia_espanol($fecha){
+		    $fecha = new DateTime($fecha);
+		    $dia = "";
+		    //cambio formato para obtener el dia de la semana y compararlo
+		    switch ($fecha->format('D')) {
+		      case 'Mon':
+		        $dia = 'Lun';
+		        break;
+
+		      case 'Tue':
+		        
+		       $dia = 'Mar';
+		        break;
+		      case 'Wed':
+		        $dia = 'Mie';
+		        break;
+
+		      case 'Thu':
+		        
+		       $dia = 'Jue';
+		        break;
+		      case 'Fri':
+		        $dia = 'Vie';
+		        break;
+
+		      case 'Sat':
+		        
+		       $dia = 'Sab';
+		        break;
+		      case 'Sun':
+		        
+		       $dia = 'Dom';
+		        break;	        
+		    }
+		    return $dia;
+		  }
+    	
+    }
+
+
+
+
     if(!function_exists('validarFestivo')){
 		    //Funcion para validar si una fecha es Festivo
-    		//recibe 1 parametro; la fecha a calcular
+    		//recibe 1 parametro; la fecha a calcular FORMATO AAAA-MM-DD
     		//Retorna '1' si es festivo o '0' si no lo es 
+    		// NOTA: tambien recibe fechas de distito formato ejemplo AAAA-M-D (2018-3-9)
 			function validarFestivo($fecha){
+				$fecha = new DateTime($fecha);
 				$festivos = array(
 				          '2018-01-01' => '2018-01-01',// Año Nuevo
 				          '2018-01-08' => '2018-01-08',// Reyes magos
@@ -158,7 +190,7 @@
 				          '2019-01-07' => '2019-01-07',// Reyes magos
 				          '2019-03-25' => '2019-03-25',//
 				        );
-				if ($festivos[$fecha]) {
+				if ($festivos[$fecha->format('Y-m-d')]) {
 				return 1;
 				} else {
 				return 0;
@@ -186,12 +218,56 @@
     }
 
 
+    if(!function_exists('dias_habiles_mes')){
+		    //Funcion para calcular todos los dias habiles de un mes dado
+    		//recibe 1 parametro; el mes a calcular
+    		//Retorna los dias habiles del mes en un array con claves igual a se result
+		function dias_habiles_mes($mes){
+			$dias_habiles = [];    	
+			$hasta = ['',31,28,31,30,31,30,31,31,30,31,30,31];
+			$meses = ['','enero','febrero','marzo','abril','mayo','junio','julio','agosto','septiembre','octubre','noviembre','diciembre'];
+			
+			for ($i=1; $i < $hasta[$mes]+1 ; $i++) { 
+				if (is_sat_sun_or_fest('2018-'.$mes.'-'.$i) == false) {
+					$fecha[$i] = new DateTime('2018-'.$mes.'-'.$i);
+					// $dias_habiles[$fecha[$i]->format('Y-m-d')] = $fecha[$i]->format('Y-m-d');
+					array_push($dias_habiles, $fecha[$i]->format('Y-m-d'));
+				}
+		    }
+
+		    return $dias_habiles;
+  		}
+    	
+    }
+
+    if (!function_exists('is_sat_sun_or_fest')) {
+    	// funcion que valida si un dia es sab o domingo o festivo
+    	// Recibe la fecha a validar
+    	// Retorna true si se cumple y false si no
+    	function is_sat_sun_or_fest($fecha){
+    		$response = false;
+    		$fecha_form = new DateTime($fecha);
+    		switch ($fecha_form->format('D')) {
+    			case 'Sat':
+    				$response = true;
+    				break;
+
+    			case 'Sun':
+    				$response = true;
+    				break;
+    			
+    			default:
+    				if (validarFestivo($fecha) === 1) {
+    					$response = true;
+    				}
+    				break;
+    		}
+
+    		return $response;
+
+    	}
+    }
 
 
 
 
-
-
-
-
-?>

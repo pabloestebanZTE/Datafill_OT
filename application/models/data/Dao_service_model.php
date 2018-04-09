@@ -358,7 +358,8 @@
 
         $query = $this->db->query("
             select 
-            ss.K_IDORDER as ORDEN, ss.K_IDCLARO AS ACTIVIDAD,
+            ss.K_IDORDER as ORDEN, 
+            ss.K_IDCLARO AS ACTIVIDAD,
             service.N_TYPE AS TIPO, 
             ss.n_cantidad as CANT, 
             s.N_NAME as ESTACION, 
@@ -367,7 +368,12 @@
             ss.D_DATE_FINISH_R as F_CIERRE_ING, 
             ss.D_CLARO_F as F_EJECUCION, 
             ss.N_ESTADO as ESTADO, 
-            ss.N_PROYECTO as PROYECTO 
+            ss.N_PROYECTO as PROYECTO, 
+            
+            ss.D_FORECAST as F_FORECAST,
+            ss.D_DATE_CREATION as F_CREACION,
+            ss.N_ING_SOL as SOLICITANTE,
+            ss.n_region as REGION 
 
             from specific_service ss 
             inner join user u 
@@ -555,6 +561,39 @@
               limit 400 , 200");
 
           return $query->result();
+
+      }
+
+      // Trae el tipo y cantidad ejecutados de el mes dado
+      public function cant_by_month_executed($mes){
+        if ($mes == 12) {
+            $where = "AND 
+                      (ss.D_CLARO_F >= '2018-12-01' AND
+                      ss.D_CLARO_F < '2019-01-01')";
+        }else{
+            $where = "AND 
+                      (ss.D_CLARO_F >= '2018-".$mes."-01' AND
+                      ss.D_CLARO_F < '2018-".($mes + 1)."-01')";
+        }
+
+
+
+        $query = $this->db->query("
+              SELECT 
+              COUNT(s.N_TYPE) AS cant,
+              s.N_TYPE AS tipo,
+              ss.D_CLARO_F as f_ejecucion
+              FROM 
+              specific_service ss
+              INNER JOIN service s
+              ON ss.K_IDSERVICE = s.K_IDSERVICE
+              WHERE 
+              ss.N_ESTADO = 'Ejecutado'
+              ".$where."  
+              GROUP BY s.N_TYPE, ss.D_CLARO_F
+
+        ");
+        return $query->result();
 
       }
 
