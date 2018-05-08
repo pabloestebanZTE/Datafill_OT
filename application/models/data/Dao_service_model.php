@@ -597,7 +597,20 @@
 
       }
 
+      public function updateFecha($data){
+        $this->db->where('K_IDORDER', $data['K_IDORDER']) ;
+        $this->db->update('specific_service', $data);
 
+        $error = $this->db->error();
+        if ($error['message']) {
+          return 'error';
+        }else{
+          return 'ok';
+        }
+
+
+
+      }
 
 
 

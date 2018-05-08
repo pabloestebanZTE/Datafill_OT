@@ -64,7 +64,7 @@ class Configdb_model extends CI_Model {
         // }
    public function openSession() {
        $user = "root";
-       $pass = "a4b3c2d1";
+       $pass = "";
        $db = "datafill_ot";
 
        try {

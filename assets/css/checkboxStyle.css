@@ -77,3 +77,22 @@
 	filter: alpha(opacity=100);
 	opacity: 1;
 }
+.cambiofecha {	
+    line-height: 10px;
+    background-color: transparent;
+    border: azure;
+} 
+input[type="date"] {
+    line-height: 10px;
+        width: 115px;
+}
+.btn-circle {
+		align-content: center;
+    width: 31px;
+    height: 28px;
+    background-color: #207be5;
+    float: left;
+    color: #fff;
+    border: 1px solid #000;
+    border-radius: 50%;
+}

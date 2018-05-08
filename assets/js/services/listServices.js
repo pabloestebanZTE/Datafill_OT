@@ -138,6 +138,19 @@ $(function () {
             return description;
         },
 
+        getdateStartP: function (obj){
+           //obj.dateStartP = data:;
+
+           var role=$('#session_role').val();
+
+           if (role == 4) {var cambiofecha = '<input class="cambiofecha" type="date" value="'+obj.services[0].dateStartP+'">';
+            cambiofecha = cambiofecha + "<button title='Actualizar' class='glyphicon glyphicon-cloud-upload btn-circle'></button>";
+             return cambiofecha;
+            }else {
+               return obj.services[0].dateStartP
+            };
+        },
+
         genericCogDataTable: function (url, table) {
             // console.log();
             // $('.contentPrincipal').removeClass('hidden');
@@ -147,7 +160,7 @@ $(function () {
                     {title: "Fecha creación", data: "creationDate"},
                     {title: "Ingeniero Solicitante", data: "services.0.ingSol"},
                     {title: "Forecast Aprox.", data: "services.0.dateForecast"},
-                    {title: "F.Asignacion", data: "services.0.dateStartP"},
+                    {title: "F.Asignacion", data: vista.getdateStartP},
                     {title: "Proyecto", data: "services.0.proyecto"},
                     {title: "Region", data: "services.0.region"},
                     {title: "Ingenieros Asignados", data: vista.getEngs},
@@ -210,10 +223,45 @@ $(function () {
                 $('#btn_fixed').fadeIn(500);
             });
 
+            $('#tableTransport').on('click', 'button.btn-circle', vista.updateFecha);
+
             // $('table').off('click', '.btn-preview', vista.onClickPreviewBtn);
             // $('table').on('click', '.btn-preview', vista.onClickPreviewBtn);
             // $('.tab-tables').on('click', vista.onClickTabTables);
         },
+
+
+        updateFecha: function(){
+            var fecha = $(this);
+            var trParent = fecha.parents('tr');
+            var input = trParent.find('input').val(); 
+            var datos = vista.tableTransport.row(trParent).data();
+
+
+            $.post(vista.urlbase+"/Service/actualizarfechaAsig",
+
+                {
+                    idOrden: datos.id,
+                    fecha: input
+                },
+                // callback
+                function(data){
+                    var res = JSON.parse(data);
+                    console.log(res);
+                    if (res == 'ok') {
+                        swal("Se actualizo correctamente!", "", "success");
+                       
+                        /*location.reload(vista.urlbase + "Service/listServices");*/
+                        setTimeout('document.location.reload()',1000);                        
+                    }else  swal("Se actualizo correctamente!", "", "error");
+                }
+
+            );
+
+
+        },
+
+
         onClickVerActividadTr: function(){
             var aLink = $(this);
             var trParent = aLink.parents('tr');

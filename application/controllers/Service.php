@@ -61,7 +61,15 @@ class Service extends CI_Controller {
         $this->load->view('updateRF');
     }
 
-    
+    public function actualizarfechaAsig(){
+
+        $data = array(
+            'K_IDORDER' => $this->input->post('idOrden'), 
+            'D_DATE_START_P' => $this->input->post('fecha') 
+        );
+        $res = $this->dao_service_model->updateFecha($data);
+        echo json_encode($res);
+    }
 
 
 }
