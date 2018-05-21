@@ -373,7 +373,8 @@
             ss.D_FORECAST as F_FORECAST,
             ss.D_DATE_CREATION as F_CREACION,
             ss.N_ING_SOL as SOLICITANTE,
-            ss.n_region as REGION 
+            ss.n_region as REGION , 
+            ss.N_CLARO_DESCRIPTION as DESCRIPCION
 
             from specific_service ss 
             inner join user u 

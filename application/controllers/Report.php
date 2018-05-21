@@ -70,7 +70,8 @@
 		      		<td>F FORECAST</td>
 		      		<td>F CREACION</td>
 		      		<td>SOLICITANTE</td>
-		      		<td>REGION</td>
+              <td>REGION</td>
+		      		<td>DESCRIPCION</td>
 
 				</tr>
 <?php 
@@ -106,7 +107,8 @@
 				      		echo '<td>'.$value->F_FORECAST.'</td>';
 				      		echo '<td>'.$value->F_CREACION.'</td>';
 				      		echo '<td>'.$value->SOLICITANTE.'</td>';
-				      		echo '<td>'.$value->REGION.'</td>';
+                  echo '<td>'.$value->REGION.'</td>';
+				      		echo '<td>'.$value->DESCRIPCION.'</td>';
 						echo '</tr>';
 					}
 

@@ -7,7 +7,7 @@
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
         <!--   ICONO PAGINA    -->
-        <link rel="icon" href="http://cellaron.com/media/wysiwyg/zte-mwc-2015-8-l-124x124.png">
+        <!-- <link rel="icon" href="http://cellaron.com/media/wysiwyg/zte-mwc-2015-8-l-124x124.png"> -->
         <!--   BOOTSTRAP    -->
         <link href="<?= URL::to('assets/css/bootstrap.css" rel="stylesheet'); ?>" />
         <link href="<?= URL::to('assets/plugins/datatables/dataTables.bootstrap.css'); ?>" rel="stylesheet">
@@ -17,6 +17,7 @@
 
         <script src="<?= URL::to('assets/js/jquery-2.1.1.min.js'); ?>"></script>
         <script src="<?= URL::to('assets/js/bootstrap.js'); ?>"></script>
+        <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
   
 <style>
 
@@ -70,7 +71,7 @@
         var users = JSON.parse(user);
 
 cont++;
-    var fila='<tr class="selected" id="fila'+cont+'" onclick="seleccionar(this.id);">';
+    var fila='<tr class="selected" id="fila'+cont+'" >';
  fila = fila + '<td>'+cont+'</td>';
    fila = fila + '<td>';
     fila = fila + '<select name="inge'+cont+'" id="inge" class="form-control selectpicker" required>';
@@ -188,6 +189,19 @@ $('#tabla tbody tr').each(function(){
     <div class="btn-group col-xs-8" id="botones">
         <a id="bt_add" class="btn btn-primary"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span></a>
         <a id="bt_delall" class="btn btn-primary"><span class="glyphicon glyphicon-minus" aria-hidden="true"></span></a>
+        <div class="form-group" style="display: flex; padding-left: 108px;">
+            <label class="col-md-4 control-label">Fecha Asignación ZTE:</label>
+            <div class="col-md-9 selectContainer">
+                <div class="input-group">
+                    <span class="input-group-addon"><i class="glyphicon glyphicon-calendar "></i></span>
+                    <input type='date' name="D_ASIG_Z" id="D_ASIG_Z" class="form-control" value="" required>
+                    <div class="input-group-btn">
+                        <button type="button" id="btnTodayDate" class="btn btn-primary" title="Fecha Actual"><i class="glyphicon glyphicon-calendar"></i></button>
+                    </div>
+                </div>
+            </div>
+        </div>
+            <span class="advertencia" style="display: none;"><i class="glyphicon glyphicon-warning-sign"></i>&nbsp;&nbsp;  La fecha de asignación a ZTE no puede ser menor a la de creación &nbsp;&nbsp; <i class="glyphicon glyphicon-warning-sign"></i></span>
 <?php
         echo "<input type='hidden' name='OT' id='OT' value='".$asignar['ot']."'>";
         echo "<input type='hidden' name='prioridad' id='prioridad' value='".$asignar['prioridad']."'>";
@@ -230,7 +244,7 @@ $('#tabla tbody tr').each(function(){
   /*header('Content-Type: text/plain');
     print_r($asignar);*/
        echo "<div class='box-header'>";
-         echo "<h5><b>OT : </b>".$asignar['ot']."</h5><h5><b>Solicitante : </b>".$asignar['solicitante']."</h5><h5><b>Fecha de Creacion : </b>".$asignar['fCreacion']."</h5>";
+         echo "<h5><b>OT : </b>".$asignar['ot']."</h5><h5><b>Solicitante : </b>".$asignar['solicitante']."</h5><h5><b>Fecha de Creacion : </b><span id='fecha_creacion'>".$asignar['fCreacion']."</span></h5>";
          echo "<h5><b>Proyecto : </b>".$asignar['proyecto']."</h5>";
          echo "<h5><b>Descripción : </b>".$asignar['descripcion']."</h5>";
          echo "<h5><b>Prioridad : </b><spam style='color:red'>".$asignar['prioridad']."</spam></h5>";
@@ -303,6 +317,56 @@ $('#tabla tbody tr').each(function(){
       "autoWidth": false
     });
   });
+</script>
+
+<script type="text/javascript">
+  // llenar el input tipo date
+  $('#btnTodayDate').on('click', function(){
+    var hoy = formatDate(new Date());
+    var fecha =  $('#D_ASIG_Z');
+    fecha.val(hoy);
+  });
+
+  // comparar fechas
+  $('#D_ASIG_Z').on('change', function(){
+    var fecha = new Date ($('#D_ASIG_Z').val());
+    var creacion = new Date ($('#fecha_creacion').html());
+
+    if ((fecha.getTime() +86400000.864) < creacion.getTime()) {
+      $('#bt_form').attr('disabled', 'true');
+      $('.advertencia').show(400);
+    } else {
+      $('#bt_form').removeAttr("disabled");
+      $('.advertencia').hide(400);
+    }
+
+
+    // alert(fecha.getTime());
+    // alert(creacion.getTime());
+  });
+
+
+
+
+
+
+
+
+
+
+
+function formatDate(date) {
+    var d = new Date(date),
+        month = '' + (d.getMonth() + 1),
+        day = '' + d.getDate(),
+        year = d.getFullYear();
+
+    if (month.length < 2) month = '0' + month;
+    if (day.length < 2) day = '0' + day;
+
+    return [year, month, day].join('-');
+}
+
 </script>
 
 </body>

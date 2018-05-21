@@ -709,6 +709,7 @@
        $order = new order_model;
        $order->createOrder(str_replace(array("\n", "\r", "\t", " "), '',$_POST['OT']),"",$_POST['fCreacion']);
        $order->setPrioridad($_POST['prioridad']);
+       $order->setD_ASIG_Z($_POST['D_ASIG_Z']);
        $this->dao_order_model->insertOrder($order);
        $activity = new service_spec_model;
        $count2 = 0; 

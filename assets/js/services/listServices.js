@@ -139,13 +139,15 @@ $(function () {
         },
 
         getdateStartP: function (obj){
-           //obj.dateStartP = data:;
+
+            // console.log(obj);
 
            var role=$('#session_role').val();
 
-           if (role == 4) {var cambiofecha = '<input class="cambiofecha" type="date" value="'+obj.services[0].dateStartP+'">';
-            cambiofecha = cambiofecha + "<button title='Actualizar' class='glyphicon glyphicon-cloud-upload btn-circle'></button>";
-             return cambiofecha;
+           if (role == 4) {
+                var cambiofecha = '<input class="cambiofecha" type="date" value="'+obj.services[0].dateStartP+'">';
+                cambiofecha = cambiofecha + "<button title='Actualizar' class='glyphicon glyphicon-cloud-upload btn-circle'></button>";
+                 return cambiofecha;
             }else {
                return obj.services[0].dateStartP
             };
@@ -159,7 +161,10 @@ $(function () {
                     {title: "Id orden", data: vista.getLinkOrden},
                     {title: "Fecha creación", data: "creationDate"},
                     {title: "Ingeniero Solicitante", data: "services.0.ingSol"},
+
                     {title: "Forecast Aprox.", data: "services.0.dateForecast"},
+                    {title: "Asignacio a ZTE", data: "D_ASIG_Z"},
+
                     {title: "F.Asignacion", data: vista.getdateStartP},
                     {title: "Proyecto", data: "services.0.proyecto"},
                     {title: "Region", data: "services.0.region"},
@@ -234,29 +239,41 @@ $(function () {
         updateFecha: function(){
             var fecha = $(this);
             var trParent = fecha.parents('tr');
+            var asinZ = trParent.find('td:eq(4)').html();
+
             var input = trParent.find('input').val(); 
             var datos = vista.tableTransport.row(trParent).data();
 
+            var nueva = new Date (input);
+            var fz = new Date (asinZ);           
 
-            $.post(vista.urlbase+"/Service/actualizarfechaAsig",
+            if (fz.getTime() <= nueva.getTime() || asinZ == "") {                
+                $.post(vista.urlbase+"/Service/actualizarfechaAsig",
+                    {
+                        idOrden: datos.id,
+                        fecha: input
+                    },
+                    // callback
+                    function(data){
+                        var res = JSON.parse(data);
+                        console.log(res);
+                        if (res == 'ok') {
+                            swal("Se actualizo correctamente!", "", "success");
+                           
+                            location.reload(vista.urlbase + "Service/listServices");
+                            setTimeout('document.location.reload()',1000);                        
+                        }else {
+                            swal("Error al actualizar!", "", "error");
+                        }
+                    }
+                );
 
-                {
-                    idOrden: datos.id,
-                    fecha: input
-                },
-                // callback
-                function(data){
-                    var res = JSON.parse(data);
-                    console.log(res);
-                    if (res == 'ok') {
-                        swal("Se actualizo correctamente!", "", "success");
-                       
-                        /*location.reload(vista.urlbase + "Service/listServices");*/
-                        setTimeout('document.location.reload()',1000);                        
-                    }else  swal("Se actualizo correctamente!", "", "error");
-                }
+            } else {
+                
+                swal("Error en fechas!", "La fecha de asignación al ingeniero no puede ser menor a la fecha de asignación a ZTE", "info");
+                                
+            }
 
-            );
 
 
         },
