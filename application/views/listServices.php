@@ -151,7 +151,7 @@
     // $('#fInicior').prop("required", true);
     // $('#fFinr').prop("required", true);
     // $('#state').prop("required", true);
-    
+
     //Mostrar select segun el roll
     var roll = document.getElementById('session_role').value;
     if (roll == 4 || roll == 0) {
@@ -490,7 +490,7 @@ echo "</div>";
       </div>
     </div>
     <br><br>
-    
+
   </div>
 </form>
 <div class="container" style="display: none;background-color: #fafafa;width: 97%;border-radius: 19px;border: 1px solid #f0f0f0;" id="formulario">
