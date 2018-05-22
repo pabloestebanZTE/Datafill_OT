@@ -38,7 +38,7 @@ class Dao_order_model extends CI_Model {
         $answer = [];
 
         //Parametrizando el ordenamiento:
-        $columns = [ "K_IDORDER", "D_DATE_CREATION", "N_ING_SOL", "D_FORECAST", "N_PROYECTO", "n_region", "N_NAME","N_PRIORIDAD", "N_CLARO_DESCRIPTION", "N_PRIORIDAD","PERCENTAGE","PERCENTAGE"];
+        $columns = [ "K_IDORDER", "D_DATE_CREATION", "N_ING_SOL", "D_FORECAST", "D_ASIG_Z", "N_PROYECTO", "n_region", "N_NAME","N_PRIORIDAD", "N_CLARO_DESCRIPTION", "N_PRIORIDAD","PERCENTAGE","PERCENTAGE"];
 
         //Algoritmo para obtener la consulta de ordenamiento...
         $orderBy = null;
@@ -89,13 +89,14 @@ class Dao_order_model extends CI_Model {
 
         if ($search) {
             //Se obtienen los registros por límite de x a 10...
-            $sqlIni = "select ot.K_IDORDER, ot.N_PRIORIDAD, $SQL_PERCENTAGE ot.N_DRIVE, ot.D_DATE_CREATION, se.N_ING_SOL, se.D_FORECAST, se.D_DATE_START_P, se.N_PROYECTO, se.n_region, u.N_NAME, u.N_LASTNAME, se.N_CLARO_DESCRIPTION, se.D_CLARO_F 
+            $sqlIni = "select ot.K_IDORDER, ot.D_ASIG_Z, ot.N_PRIORIDAD, $SQL_PERCENTAGE ot.N_DRIVE, ot.D_DATE_CREATION, se.N_ING_SOL, se.D_FORECAST, se.D_DATE_START_P, se.N_PROYECTO, se.n_region, u.N_NAME, u.N_LASTNAME, se.N_CLARO_DESCRIPTION, se.D_CLARO_F 
                   from ot inner join specific_service se
                   on ot.K_IDORDER = se.K_IDORDER  
                   inner join user u 
                   on u.K_IDUSER = se.K_IDUSER 
                   WHERE " . $typeSQL . $whereIngeniero . " AND (ot.K_IDORDER LIKE '%" . $search . "%' 
                   OR ot.N_PRIORIDAD LIKE '%" . $search . "%'                   
+                  OR ot.D_ASIG_Z LIKE '%" . $search . "%'                   
                   OR ot.D_DATE_CREATION LIKE '%" . $search . "%' 
                   OR se.N_ING_SOL LIKE '%" . $search . "%' 
                   OR se.D_FORECAST LIKE '%" . $search . "%' 
@@ -123,6 +124,7 @@ class Dao_order_model extends CI_Model {
                         $order->createOrder($row['K_IDORDER'], $row['N_NAME'], $row['D_DATE_CREATION']);
                         $order->setLink($row['N_DRIVE']);
                         $order->setPrioridad($row['N_PRIORIDAD']);
+                        $order->setD_ASIG_Z($row['D_ASIG_Z']);
 
                         $sercicios = $this->dao_service_model->getServiceByIdOrder($row['K_IDORDER']);
                         $order->services = $sercicios;
@@ -133,7 +135,7 @@ class Dao_order_model extends CI_Model {
             }
         } else {
             //Si no se está filtrando se realiza la consulta normalmnete limitada de x a 10...                    
-            $sqlIni = "select ot.K_IDORDER, ot.N_PRIORIDAD, $SQL_PERCENTAGE ot.N_DRIVE, ot.D_DATE_CREATION, se.N_ING_SOL, se.D_FORECAST, se.D_DATE_START_P, se.N_PROYECTO, se.n_region, u.N_NAME, u.N_LASTNAME, se.N_CLARO_DESCRIPTION, se.D_CLARO_F 
+            $sqlIni = "select ot.K_IDORDER, ot.D_ASIG_Z, ot.N_PRIORIDAD, $SQL_PERCENTAGE ot.N_DRIVE, ot.D_DATE_CREATION, se.N_ING_SOL, se.D_FORECAST, se.D_DATE_START_P, se.N_PROYECTO, se.n_region, u.N_NAME, u.N_LASTNAME, se.N_CLARO_DESCRIPTION, se.D_CLARO_F 
                   from ot 
                   inner join specific_service se
                   on ot.K_IDORDER = se.K_IDORDER 
@@ -154,6 +156,7 @@ class Dao_order_model extends CI_Model {
                         $order->createOrder($row['K_IDORDER'], $row['N_NAME'], $row['D_DATE_CREATION']);
                         $order->setLink($row['N_DRIVE']);
                         $order->setPrioridad($row['N_PRIORIDAD']);
+                        $order->setD_ASIG_Z($row['D_ASIG_Z']);
 
                         $sercicios = $this->dao_service_model->getServiceByIdOrder($row['K_IDORDER']);
                         $order->services = $sercicios;
@@ -174,8 +177,8 @@ class Dao_order_model extends CI_Model {
     public function insertOrder($order) {
         $dbConnection = new configdb_model();
         $session = $dbConnection->openSession();
-        $sql = "INSERT INTO ot (K_IDORDER, N_NAME, D_DATE_CREATION, N_PRIORIDAD)
-            values (" . $order->getId() . ", '" . $order->getName() . "', STR_TO_DATE('" . $order->getCreationDate() . "', '%Y-%m-%d'), '".$order->getPrioridad()."');";
+        $sql = "INSERT INTO ot (K_IDORDER, N_NAME, D_DATE_CREATION, N_PRIORIDAD, D_ASIG_Z)
+            values (" . $order->getId() . ", '" . $order->getName() . "', STR_TO_DATE('" . $order->getCreationDate() . "', '%Y-%m-%d'), '".$order->getPrioridad()."', STR_TO_DATE('" . $order->getD_ASIG_Z() . "', '%Y-%m-%d')) ;";
         if ($session != "false") {
             $result = $session->query($sql);
         }

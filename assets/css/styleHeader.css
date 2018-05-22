@@ -87,7 +87,8 @@ margin-top: 10px;
 }
 
 .m-b-5 {
-    margin-bottom: 5px !important; 
+    margin-bottom: 5px !important;
+    /*width: 100% !important;*/
 }
 
 .m-l-5 {
@@ -161,4 +162,11 @@ table#tableGDATOS th{
 .navCami li a:active{
     padding: 8px 25px;
     background-color: rgba(51, 122, 183, 0.79);  
+}
+
+.advertencia {
+    padding: 7px 30px;
+    background-color: #ff000080;
+    color: #fff;
+    box-shadow: 3px 0px 12px -1px rgba(250,3,3,1);
 }

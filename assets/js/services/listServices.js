@@ -140,13 +140,15 @@ $(function () {
         },
 
         getdateStartP: function (obj){
-           //obj.dateStartP = data:;
+
+            // console.log(obj);
 
            var role=$('#session_role').val();
 
-           if (role == 4) {var cambiofecha = '<input class="cambiofecha" type="date" value="'+obj.services[0].dateStartP+'">';
-            cambiofecha = cambiofecha + "<button title='Actualizar' class='glyphicon glyphicon-cloud-upload btn-circle'></button>";
-             return cambiofecha;
+           if (role == 4) {
+                var cambiofecha = '<input class="cambiofecha" type="date" value="'+obj.services[0].dateStartP+'">';
+                cambiofecha = cambiofecha + "<button title='Actualizar' class='glyphicon glyphicon-cloud-upload btn-circle'></button>";
+                 return cambiofecha;
             }else {
                return obj.services[0].dateStartP
             };
@@ -160,7 +162,9 @@ $(function () {
                     {title: "Id orden", data: vista.getLinkOrden},
                     {title: "Fecha creación", data: "creationDate"},
                     {title: "Ingeniero Solicitante", data: "services.0.ingSol"},
+
                     {title: "Forecast Aprox.", data: "services.0.dateForecast"},
+                    {title: "Asignacio a ZTE", data: "D_ASIG_Z"},
 
                     {title: "F.Asignacion", data: vista.getdateStartP},
                     {title: "Proyecto", data: "services.0.proyecto"},
@@ -251,11 +255,7 @@ $(function () {
 
 
         updateFecha: function(datos, input){
-            /*var fecha = $(this);
-            var trParent = fecha.parents('tr');
-            var input = trParent.find('input').val();
-            var datos = vista.tableTransport.row(trParent).data();
-*/
+
 
             $.post(vista.urlbase+"/Service/actualizarfechaAsig",
 
@@ -272,10 +272,11 @@ $(function () {
 
                         /*location.reload(vista.urlbase + "Service/listServices");*/
                         setTimeout('document.location.reload()',1000);
-                    }else  swal("Se actualizo correctamente!", "", "error");
-                }
+                    }else {
+                      swal("Se actualizo correctamente!", "", "error");
+                    }
+                });
 
-            );
 
 
         },
