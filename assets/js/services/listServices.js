@@ -1,7 +1,7 @@
 $(function () {
     vista = {
-        urlbase: $('body').attr('data-url'),     
-        init: function () {      
+        urlbase: $('body').attr('data-url'),
+        init: function () {
             vista.events();
             vista.getListTransport();
             vista.getListGDATOS();
@@ -50,7 +50,7 @@ $(function () {
             var porEjecutadas = obj.ejecutadas * 100 / total;
             var avance = porCanceladas + porEjecutadas + porEnviadas;
             var barras = "";
-            barras+= "<div class='containerfluid'>";                                    
+            barras+= "<div class='containerfluid'>";
                 barras+= "<div class='row'>";
                   barras+= "<div class='col-md-12'>";
                     barras+= "<div class='progress' style='height: 13px;'>";
@@ -102,7 +102,7 @@ $(function () {
             href += '<a class="link-ver-actividades" title="Ver actividades">' + obj.id + '</a><br><br>';
             if (obj.link != "" && obj.link != null) {
                 href += "<a type='button' id='btnDrive' href='"+ obj.link +"' target='_blank'><img src= '"+vista.urlbase+"/assets/img/drive.ico' alt='drive' id='imgIcon' /></a>";
-                
+
             }
             return href;
         },
@@ -116,6 +116,7 @@ $(function () {
         },
 
         getDescription: function(obj){
+          console.log(obj);
              // console.log(obj.services[0].claroDescription);
             var ini = obj.services[0].claroDescription.substring(0,45);
             var description ="";
@@ -134,7 +135,7 @@ $(function () {
             description += "<p id='p"+obj.id+"' style='display:none;'> "+obj.services[0].claroDescription.substring(45);
             description += "<a class='miniBoton' id='hide"+obj.id+"'><br>...menos</a>";
              description += " </p>";
-            description += "<a class='miniBoton' id='show"+obj.id+"'><br>... mas</a>";            
+            description += "<a class='miniBoton' id='show"+obj.id+"'><br>... mas</a>";
             return description;
         },
 
@@ -201,14 +202,14 @@ $(function () {
         events: function () {
             $('#tableTransport').on('click', 'a.link-ver-actividades', vista.onClickVerActividadTr);
             $('#tableGDATOS').on('click', 'a.link-ver-actividades', vista.onClickVerActividadGd);
-           
+
 
             $('#btn_fixed2').on('click', function(){
-                $(this).hide();                
+                $(this).hide();
                 $('#content_fixed2').removeClass('closed2');
                 $('#content_fixed2 #menu_fixed2').removeClass('hidden').hide().fadeIn(500);
             });
-            $('#btn_close_fixed2').on('click', function(){                
+            $('#btn_close_fixed2').on('click', function(){
                 $('#content_fixed2').addClass('closed2');
                 $('#content_fixed2 #menu_fixed2').hide();
                 $('#btn_fixed2').fadeIn(500);
@@ -218,61 +219,63 @@ $(function () {
 
 
             $('#btn_fixed').on('click', function(){
-                $(this).hide();                
+                $(this).hide();
                 $('#content_fixed').removeClass('closed');
                 $('#content_fixed #menu_fixed').removeClass('hidden').hide().fadeIn(500);
             });
-            $('#btn_close_fixed').on('click', function(){                
+            $('#btn_close_fixed').on('click', function(){
                 $('#content_fixed').addClass('closed');
                 $('#content_fixed #menu_fixed').hide();
                 $('#btn_fixed').fadeIn(500);
             });
 
-            $('#tableTransport').on('click', 'button.btn-circle', vista.updateFecha);
+            $('#tableTransport').on('click', 'button.btn-circle', vista.TRupdateFecha);
+            $('#tableGDATOS').on('click', 'button.btn-circle', vista.GDupdateFecha);
 
             // $('table').off('click', '.btn-preview', vista.onClickPreviewBtn);
             // $('table').on('click', '.btn-preview', vista.onClickPreviewBtn);
             // $('.tab-tables').on('click', vista.onClickTabTables);
         },
 
-
-        updateFecha: function(){
-            var fecha = $(this);
+        TRupdateFecha: function(){
+             var fecha = $(this);
             var trParent = fecha.parents('tr');
-            var asinZ = trParent.find('td:eq(4)').html();
-
-            var input = trParent.find('input').val(); 
+            var input = trParent.find('input').val();
             var datos = vista.tableTransport.row(trParent).data();
+            vista.updateFecha(datos,input);
+        },
 
-            var nueva = new Date (input);
-            var fz = new Date (asinZ);           
+        GDupdateFecha: function(){
+             var fecha = $(this);
+            var trParent = fecha.parents('tr');
+            var input = trParent.find('input').val();
+            var datos = vista.tableGDATOS.row(trParent).data();
+            vista.updateFecha(datos,input);
+        },
 
-            if (fz.getTime() <= nueva.getTime() || asinZ == "") {                
-                $.post(vista.urlbase+"/Service/actualizarfechaAsig",
-                    {
-                        idOrden: datos.id,
-                        fecha: input
-                    },
-                    // callback
-                    function(data){
-                        var res = JSON.parse(data);
-                        console.log(res);
-                        if (res == 'ok') {
-                            swal("Se actualizo correctamente!", "", "success");
-                           
-                            location.reload(vista.urlbase + "Service/listServices");
-                            setTimeout('document.location.reload()',1000);                        
-                        }else {
-                            swal("Error al actualizar!", "", "error");
-                        }
+
+        updateFecha: function(datos, input){
+
+
+            $.post(vista.urlbase+"/Service/actualizarfechaAsig",
+
+                {
+                    idOrden: datos.id,
+                    fecha: input
+                },
+                // callback
+                function(data){
+                    var res = JSON.parse(data);
+                    console.log(res);
+                    if (res == 'ok') {
+                        swal("Se actualizo correctamente!", "", "success");
+
+                        /*location.reload(vista.urlbase + "Service/listServices");*/
+                        setTimeout('document.location.reload()',1000);
+                    }else {
+                      swal("Se actualizo correctamente!", "", "error");
                     }
-                );
-
-            } else {
-                
-                swal("Error en fechas!", "La fecha de asignación al ingeniero no puede ser menor a la fecha de asignación a ZTE", "info");
-                                
-            }
+                });
 
 
 
@@ -311,9 +314,8 @@ $(function () {
         // //Temporalmente...
         fillNA: function () {
             return "N/A";
-        },       
+        },
     };
 
     vista.init();
 });
-

@@ -624,7 +624,19 @@
 
       }
 
-
+      //retorna actividades, cullas fechas sean inconsistentes
+      public function fechasInconsistentes(){
+        $query = $this->db->query("SELECT ss.K_IDORDER AS orden, K_IDCLARO as claro, ot.D_DATE_CREATION as creacion, ot.D_ASIG_Z as asig_a_ZTE, ss.D_DATE_START_P as asignacion, ss.D_DATE_START_R as inicio_ing, ss.D_DATE_FINISH_R as fin_ing, ss.D_CLARO_F as ejecucion, ss.D_FORECAST  FROM specific_service ss
+          INNER JOIN ot
+          ON  ss.K_IDORDER = ot.K_IDORDER
+          WHERE  (ot.D_ASIG_Z < ot.D_DATE_CREATION) OR 
+          (ss.D_DATE_START_P < ot.D_ASIG_Z OR ss.D_DATE_START_P < ot.D_DATE_CREATION) OR
+          (ss.D_DATE_START_R < ss.D_DATE_START_P OR ss.D_DATE_START_R < D_ASIG_Z) OR
+          (ss.D_DATE_FINISH_R < ss.D_DATE_START_R OR ss.D_DATE_FINISH_R < ss.D_DATE_START_P)OR
+          (ss.D_CLARO_F < ss.D_DATE_FINISH_R OR ss.D_CLARO_F < ss.D_DATE_START_R)  
+          ;");
+        return $query->result();
+      }
 
     }
 ?>

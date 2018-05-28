@@ -71,6 +71,12 @@ class Service extends CI_Controller {
         echo json_encode($res);
     }
 
+    public function fechasInconsistentes(){
+       $data = $this->dao_service_model->fechasInconsistentes();
+       header('content-type: text/plain');
+       print_r($data);
+
+    }
 
 }
 
