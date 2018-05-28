@@ -50,65 +50,82 @@
     color: white;
   }
 </style>
-<script>
-  var cont = 0;
-  $(document).ready(function(){
-    $('#bt_add').click(function(){
-      agregar();
-    });
-    $('#bt_del').click(function(){
-      eliminar(id_fila_selected);
-    });
-    $('#bt_delall').click(function(){
-      eliminarTodasFilas();
-    });
-    
-
-  });
-  var id_fila_selected=[];
-  function agregar(){
-    var user = '<?php echo json_encode($asignar['eng']); ?>';
+    <script>
+      var cont = 0;
+      $(document).ready(function(){
+        $('#bt_add').click(function(){
+          agregar();
+        });
+        $('#bt_del').click(function(){
+          eliminar(id_fila_selected);
+        });
+        $('#bt_delall').click(function(){
+          eliminarTodasFilas();
+        });
+      });
+      var id_fila_selected=[];
+      function agregar(){
+        var user = '<?php echo json_encode($asignar['eng']); ?>';
         var users = JSON.parse(user);
 
-cont++;
-    var fila='<tr class="selected" id="fila'+cont+'" >';
- fila = fila + '<td>'+cont+'</td>';
-   fila = fila + '<td>';
-    fila = fila + '<select name="inge'+cont+'" id="inge" class="form-control selectpicker" required>';
+        var tipojson = '<?= json_encode($asignar['tipo']['idTipo']); ?>' ;
+        var tipo = JSON.parse(tipojson);
+
+        var gdatos = 0;
+        var trans = 0;
+
+        for (var i = 0; i < tipo.length; i++) {
+          if (tipo[i] == 0 || tipo[i] == 1 || tipo[i] == 2 ) {
+            gdatos = 1;
+          } else if (tipo[i] == 9 || tipo[i] == 10 || tipo[i] == 11 || tipo[i] == 12 || tipo[i] == 15 || tipo[i] == 16 ) {
+            trans = 1;
+          }
+        }
+
+        // console.log(users);
+        // console.log(tipo);
+
+        cont++;
+        var fila='<tr class="selected" id="fila'+cont+'" >';
+        fila = fila + '<td>'+cont+'</td>';
+        fila = fila + '<td>';
+        fila = fila + '<select name="inge'+cont+'" id="inge" class="form-control selectpicker" required>';
         fila = fila + '<option value=" " >Seleccione Ingeniero</option>';
-          for(var i = 0; i<users.length; i++){
-        fila = fila + "<option value="+users[i].id+ ">"+users[i].name+" "+users[i].lastname+"</option>";
-             }
-    fila = fila + '</select>';
-   fila = fila + '</td>';
-   fila = fila + '<td>';
-     fila = fila + '<input type="text" class="form-control selectpicker" name="porcen'+cont+'" id="porcen'+cont+'" value="" max="100">';
-   fila = fila + '</td>';
-   fila = fila + '<td>';
-   if(cont>1){
-     fila = fila + '<input type="text" class="form-control selectpicker" name="cantidad'+cont+'" id="cantidad'+cont+'" value = "0" onkeyup="validateValuesCant()">';
-   } else {
-    var cantidadExcel = '<?php echo count($asignar['actividades']) ?>'
-     fila = fila + '<input type="text" class="form-control selectpicker" name="cantidad'+cont+'" id="cantidad'+cont+'" value ="'+0+'" onkeyup="validateValuesCant()">';
-   }
-   fila = fila + '</td>';
-   
-fila = fila + '</tr>';
-
-          $('#tabla').append(fila);
-          reordenar();
-  }
-
-  function validateValuesCant(){
-     var cantidadExcel = '<?php echo count($asignar['actividades'])?>'
-     var sumados = 0; 
-    for(var i = 1; i<=cont; i++){
-      var s = document.getElementById("cantidad"+i);  
-      sumados = sumados + parseInt(s.value);
-      // sumados += s.value;
-      var porc = document.getElementById("porcen"+i); 
-      //console.log(porc); 
-      porc.value = 100/cantidadExcel*parseInt(s.value);
+        for(var i = 0; i<users.length; i++){
+          if (trans == 1 && users[i].role.id == 1) {
+            fila = fila + "<option value="+users[i].id+ ">"+users[i].name+" "+users[i].lastname+"</option>";
+          }
+          if (gdatos == 1 && users[i].role.id == 2) {
+            fila = fila + "<option value="+users[i].id+ ">"+users[i].name+" "+users[i].lastname+"</option>";
+          }
+        }
+        fila = fila + '</select>';
+        fila = fila + '</td>';
+        fila = fila + '<td>';
+        fila = fila + '<input type="text" class="form-control selectpicker" name="porcen'+cont+'" id="porcen'+cont+'" value="" max="100">';
+        fila = fila + '</td>';
+        fila = fila + '<td>';
+        if(cont>1){
+          fila = fila + '<input type="text" class="form-control selectpicker" name="cantidad'+cont+'" id="cantidad'+cont+'" value = "0" onkeyup="validateValuesCant()">';
+        } else {
+          var cantidadExcel = '<?php echo count($asignar['actividades']) ?>'
+          fila = fila + '<input type="text" class="form-control selectpicker" name="cantidad'+cont+'" id="cantidad'+cont+'" value ="'+0+'" onkeyup="validateValuesCant()">';
+        }
+        fila = fila + '</td>';
+        fila = fila + '</tr>';
+        $('#tabla').append(fila);
+        reordenar();
+      }
+      function validateValuesCant(){
+        var cantidadExcel = '<?php echo count($asignar['actividades'])?>'
+        var sumados = 0;
+        for(var i = 1; i<=cont; i++){
+          var s = document.getElementById("cantidad"+i);
+          sumados = sumados + parseInt(s.value);
+    // sumados += s.value;
+    var porc = document.getElementById("porcen"+i);
+    //console.log(porc);
+    porc.value = 100/cantidadExcel*parseInt(s.value);
     }
     if(sumados != cantidadExcel){
       var btform = document.getElementById("bt_form");
@@ -116,30 +133,32 @@ fila = fila + '</tr>';
     } else {
       var btform = document.getElementById("bt_form");
       btform.style.display = 'block';    }
-    console.log(sumados);
-    console.log(cantidadExcel);
-  }
-
-  function reordenar(){
-    var num=1;
-    $('#tabla tbody tr').each(function(){
-      $(this).find('td').eq(0).text(num);
-      num++;
-    });
-  }
-  function eliminarTodasFilas(){
-$('#tabla tbody tr').each(function(){
-      $(this).remove();
-    });
-    cont = 0;
-  }
-
-
-</script>
+      console.log(sumados);
+      console.log(cantidadExcel);
+    }
+    function reordenar(){
+      var num=1;
+      $('#tabla tbody tr').each(function(){
+        $(this).find('td').eq(0).text(num);
+        num++;
+      });
+    }
+    function eliminarTodasFilas(){
+      $('#tabla tbody tr').each(function(){
+        $(this).remove();
+      });
+      cont = 0;
+    }
+    </script>
 
 
 </head>
 <body>
+  <?php 
+    // header('Content-Type: text/plain');
+    // print_r($asignar['eng']);
+
+   ?>
     <!-- Navigation -->
     <header>
         <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
@@ -371,3 +390,6 @@ function formatDate(date) {
 
 </body>
 </html>
+
+
+

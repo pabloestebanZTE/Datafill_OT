@@ -44,10 +44,10 @@ return [
     'connections' => [
         'mysql' => [
             'driver' => 'mysql',
-            'host' => 'zte-col.cws6f2qsxddy.us-west-2.rds.amazonaws.com',
+            'host' => 'zte-coldb.cwtksnwikcx3.us-west-2.rds.amazonaws.com',
             'port' => '3306',
             'database' => 'datafill_ot',
-            'username' => 'AdminZTE',
+            'username' => 'adminZTE',
             'password' => 'a4b3c2d1',
             'charset' => 'utf8',
             'collation' => 'utf8mb4_unicode_ci',
