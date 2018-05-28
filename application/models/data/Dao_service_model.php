@@ -155,12 +155,21 @@
           }
 
 //CAMILO--------------------------------------------ejecuta con excel
-          public function executeFromExcel($executed, $fEjecucion){
+          public function executeFromExcel($executed, $fEjecucion, $estado){
+
+            if ($estado == 'Cancelada') {
+              $estado = 'Cancelado';
+              $fEjecucion = 'null';
+            } else {
+              $estado = 'Ejecutado';
+              $fEjecucion =  "STR_TO_DATE('".$fEjecucion."', '%Y-%m-%d')";
+            }
+
             $dbConnection = new configdb_model();
             $session = $dbConnection->openSession();
             if ($session != "false"){
                 if ($executed != "") {                 
-                  $sql = "UPDATE specific_service SET N_ESTADO = 'Ejecutado' , D_CLARO_F = STR_TO_DATE('".$fEjecucion."', '%Y-%m-%d') WHERE K_IDCLARO = ".$executed.";";
+                  $sql = "UPDATE specific_service SET N_ESTADO = '".$estado."' , D_CLARO_F = $fEjecucion WHERE K_IDCLARO = ".$executed.";";
                    $session->query($sql);
                 }   
 
@@ -251,6 +260,8 @@
           }
 
           public function getServiceByIdActivity($id){
+
+
              $dbConnection = new configdb_model();
               $session = $dbConnection->openSession();
               $sql ="SELECT * FROM specific_service WHERE K_IDCLARO = '".$id."';";

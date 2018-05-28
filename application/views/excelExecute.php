@@ -64,9 +64,12 @@
 <form class="form-group" action=" " method="post"  id="cancel" name="cancel">
   <?php
 
+
+
         for ($r=0; $r < count($ejecutar['idActividad']); $r++) {          
           echo "<input type='hidden' name='actividades_".$r."' id='actividades_".$r."' value='".$ejecutar['idActividad'][$r]."'>";
           echo "<input type='hidden' name='fechaEjecucion_".$r."' id='fechaEjecucion_".$r."' value='".$ejecutar['fEjecucion'][$r]."'>";
+          echo "<input type='hidden' name='estado_".$r."' id='estado_".$r."' value='".$ejecutar['estado'][$r]."'>";
         }
         echo "<input type='hidden' name='cant' value='".count($ejecutar['idActividad'])."'>";
   ?>

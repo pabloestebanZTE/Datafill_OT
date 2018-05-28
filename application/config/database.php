@@ -70,7 +70,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 | The $query_builder variables lets you determine whether or not to load
 | the query builder class.
 */
-$active_group = 'servidor';
+$active_group = 'local';
 $query_builder = TRUE;
 
 
@@ -123,8 +123,8 @@ $db['jj'] = array(
 /*=====================================Servidor de Prueba=====================================*/
 $db['prueba'] = array(
 	'dsn'	=> '',
-	'hostname' => 'zte-col.cws6f2qsxddy.us-west-2.rds.amazonaws.com',
-	'username' => 'AdminZTE',
+	'hostname' => 'zte-coldb.cwtksnwikcx3.us-west-2.rds.amazonaws.com',
+	'username' => 'adminZTE',
 	'password' => 'a4b3c2d1',
 	'database' => 'datafill_test',
 	'dbdriver' => 'mysqli',
@@ -146,8 +146,8 @@ $db['prueba'] = array(
 /*======================================servidor cliente======================================*/
 $db['servidor'] = array(
 	'dsn'	=> '',
-	'hostname' => 'zte-col.cws6f2qsxddy.us-west-2.rds.amazonaws.com',
-	'username' => 'AdminZTE',
+	'hostname' => 'zte-coldb.cwtksnwikcx3.us-west-2.rds.amazonaws.com',
+	'username' => 'adminZTE',
 	'password' => 'a4b3c2d1',
 	'database' => 'datafill_ot',
 	'dbdriver' => 'mysqli',

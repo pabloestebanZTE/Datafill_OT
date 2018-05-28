@@ -25,7 +25,7 @@ return [
      */
     //Por favor, Seguir subiendo la configuración de sus localhost y no la del servidor
     //que el único que apunte a el servidor mysql sea quíen suba el proyecto con nuevos cambios...
-    'default' => 'mysql',
+    'default' => 'camilo',
     /*
       |--------------------------------------------------------------------------
       | Database Connections
@@ -44,10 +44,10 @@ return [
     'connections' => [
         'mysql' => [
             'driver' => 'mysql',
-            'host' => 'zte-col.cws6f2qsxddy.us-west-2.rds.amazonaws.com',
+            'host' => 'zte-coldb.cwtksnwikcx3.us-west-2.rds.amazonaws.com',
             'port' => '3306',
             'database' => 'datafill_ot',
-            'username' => 'AdminZTE',
+            'username' => 'adminZTE',
             'password' => 'a4b3c2d1',
             'charset' => 'utf8',
             'collation' => 'utf8mb4_unicode_ci',

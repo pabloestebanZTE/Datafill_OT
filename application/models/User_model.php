@@ -65,6 +65,7 @@
       $this->setLastname($lastname);
       $this->setCellphone($cellphone);
       $this->setMail($mail);
+      // $this->setRole($role);
 			return $this;
     }
 	}

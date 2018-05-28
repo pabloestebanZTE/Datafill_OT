@@ -139,7 +139,7 @@
                     }
                   }
                     $asignar['eng'] = $this->dao_user_model->getAllEngineers();//llama todos los ing para pintar en select
-                    /*print_r($asignar);*/
+
                     $array['asignar'] = $asignar;
                     $this->load->view('excelAssign', $array);
                   }else{
@@ -249,12 +249,11 @@
                             $allSites[count($allSites)] = $newSite;
                       }
                       //fin creacion site
-
                       $plus++;
                     }
                   }
                     $asignar['eng'] = $this->dao_user_model->getAllEngineers();//llama todos los ing para pintar en select
-                    /*print_r($asignar);*/
+                    /*print_r($asignar);*/           
                     $array['asignar'] = $asignar;
                     $this->load->view('excelAssign', $array);
                   }else{
@@ -267,7 +266,7 @@
       public function cancelByMail(){
         //diferencio de que formato de correo viene
         $dic = str_replace(array("\n", "\r", "\t"), '', explode("\n", $_POST['actividades'])[4]);
-
+        // print_r(str_replace(array("\n", "\r", "\t"), '', explode("\t", explode("\n", $_POST['actividades'])[0])[6]));
         if ($dic != "ID:") {//comparo el formato
            //verificacion si viene de correo cancelacion
             $_POST['actividades'] = str_replace("\t", "\n", $_POST['actividades']);
@@ -275,6 +274,8 @@
             $clave1 = str_replace(array("\n", "\r", "\t"), '', $clav1);
             $clav2 = explode("\n", $_POST['actividades'])[23];
             $clave2 = str_replace(array("\n", "\r", "\t"), '', $clav2);
+              // variable para verificar si es una ejecucion sin cabecera le sum0 cero para comvertirlo a entero
+              $dic2 = str_replace(array("\n", "\r", "\t"), '',explode("\n", $_POST['actividades'])[6]) + 0;
             //si es de cancelacion ejecuta la accion
             if ($clave1 == "Fecha de creación:" && $clave2 != "Fecha ejecución") {
               $orden = explode("Servicios unitarios", $_POST['actividades']); 
@@ -296,42 +297,67 @@
               }
               $array['cancelar'] = $cancelar;
               $this->load->view('excelCancel', $array);
-            }else{
-              $answer['error'] = "error";
-              $this->load->view('assignService', $answer);
-            }
-        }  else {
-          //verificacion si viene de correo cancelacion
-            $_POST['actividades'] = str_replace("\t", "\n", $_POST['actividades']);
-            $clav1 = explode("\n", $_POST['actividades'])[16];
-            $clave1 = str_replace(array("\n", "\r", "\t"), '', $clav1);
-            $clav2 = explode("\n", $_POST['actividades'])[40];
-            $clave2 = str_replace(array("\n", "\r", "\t"), '', $clav2);
-            //si es de cancelacion ejecuta la accion
-            if ($clave1 == "Fecha de creación:" && $clave2 != "Fecha ejecución") {
-              $orden = explode("Servicios unitarios", $_POST['actividades']); 
-              $cancelar['ot'] = str_replace(array("\n", "\r", "\t", " "), '', explode("\n", $orden[0])[6]);
-              $cancelar['solicitante'] = explode("\n", $orden[0])[10];
-              $cancelar['descripcion'] = explode("\n", $orden[0])[14];
-              $cancelar['fCreacion'] = str_replace("/", "-", substr(explode("\n", $orden[0])[18], 0, -9));
-              $tareas = explode("Descripción", $orden[1]);
-              $id = explode("\n", $tareas[1]);
-              $plus = 0;
-              for ($x=2; $x < count($id) ;  $x=$x+8) { 
-                if ($id[$x] != "") {
-                  $cancelar['idActividad'][$plus] = str_replace(array("\n", "\r", "\t", " "), '',$id[$x]);
-                  $cancelar['tipo'][$plus] = (explode("-",$id[$x+2])[0]);
-                  $cancelar['cantidad'][$plus] = $id[$x+4];
-                  $cancelar['descripcionActividad'][$plus] = $id[$x+6];
+            }elseif ($dic2 != "Fecha ejecución" && $dic2 > 0) {
+               $can =  explode("\n", $_POST['actividades']);
+               // defino las variables de cancelar
+              $cancelar['ot'] = str_replace(array("\n", "\r", "\t", " "), '',$can[6]);
+              $cancelar['solicitante'] = "<span style='color:red;'>No hay información</span>";
+              $cancelar['descripcion'] = str_replace(array("\n", "\r", "\t"), '',$can[8]);
+              $cancelar['fCreacion'] = "<span style='color:red;'>No hay información</span>";
+               $plus = 0;
+               for ($i=7; $i < count($can) ; $i= $i+6) { 
+                  $cancelar['idActividad'][$plus] = str_replace(array("\n", "\r", "\t", " "), '',$can[$i]);
+                  $cancelar['tipo'][$plus] = str_replace(array("\n", "\r", "\t", " "), '',(explode("-",$can[$i+2])[0]));
+                  $cancelar['cantidad'][$plus] = str_replace(array("\n", "\r", "\t", " "), '',$can[$i+3]);
+                  $cancelar['descripcionActividad'][$plus] = str_replace(array("\n", "\r", "\t", " "), '',$can[$i+4]);
                   $plus++;
-                }
-              }
-              $array['cancelar'] = $cancelar;
-              $this->load->view('excelCancel', $array);
-            }else{
+               }
+               $array['cancelar'] = $cancelar;
+               $this->load->view('excelCancel', $array);
+
+                // print_r( explode("\n", $_POST['actividades'] ));
+            }
+            else{
               $answer['error'] = "error";
               $this->load->view('assignService', $answer);
             }
+        } 
+
+          else {
+              //verificacion si viene de correo cancelacion
+              $_POST['actividades'] = str_replace("\t", "\n", $_POST['actividades']);
+              $clav1 = explode("\n", $_POST['actividades'])[16];
+              $clave1 = str_replace(array("\n", "\r", "\t"), '', $clav1);
+              $clav2 = explode("\n", $_POST['actividades'])[40];
+              $clave2 = str_replace(array("\n", "\r", "\t"), '', $clav2);
+              //si es de cancelacion ejecuta la accion
+              if ($clave1 == "Fecha de creación:" && $clave2 != "Fecha ejecución") {
+                $orden = explode("Servicios unitarios", $_POST['actividades']); 
+                $cancelar['ot'] = str_replace(array("\n", "\r", "\t", " "), '', explode("\n", $orden[0])[6]);
+                $cancelar['solicitante'] = explode("\n", $orden[0])[10];
+                $cancelar['descripcion'] = explode("\n", $orden[0])[14];
+                $cancelar['fCreacion'] = str_replace("/", "-", substr(explode("\n", $orden[0])[18], 0, -9));
+                $tareas = explode("Descripción", $orden[1]);
+                $id = explode("\n", $tareas[1]);
+                $plus = 0;
+                for ($x=2; $x < count($id) ;  $x=$x+8) { 
+                  if ($id[$x] != "") {
+                    $cancelar['idActividad'][$plus] = str_replace(array("\n", "\r", "\t", " "), '',$id[$x]);
+                    $cancelar['tipo'][$plus] = (explode("-",$id[$x+2])[0]);
+                    $cancelar['cantidad'][$plus] = $id[$x+4];
+                    $cancelar['descripcionActividad'][$plus] = $id[$x+6];
+                    $plus++;
+                  }
+                }
+                $array['cancelar'] = $cancelar;
+                $this->load->view('excelCancel', $array);
+              }
+
+              else{
+                $answer['error'] = "error";
+                $this->load->view('assignService', $answer);
+              }
+
         }
       }
 
@@ -349,13 +375,14 @@
                 $tareas = explode("Ejecutada en inst. proveedor", $orden[1]);
                 $id = explode("\n", $tareas[1]);
                 $plus = 0;
+
                 for ($x=1; $x < count($id) ; $x=$x+7) { 
                   if ($id[$x] != "") {
                     $ejecutar['idActividad'][$plus] = str_replace(array("\n", "\r", "\t", " "), '', $id[$x]);
                     $ejecutar['tipo'][$plus] = (explode("-",$id[$x+1])[0]);
                     $ejecutar['cantidad'][$plus] = $id[$x+2];
                     $ejecutar['descripcionActividad'][$plus] = $id[$x+3];
-                    $ejecutar['estado'][$plus] = $id[$x+4];
+                    $ejecutar['estado'][$plus] = str_replace(array("\n", "\r", "\t", " "), '',$id[$x+4]);
                     $ejecutar['fEjecucion'][$plus] = $id[$x+5];
                     $ejecutar['ejecProveedor'][$plus] = $id[$x+6];
                     $plus++;
@@ -390,7 +417,7 @@
                         $ejecutar['tipo'][$plus] = (explode("-",$id[$x+2])[0]);
                         $ejecutar['cantidad'][$plus] = $id[$x+4];
                         $ejecutar['descripcionActividad'][$plus] = $id[$x+6];
-                        $ejecutar['estado'][$plus] = $id[$x+8];
+                        $ejecutar['estado'][$plus] = str_replace(array("\n", "\r", "\t", " "), '',$id[$x+8]);
                         $ejecutar['fEjecucion'][$plus] = $id[$x+10];
                         $ejecutar['ejecProveedor'][$plus] = $id[$x+12];
                        $plus++;
@@ -403,7 +430,7 @@
                         $ejecutar['tipo'][$plus] = (explode("-",$id[$x+2])[0]);
                         $ejecutar['cantidad'][$plus] = $id[$x+4];
                         $ejecutar['descripcionActividad'][$plus] = $id[$x+6];
-                        $ejecutar['estado'][$plus] = $id[$x+8];
+                        $ejecutar['estado'][$plus] = str_replace(array("\n", "\r", "\t", " "), '',$id[$x+8]);
                         $ejecutar['fEjecucion'][$plus] = $id[$x+10];
                         $ejecutar['ejecProveedor'][$plus] = "";
                        $plus++;
@@ -554,6 +581,7 @@
          //llamar vista segun opcion
          if ($_GET['option']==1) {
           $array['eng'] = $this->dao_user_model->getAllEngineers();//llama todos los ing para pintar en select
+
           $this->load->view('excelAssign', $array);
          }
          if ($_GET['option']==2) {
@@ -715,6 +743,8 @@
        $count2 = 0; 
        $flag = 0;
        $ingeMails = [];
+
+
         for ($g=0; $g < $_POST['contador'] ; $g++) {
           $existe = $this->dao_service_model->getServiceByIdActivity($_POST['actividades_'.$g]);
           if ($existe) {
@@ -965,15 +995,15 @@
       }
 
       public function saveExecuteExcel(){
-        /*header('Content-Type: text/plain');
-        print_r($_POST);*/
         $flag = 0;
         for ($i=0; $i < $_POST['cant']; $i++) { 
           if ($_POST['actividades_'.$i] != "") {
             $existe[$i] = $this->dao_service_model->getServiceByIdActivity($_POST['actividades_'.$i]);
-            $existe[$i]->fechaEjecucion = str_replace(array("\n", "\r", "\t", " "), '', $_POST['fechaEjecucion_'.$i]); 
+            $existe[$i]->fechaEjecucion = str_replace(array("\n", "\r", "\t", " "), '', $_POST['fechaEjecucion_'.$i]);
+
+
             if ($existe[$i]) {
-              $this->dao_service_model->executeFromExcel($_POST['actividades_'.$i], $_POST['fechaEjecucion_'.$i]);
+              $this->dao_service_model->executeFromExcel($_POST['actividades_'.$i], $_POST['fechaEjecucion_'.$i], $_POST['estado_'.$i]);
             }else{
               $flag = 1;
             }
@@ -1186,9 +1216,5 @@
           header('Location: '. URL::to("Service/listServices"));
         
         }
-      }
-
-     
+      }     
   }
-
-?>
