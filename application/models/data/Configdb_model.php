@@ -34,7 +34,7 @@ class Configdb_model extends CI_Model {
     //   return $connection;
     // }
     // /**************************servidor del cliente**************************/
-    public function openSession(){
+    /*public function openSession(){
       $user = "AdminZTE";
       $pass =  "a4b3c2d1";
       $db = "datafill_ot";
@@ -45,11 +45,11 @@ class Configdb_model extends CI_Model {
          $connection = "false";
       }
       return $connection;
-    }
+    }*/
 
 
     /*     * ******************************localhost******************************* */
-<<<<<<< HEAD
+
         public function openSession(){
           $user = "root";
           $pass =  "";
@@ -63,20 +63,7 @@ class Configdb_model extends CI_Model {
           }
           return $connection;
         }
-   /*public function openSession() {
-       $user = "root";
-       $pass = "";
-       $db = "datafill_ot";
 
-       try {
-           $connection = new mysqli('localhost', $user, $pass, $db);
-           $connection->set_charset("utf8");
-       } catch (Exception $e) {
-           $connection = "false";
-       }
-       return $connection;
-   }*/
-=======
         // public function openSession(){
         //   $user = "root";
         //   $pass =  "a4b3c2d1";
@@ -90,20 +77,7 @@ class Configdb_model extends CI_Model {
         //   }
         //   return $connection;
         // }
-   // public function openSession() {
-   //     $user = "root";
-   //     $pass = "a4b3c2d1";
-   //     $db = "datafill_ot";
-
-   //     try {
-   //         $connection = new mysqli('localhost', $user, $pass, $db);
-   //         $connection->set_charset("utf8");
-   //     } catch (Exception $e) {
-   //         $connection = "false";
-   //     }
-   //     return $connection;
-   // }
->>>>>>> 5078c4a28601c48e5d25f7c53ffe14ea452ab9c2
+   
 
     public function closeSession($session) {
         $session->close();

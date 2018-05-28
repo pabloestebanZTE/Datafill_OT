@@ -84,15 +84,15 @@
                 $this->dao_order_model->insertOrder($newOrder);
               }
               $sql2 = "INSERT INTO specific_service (K_IDUSER, K_IDSERVICE, K_IDSITE, K_IDORDER, D_DATE_START_P, D_DATE_FINISH_P, D_FORECAST, K_IDCLARO, N_DESCRIPTION, D_DATE_CREATION, N_ING_SOL, N_ESTADO, N_PROYECTO, N_CRQ, N_CLARO_DESCRIPTION)
-                values (".$service->getUser().", ".$service->getService().", ".$service->getSite()." , '".$service->getOrder()."', STR_TO_DATE('".$service->getDateStartP()."', '%Y-%m-%d'), STR_TO_DATE('".$service->getDateFinishP()."', '%Y-%m-%d'), STR_TO_DATE('".$service->getDateForecast()."', '%Y-%m-%d'), '".$service->getIdClaro()."', '".$service->getDescription()."', STR_TO_DATE('".$service->getDateCreation()."', '%Y-%m-%d'), '".$service->getIngSol()."', '".$service->getEstado()."', '".$service->getProyecto()."', '".$service->getCRQ()."', '".$service->getClaroDescription()."');"; 
-                print_r($sql2);         
+                values (".$service->getUser().", ".$service->getService().", ".$service->getSite()." , '".$service->getOrder()."', STR_TO_DATE('".$service->getDateStartP()."', '%Y-%m-%d'), STR_TO_DATE('".$service->getDateFinishP()."', '%Y-%m-%d'), STR_TO_DATE('".$service->getDateForecast()."', '%Y-%m-%d'), '".$service->getIdClaro()."', '".$service->getDescription()."', STR_TO_DATE('".$service->getDateCreation()."', '%Y-%m-%d'), '".$service->getIngSol()."', '".$service->getEstado()."', '".$service->getProyecto()."', '".$service->getCRQ()."', '".$service->getClaroDescription()."');";
+                print_r($sql2);
               $result = $session->query($sql2);
             } else {
               $answer = "Error de informacion";
             }
           }
 
- //CAMILO-------------------------------------------------INSERTA DATOS DE EXCEL  
+ //CAMILO-------------------------------------------------INSERTA DATOS DE EXCEL
 
           public function insertFromExcel($activity){
             $dbConnection = new configdb_model();
@@ -119,8 +119,8 @@
                   .$activity->getId().", "
                   .$activity->getIdClaro().",'"
                   .$activity->getDescription()."', '"
-                  .$activity->getClaroDescription()."', 
-                  STR_TO_DATE('".$activity->getDateCreation()."','%Y-%m-%d'), 
+                  .$activity->getClaroDescription()."',
+                  STR_TO_DATE('".$activity->getDateCreation()."','%Y-%m-%d'),
                   STR_TO_DATE('".$activity->getDateForecast()."','%Y-%m-%d'),"
                   .$activity->getOrder().","
                   .$activity->getSite().","
@@ -133,7 +133,7 @@
                   STR_TO_DATE('".$date."','%m-%d-%Y'));";
                     $result = $session->query($sql2);
                     $count++;
-               } 
+               }
             } else {
               $answer = "Error de informacion";
             }
@@ -144,10 +144,10 @@
             $dbConnection = new configdb_model();
             $session = $dbConnection->openSession();
             if ($session != "false"){
-                if ($cancel != "") {                 
+                if ($cancel != "") {
                   $sql = "UPDATE specific_service SET N_ESTADO = 'Cancelado' WHERE K_IDCLARO = ".$cancel.";";
                    $session->query($sql);
-                }   
+                }
 
             } else {
               $answer = "Error de informacion";
@@ -159,15 +159,15 @@
             $dbConnection = new configdb_model();
             $session = $dbConnection->openSession();
             if ($session != "false"){
-                if ($executed != "") {                 
+                if ($executed != "") {
                   $sql = "UPDATE specific_service SET N_ESTADO = 'Ejecutado' , D_CLARO_F = STR_TO_DATE('".$fEjecucion."', '%Y-%m-%d') WHERE K_IDCLARO = ".$executed.";";
                    $session->query($sql);
-                }   
+                }
 
             } else {
               $answer = "Error de informacion";
              }
-          }          
+          }
 //CAMILO-------------------------------------------------INSERTA DATOS DE CIERRE
           public function  updateClose($close){
            $dbConnection = new configdb_model();
@@ -209,20 +209,20 @@
                 $result = $session->query($sql);
                 if ($result->num_rows > 0) {
                   $i = 0;
-                    while($row = $result->fetch_assoc()) {  
+                    while($row = $result->fetch_assoc()) {
                     $sService = new service_spec_model();
                      $sService->createServiceS($row['K_ID_SP_SERVICE'], $row['N_DURATION'], $row['K_IDCLARO'], $row['N_DESCRIPTION'], $row['D_DATE_START_P'], $row['D_DATE_FINISH_P'], $row['D_DATE_CREATION'], $row['D_FORECAST'], $row['K_IDORDER'], $this->dao_site_model->getSitePerId($row['K_IDSITE']), $this->getServicePerId($row['K_IDSERVICE']), $this->dao_user_model->getUserById($row['K_IDUSER']), $row['N_CLARO_DESCRIPTION'], $row['N_ING_SOL'], $row['N_PROYECTO'], $row['N_ESTADO'], $row['N_CRQ']);
                        $sService->setDateFinishR($row['D_DATE_FINISH_R']);
                        $sService->setDateStartR($row['D_DATE_START_R']);
-                       $sService->setCierreDescription($row['N_CIERRE_DESCRIPTION']); 
+                       $sService->setCierreDescription($row['N_CIERRE_DESCRIPTION']);
                        $sService->setQuantity($row['n_cantidad']);
                        $sService->setRegion($row['n_region']);
                        $sService->setDateFinishClaro($row['D_CLARO_F']);
-                       $sService->setLink1($row['N_LINK_SEND']);                    
-                       $sService->setLink2($row['N_LINK_EXECUTE']);                    
+                       $sService->setLink1($row['N_LINK_SEND']);
+                       $sService->setLink2($row['N_LINK_EXECUTE']);
                        $answer[$i] = $sService;
                        $i++;
-                    } 
+                    }
                 }
               } else{
                   $answer = "Error de informacion";
@@ -236,7 +236,7 @@
               $sql ="SELECT * FROM specific_service WHERE K_ID_SP_SERVICE = '".$id."';";
               if ($session != "false"){
                 $result = $session->query($sql);
-                if ($result->num_rows > 0) {                   
+                if ($result->num_rows > 0) {
                       $row = $result->fetch_assoc();
                       $sService = new service_spec_model();
                        $sService->createServiceS($row['K_ID_SP_SERVICE'], $row['N_DURATION'], $row['K_IDCLARO'], $row['N_DESCRIPTION'], $row['D_DATE_START_P'], $row['D_DATE_FINISH_P'], $row['D_DATE_CREATION'], $row['D_FORECAST'], $this->dao_order_model->getOrderById($row['K_IDORDER']), $this->dao_site_model->getSitePerId($row['K_IDSITE']), $this->getServicePerId($row['K_IDSERVICE']), $this->dao_user_model->getUserById($row['K_IDUSER']), $row['N_CLARO_DESCRIPTION'], $row['N_ING_SOL'], $row['N_PROYECTO'], $row['N_ESTADO'], $row['N_CRQ']);
@@ -256,32 +256,32 @@
               $sql ="SELECT * FROM specific_service WHERE K_IDCLARO = '".$id."';";
               if ($session != "false"){
                 $result = $session->query($sql);
-                if ($result->num_rows > 0) {                   
+                if ($result->num_rows > 0) {
                       $row = $result->fetch_assoc();
                       $sService = new service_spec_model();
                        $sService->createServiceS(
-                        $row['K_ID_SP_SERVICE'], 
-                        $row['N_DURATION'], 
-                        $row['K_IDCLARO'], 
+                        $row['K_ID_SP_SERVICE'],
+                        $row['N_DURATION'],
+                        $row['K_IDCLARO'],
                         $row['N_DESCRIPTION'],
-                         $row['D_DATE_START_P'], 
-                         $row['D_DATE_FINISH_P'], 
-                         $row['D_DATE_CREATION'], 
-                         $row['D_FORECAST'], 
-                         $this->dao_order_model->getOrderById($row['K_IDORDER']), 
-                         $this->dao_site_model->getSitePerId($row['K_IDSITE']), 
-                         $this->getServicePerId($row['K_IDSERVICE']), 
-                         $this->dao_user_model->getUserById($row['K_IDUSER']), 
-                         $row['N_CLARO_DESCRIPTION'], 
-                         $row['N_ING_SOL'], 
-                         $row['N_PROYECTO'], 
-                         $row['N_ESTADO'], 
+                         $row['D_DATE_START_P'],
+                         $row['D_DATE_FINISH_P'],
+                         $row['D_DATE_CREATION'],
+                         $row['D_FORECAST'],
+                         $this->dao_order_model->getOrderById($row['K_IDORDER']),
+                         $this->dao_site_model->getSitePerId($row['K_IDSITE']),
+                         $this->getServicePerId($row['K_IDSERVICE']),
+                         $this->dao_user_model->getUserById($row['K_IDUSER']),
+                         $row['N_CLARO_DESCRIPTION'],
+                         $row['N_ING_SOL'],
+                         $row['N_PROYECTO'],
+                         $row['N_ESTADO'],
                          $row['N_CRQ']);
 
                          $sService->setDateFinishR($row['D_DATE_FINISH_R']);
                          $sService->setDateStartR($row['D_DATE_START_R']);
                          $sService->setCierreDescription($row['N_CIERRE_DESCRIPTION']);
-                         
+
                          $sService->setRegion($row['n_region']);
                          $sService->setQuantity($row['n_cantidad']);
 
@@ -296,10 +296,10 @@
          $dbConnection = new configdb_model();
             $session = $dbConnection->openSession();
             if ($session != "false"){
-                if ($activity != "") {                 
+                if ($activity != "") {
                   $sql = "UPDATE specific_service SET K_IDUSER = ".$inge."  WHERE K_IDCLARO = ".$activity.";";
                    $session->query($sql);
-                }   
+                }
 
             } else {
               $answer = "Error de informacion";
@@ -357,32 +357,32 @@
 
 
         $query = $this->db->query("
-            select 
-            ss.K_IDORDER as ORDEN, 
+            select
+            ss.K_IDORDER as ORDEN,
             ss.K_IDCLARO AS ACTIVIDAD,
-            service.N_TYPE AS TIPO, 
-            ss.n_cantidad as CANT, 
-            s.N_NAME as ESTACION, 
+            service.N_TYPE AS TIPO,
+            ss.n_cantidad as CANT,
+            s.N_NAME as ESTACION,
             concat(u.N_NAME,' ', u.N_LASTNAME) as NOMBRE_ING,
-            ss.D_DATE_START_P as F_ASIFGNACION, 
-            ss.D_DATE_FINISH_R as F_CIERRE_ING, 
-            ss.D_CLARO_F as F_EJECUCION, 
-            ss.N_ESTADO as ESTADO, 
-            ss.N_PROYECTO as PROYECTO, 
-            
+            ss.D_DATE_START_P as F_ASIFGNACION,
+            ss.D_DATE_FINISH_R as F_CIERRE_ING,
+            ss.D_CLARO_F as F_EJECUCION,
+            ss.N_ESTADO as ESTADO,
+            ss.N_PROYECTO as PROYECTO,
+
             ss.D_FORECAST as F_FORECAST,
             ss.D_DATE_CREATION as F_CREACION,
             ss.N_ING_SOL as SOLICITANTE,
-            ss.n_region as REGION , 
+            ss.n_region as REGION ,
             ss.N_CLARO_DESCRIPTION as DESCRIPCION
 
-            from specific_service ss 
-            inner join user u 
-            on ss.K_IDUSER = u.K_IDUSER 
-            inner join site s 
-            on ss.K_IDSITE = s.K_IDSITE 
-            inner join service 
-            on ss.K_IDSERVICE = service.K_IDSERVICE 
+            from specific_service ss
+            inner join user u
+            on ss.K_IDUSER = u.K_IDUSER
+            inner join site s
+            on ss.K_IDSITE = s.K_IDSITE
+            inner join service
+            on ss.K_IDSERVICE = service.K_IDSERVICE
             ".$where."".$usuario."
             order by ss.K_IDORDER asc
             ;"
@@ -393,7 +393,7 @@
       //Modelo de los meses totales que han asignado actividad
       public function getMonthsWorked(){
         $query = $this->db->query("
-          SELECT distinct 
+          SELECT distinct
           EXTRACT( YEAR_MONTH FROM specific_service.D_DATE_START_P ) AS meses
           FROM specific_service GROUP BY D_DATE_START_P;
           ");
@@ -407,13 +407,13 @@
             select
             count(*) as cantidad, N_ESTADO as estado,
             CASE
-                WHEN D_CLARO_F >0 THEN EXTRACT(year_month FROM D_CLARO_F)    
+                WHEN D_CLARO_F >0 THEN EXTRACT(year_month FROM D_CLARO_F)
                 ELSE EXTRACT(year_month FROM D_DATE_START_P)
             END
-             as meses 
-             from specific_service 
+             as meses
+             from specific_service
              ".$user."
-             group by meses, estado; 
+             group by meses, estado;
             ");
           return $query->result();
       }
@@ -423,15 +423,15 @@
         $usuario = ($_SESSION['role'] == 4)? "":" and ss.K_IDUSER = ".$_SESSION['id']."";
 
         $where = "";
-        $where = ($mes == 12) ? 
+        $where = ($mes == 12) ?
         "(ss.D_CLARO_F >= '2017-".$mes."-01' and ss.D_CLARO_F < '2018-01-01'".$usuario.") or ( ss.D_DATE_START_P >= '2017-".$mes."-01' and ss.D_DATE_START_P < '2018-01-01' and ss.D_CLARO_F is null".$usuario.")" :
 
          "(ss.D_CLARO_F >= '2018-".$mes."-01' and ss.D_CLARO_F < '2018-".($mes + 1)."-01'".$usuario.") or ( ss.D_DATE_START_P >= '2018-".$mes."-01' and ss.D_DATE_START_P < '2018-".($mes + 1)."-01' and ss.D_CLARO_F is null".$usuario.")";
 
           $query = $this->db->query("
-            select 
+            select
             count(*) as cantidad,
-            s.N_TYPE as tipo, 
+            s.N_TYPE as tipo,
             ss.N_ESTADO as estado
             from specific_service ss
             inner join service s
@@ -448,42 +448,42 @@
         $usuario = ($_SESSION['role'] == 4)? "": " and (ss.K_IDUSER= ".$_SESSION['id'].")";
         $where = "";
         if ($mes == 12) {
-          $where = "where 
-            ( 
-              (ss.D_CLARO_F >= '2017-".$mes."-01' and ss.D_CLARO_F < '2018-01-01') 
-              or 
+          $where = "where
+            (
+              (ss.D_CLARO_F >= '2017-".$mes."-01' and ss.D_CLARO_F < '2018-01-01')
+              or
                 ( ss.D_DATE_START_P >= '2017-".$mes."-01' and ss.D_DATE_START_P < '2018-01-01' and ss.D_CLARO_F is null)
-            ) 
-            and 
+            )
+            and
             (s.N_TYPE ='".$tipo."'".$usuario.");";
         }else{
-          $where = "where 
-            ( 
-              (ss.D_CLARO_F >= '2018-".$mes."-01' and ss.D_CLARO_F < '2018-".($mes + 1)."-01') 
-              or 
+          $where = "where
+            (
+              (ss.D_CLARO_F >= '2018-".$mes."-01' and ss.D_CLARO_F < '2018-".($mes + 1)."-01')
+              or
                 ( ss.D_DATE_START_P >= '2018-".$mes."-01' and ss.D_DATE_START_P < '2018-".($mes + 1)."-01' and ss.D_CLARO_F is null)
-            ) 
-            and 
+            )
+            and
             (s.N_TYPE ='".$tipo."'".$usuario.");";
         }
 
         $query = $this->db->query("
             select
-            s.N_TYPE as tipo, 
-            ss.K_IDORDER as orden, 
-            ss.K_IDCLARO as id, 
-            ss.n_cantidad as cant, 
-            ss.N_PROYECTO as proyecto, 
-            ss.D_DATE_START_P as f_asignacion, 
-            ss.D_CLARO_F as f_ejecucion, 
-            concat(u.N_NAME, ' ', u.N_LASTNAME) as ingeniero, 
-            ss.N_ESTADO as estado, 
+            s.N_TYPE as tipo,
+            ss.K_IDORDER as orden,
+            ss.K_IDCLARO as id,
+            ss.n_cantidad as cant,
+            ss.N_PROYECTO as proyecto,
+            ss.D_DATE_START_P as f_asignacion,
+            ss.D_CLARO_F as f_ejecucion,
+            concat(u.N_NAME, ' ', u.N_LASTNAME) as ingeniero,
+            ss.N_ESTADO as estado,
             ss.N_ING_SOL as ingeSol
 
             from specific_service ss
             inner join service s
             on ss.K_IDSERVICE = s.K_IDSERVICE
-            inner join user u 
+            inner join user u
             on ss.K_IDUSER = u.K_IDUSER
             ".$where."
         ");
@@ -495,13 +495,13 @@
 
         $query = $this->db->query("
           select
-            s.N_TYPE as tipo, 
-            ss.K_IDORDER as orden, 
-            ss.K_IDCLARO as id, 
-            ss.n_cantidad as cantidad, 
-            ss.N_PROYECTO as proyecto, 
-            ss.N_ING_SOL as solicitante, 
-            ss.D_DATE_START_P as asignacion, 
+            s.N_TYPE as tipo,
+            ss.K_IDORDER as orden,
+            ss.K_IDCLARO as id,
+            ss.n_cantidad as cantidad,
+            ss.N_PROYECTO as proyecto,
+            ss.N_ING_SOL as solicitante,
+            ss.D_DATE_START_P as asignacion,
             ss.D_CLARO_F as ejecucion,
             concat(u.N_NAME,' ',u.N_LASTNAME) as ingeniero,
             ss.N_ESTADO as estado,
@@ -512,14 +512,14 @@
              specific_service ss
              inner join service s
              on ss.K_IDSERVICE = s.K_IDSERVICE
-             inner join user u 
+             inner join user u
              on ss.K_IDUSER = u.K_IDUSER
 
-          where               
+          where
              ss.N_ESTADO != 'Ejecutado' and
              ss.N_ESTADO != 'Cancelado' and
              (ss.N_LINK_SEND is null or ss.N_LINK_EXECUTE is null or ss.N_LINK_SEND = '' or ss.N_LINK_EXECUTE = '') ".$user."
-             
+
         ");
 
         return $query->result();
@@ -545,14 +545,14 @@
 
       public function getservicesX(){
         $query = $this->db->query("
-              SELECT 
+              SELECT
               concat(u.N_NAME, ' ', u.N_LASTNAME) as nombre,
               s.N_NAME as Sitio,
               sp.K_IDORDER as Orden,
               sp.D_DATE_START_P as 'Fecha inicio',
               sp.N_ESTADO as Estado
 
-              FROM 
+              FROM
               specific_service sp
 
               inner join site s
@@ -568,11 +568,11 @@
       // Trae el tipo y cantidad ejecutados de el mes dado
       public function cant_by_month_executed($mes){
         if ($mes == 12) {
-            $where = "AND 
+            $where = "AND
                       (ss.D_CLARO_F >= '2018-12-01' AND
                       ss.D_CLARO_F < '2019-01-01')";
         }else{
-            $where = "AND 
+            $where = "AND
                       (ss.D_CLARO_F >= '2018-".$mes."-01' AND
                       ss.D_CLARO_F < '2018-".($mes + 1)."-01')";
         }
@@ -580,17 +580,17 @@
 
 
         $query = $this->db->query("
-              SELECT 
+              SELECT
               COUNT(s.N_TYPE) AS cant,
               s.N_TYPE AS tipo,
               ss.D_CLARO_F as f_ejecucion
-              FROM 
+              FROM
               specific_service ss
               INNER JOIN service s
               ON ss.K_IDSERVICE = s.K_IDSERVICE
-              WHERE 
+              WHERE
               ss.N_ESTADO = 'Ejecutado'
-              ".$where."  
+              ".$where."
               GROUP BY s.N_TYPE, ss.D_CLARO_F
 
         ");
@@ -613,17 +613,53 @@
 
       }
 
+
+      public function upDateInconsistentes($data){
+        $this->db->where('K_IDCLARO', $data['K_IDCLARO']);
+        $this->db->update('specific_service', $data);
+
+       // print_r($this->db->last_query());
+        $error = $this->db->error();
+        if ($error['message']) {
+          return 'error';
+        }else{
+          return 1;
+        }
+
+      }
+      public function upDateInconsistentesOt($data){
+        $this->db->where('K_IDORDER', $data['K_IDORDER']);
+        $this->db->update('ot', $data);
+        
+        $error = $this->db->error();
+        if ($error['message']) {
+          return 'error';
+        }else{
+          return 1;
+        }
+
+      }
+
       //retorna actividades, cullas fechas sean inconsistentes
       public function fechasInconsistentes(){
-        $query = $this->db->query("SELECT ss.K_IDORDER AS orden, K_IDCLARO as claro, ot.D_DATE_CREATION as creacion, ot.D_ASIG_Z as asig_a_ZTE, ss.D_DATE_START_P as asignacion, ss.D_DATE_START_R as inicio_ing, ss.D_DATE_FINISH_R as fin_ing, ss.D_CLARO_F as ejecucion, ss.D_FORECAST  FROM specific_service ss
+        $query = $this->db->query("
+      SELECT ss.K_IDORDER AS orden, K_IDCLARO as claro, ot.D_DATE_CREATION as creacion,
+         ot.D_ASIG_Z as asig_a_ZTE, ss.D_DATE_START_P as asignacion, ss.D_DATE_START_R as inicio_ing,
+         ss.D_DATE_FINISH_R as fin_ing, ss.D_CLARO_F as ejecucion, ss.D_FORECAST as forecast, ss.N_ESTADO  as estado,
+         concat(u.N_NAME, ' ', u.N_LASTNAME) as ingeniero
+          FROM specific_service ss
           INNER JOIN ot
           ON  ss.K_IDORDER = ot.K_IDORDER
-          WHERE  (ot.D_ASIG_Z < ot.D_DATE_CREATION) OR 
+          INNER JOIN user u
+          on ss.K_IDUSER = u.K_IDUSER                             
+          WHERE  (ot.D_ASIG_Z < ot.D_DATE_CREATION) OR
           (ss.D_DATE_START_P < ot.D_ASIG_Z OR ss.D_DATE_START_P < ot.D_DATE_CREATION) OR
           (ss.D_DATE_START_R < ss.D_DATE_START_P OR ss.D_DATE_START_R < D_ASIG_Z) OR
           (ss.D_DATE_FINISH_R < ss.D_DATE_START_R OR ss.D_DATE_FINISH_R < ss.D_DATE_START_P)OR
-          (ss.D_CLARO_F < ss.D_DATE_FINISH_R OR ss.D_CLARO_F < ss.D_DATE_START_R)  
-          ;");
+          (ss.D_CLARO_F < ss.D_DATE_FINISH_R OR ss.D_CLARO_F < ss.D_DATE_START_R)
+          ;
+          ");
+
         return $query->result();
       }
 

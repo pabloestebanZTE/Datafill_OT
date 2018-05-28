@@ -240,7 +240,36 @@
     	
     }
 
-    if (!function_exists('is_sat_sun_or_fest')) {
+
+
+
+    if (!function_exists('comparar_fecha')) {
+    	// compara dos fechas para saber cual es mayor
+    	// recibe dos parametros (2 fechas)
+    	// retorna true si la primera fecha es mayor a la segunda
+    	// y false si la la orimera fecha es igual o menor    
+    	function comparar_fecha($fecha1, $fecha2){
+    		if ($fecha1 == "" || $fecha2 == "") {
+    			return false;
+    		}
+				$fecha1=strtotime($fecha1);
+    		$fecha2 =strtotime($fecha2);
+
+    			if ($fecha1 > $fecha2) {
+    					$response = true;
+    			}else{
+    				$response = false;
+    			}
+    			return $response;    			
+    		}
+
+   	}
+
+    
+
+
+
+        if (!function_exists('is_sat_sun_or_fest')) {
     	// funcion que valida si un dia es sab o domingo o festivo
     	// Recibe la fecha a validar
     	// Retorna true si se cumple y false si no
@@ -266,8 +295,6 @@
     		return $response;
 
     	}
+    	
     }
-
-
-
 

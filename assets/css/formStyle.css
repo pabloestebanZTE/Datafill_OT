@@ -158,7 +158,8 @@ form.register select.date
 {
     width: 55px;
 }
-
-
-
+.cambiofecha{
+    background: #ffffff45;
+    cursor:pointer;
+}
 
