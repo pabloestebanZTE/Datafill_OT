@@ -703,5 +703,24 @@
         return $query->result();
       }
 
+      //retorna actividades, cullas fechas sean inconsistentes
+      public function cantFechasInconsistentes(){
+        $query = $this->db->query("
+          SELECT count(*) as cant
+          FROM specific_service ss
+          INNER JOIN ot
+          ON  ss.K_IDORDER = ot.K_IDORDER
+          INNER JOIN user u
+          on ss.K_IDUSER = u.K_IDUSER                             
+          WHERE  (ot.D_ASIG_Z < ot.D_DATE_CREATION) OR
+          (ss.D_DATE_START_P < ot.D_ASIG_Z OR ss.D_DATE_START_P < ot.D_DATE_CREATION) OR
+          (ss.D_DATE_START_R < ss.D_DATE_START_P OR ss.D_DATE_START_R < D_ASIG_Z) OR
+          (ss.D_DATE_FINISH_R < ss.D_DATE_START_R OR ss.D_DATE_FINISH_R < ss.D_DATE_START_P)OR
+          (ss.D_CLARO_F < ss.D_DATE_FINISH_R OR ss.D_CLARO_F < ss.D_DATE_START_R);
+          ");
+        return $query->row();
+      }
+
+
     }
 ?>

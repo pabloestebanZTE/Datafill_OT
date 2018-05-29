@@ -51,6 +51,7 @@
                         </li>
                         <li class="cam"><a href="<?= URL::to('user/principalView'); ?>">Home</a>
                         </li>
+                        <li class="cam"><a href="#"><i class="glyphicon glyphicon-warning-sign"></i><span class="badge"><?php print_r($this->Dao_service_model->cantFechasInconsistentes()->cant); ?></span></a></li>
                         <li class="cam"><a href="#services">Servicios</a>
                             <ul>
                                 <li><a href="<?= URL::to('Service/assignService'); ?>">Agendar Actividad</a></li>

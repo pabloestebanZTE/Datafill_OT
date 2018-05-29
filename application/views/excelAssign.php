@@ -175,16 +175,17 @@
                 <!-- Collect the nav links for toggling -->
                 <div class="collapse navbar-collapse navbar-ex1-collapse">
                     <ul class="nav navbar-nav navbar-right">
-                        <li class="cam"><a >Bienvenid@ <?php print_r( $_SESSION['userName']) ?></a>
+                        <li class="cam"><a >Bienvenid@ <?php echo $_SESSION['userName']?></a>
                         </li>
-                        <li class="cam"><a href="<?= URL::to('user/principalView'); ?>">Home</a>
+                        <li class="cam"><a href="#"><i class="glyphicon glyphicon-warning-sign"></i><span class="badge"><?php print_r($this->Dao_service_model->cantFechasInconsistentes()->cant); ?></span></a></li>
+                        <li class="cam"><a href="#home">Home</a>
                         </li>
                         <li class="cam"><a href="#services">Servicios</a>
-                        <ul>
-                            <li><a href="<?= URL::to('Service/assignService'); ?>">Agendar Actividad</a></li>
-                            <li><a href="<?= URL::to('Service/listServices'); ?>">Ver Actividades</a></li>
-                            <li><a href="https://accounts.google.com/ServiceLogin/signinchooser?passive=1209600&continue=https%3A%2F%2Faccounts.google.com%2FManageAccount&followup=https%3A%2F%2Faccounts.google.com%2FManageAccount&flowName=GlifWebSignIn&flowEntry=ServiceLogin" title="drive" target='_blank'>Drive</a></li>
-                        </ul>
+                            <ul>
+                                <li><a href="<?= URL::to('Service/assignService'); ?>">Agendar Actividad</a></li>
+                                <li><a href="<?= URL::to('Service/listServices'); ?>">Ver Actividades</a></li>
+                                <li><a href="https://accounts.google.com/ServiceLogin/signinchooser?passive=1209600&continue=https%3A%2F%2Faccounts.google.com%2FManageAccount&followup=https%3A%2F%2Faccounts.google.com%2FManageAccount&flowName=GlifWebSignIn&flowEntry=ServiceLogin" title="drive" target='_blank'>Drive</a></li>
+                            </ul>
                         </li>
                         <li class="cam"><a href="#services">RF</a>
                             <ul>

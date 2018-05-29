@@ -9,6 +9,7 @@
         $this->load->model('data/configdb_model');
         $this->load->model('data/dao_user_model');
         $this->load->model('data/user_model');
+        $this->load->model('data/Dao_service_model');
       }
 
       public function loginUser(){

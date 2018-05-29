@@ -170,3 +170,54 @@ table#tableGDATOS th{
     color: #fff;
     box-shadow: 3px 0px 12px -1px rgba(250,3,3,1);
 }
+
+
+/************ TABLA FECHAS INCONSISTENTES*********** */
+
+table#table-fechas{
+  display: block !important;;
+  width: 100% !important;
+  border: 2px solid #c5c4c4;
+  
+}
+table#table-fechas th{
+  font-size: 11px;
+  background-color:#207be5;
+  color:#fff;
+  text-align:center;
+  border: 1px solid #545458;
+  text-shadow: .5px 0.5px 0px #000;
+}
+table#table-fechas td{
+  font-size: 11px;
+}
+table#table-fechas td:nth-child(5){    
+  max-width: 90px !important;
+}
+table#table-fechas td:nth-child(7){      
+  max-width: 90px !important;
+}
+table#table-fechas td:nth-child(8){
+  max-width: 90px !important;
+}
+table#table-fechas td:nth-child(9){
+  max-width: 110px !important;
+}
+table#table-fechas td:nth-child(11){
+  max-width: 110px !important;
+}
+table#table-fechas td:nth-child(12){
+  max-width: 0px !important;
+  font-size: 9px
+}
+
+table#table-fechas input{
+  height: 20px;
+  width: 110px;
+}
+
+.container-max {
+    background-color: #fff;
+    padding: 19px;
+    border-radius: 15px;
+}

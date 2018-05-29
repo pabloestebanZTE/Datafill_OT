@@ -49,16 +49,17 @@
                 <!-- Collect the nav links for toggling -->
                 <div class="collapse navbar-collapse navbar-ex1-collapse">
                     <ul class="nav navbar-nav navbar-right">
-                        <li class="cam"><a >Bienvenid@ <?php print_r( $_SESSION['userName']) ?></a>
+                        <li class="cam"><a >Bienvenid@ <?php echo $_SESSION['userName']?></a>
                         </li>
-                        <li class="cam"><a href="<?= URL::to('user/principalView'); ?>">Home</a>
+                        <li class="cam"><a href="#"><i class="glyphicon glyphicon-warning-sign"></i><span class="badge"><?php /*print_r($this->Dao_service_model->cantFechasInconsistentes()->cant);*/ ?></span></a></li>
+                        <li class="cam"><a href="#home">Home</a>
                         </li>
                         <li class="cam"><a href="#services">Servicios</a>
-                        <ul>
-                            <li><a href="<?= URL::to('Service/assignService'); ?>">Agendar Actividad</a></li>
-                            <li><a href="<?= URL::to('Service/listServices'); ?>">Ver Actividades</a></li>
-                            <li><a href="https://accounts.google.com/ServiceLogin/signinchooser?passive=1209600&continue=https%3A%2F%2Faccounts.google.com%2FManageAccount&followup=https%3A%2F%2Faccounts.google.com%2FManageAccount&flowName=GlifWebSignIn&flowEntry=ServiceLogin" title="drive" target='_blank'>Drive</a></li>
-                        </ul>
+                            <ul>
+                                <li><a href="<?= URL::to('Service/assignService'); ?>">Agendar Actividad</a></li>
+                                <li><a href="<?= URL::to('Service/listServices'); ?>">Ver Actividades</a></li>
+                                <li><a href="https://accounts.google.com/ServiceLogin/signinchooser?passive=1209600&continue=https%3A%2F%2Faccounts.google.com%2FManageAccount&followup=https%3A%2F%2Faccounts.google.com%2FManageAccount&flowName=GlifWebSignIn&flowEntry=ServiceLogin" title="drive" target='_blank'>Drive</a></li>
+                            </ul>
                         </li>
                         <li class="cam"><a href="#services">RF</a>
                             <ul>
@@ -75,12 +76,12 @@
                 </div>
             </div>
         </nav>
-     </header><br><br>
+     </header><br>
 <!--      fin header         -->
 <?php $this->load->helper('camilo'); ?>
-		<div class="container">
-			<h1 align="center">FECHAS INCONSITENTES</h1><br><br>
-			<table class="table table-bordered table-striped table-hover" id="fechas">
+		<div class="container-max">
+			<h2 align="center" style="color:#207be5">FECHAS INCONSITENTES</h2>
+			<table class="table table-bordered table-striped table-hover" id="table-fechas">
 				<thead>
 					<tr>
 						<th>#</th>
@@ -147,7 +148,7 @@
 										<option value="Cancelado">Cancelado</option>
 							</td>
 							<td><?=$fechas[$i]->ingeniero?></td>
-							<td><button class="btn-guardar btn btn-success" title="Guardar"><i class="glyphicon glyphicon-send"></i></button></td>
+							<td><button class="btn-guardar btn btn-success btn-xs" title="Guardar"><i class="glyphicon glyphicon-send"></i></button></td>
 						</tr>
 						<?php  }
 						?>
@@ -162,8 +163,8 @@
 		<script type="text/javascript">
 			$(document).ready(
 				function () {
-					$('#fechas').DataTable( {
-		        "scrollX": true
+					$('#table-fechas').DataTable( {
+		        // "scrollX": true
 		      });
 				}
 
@@ -252,13 +253,13 @@
 
 		                {
 		                    idClaro: claro,
-												idOrder: ot,
-												idDateStar: fasi,
-												idEstado: esta,
-												idZte: fzte,
-												idIni: finic,
-												idFin: ffin,
-												idEjec: feje,
+							idOrder: ot,
+							idDateStar: fasi,
+							idEstado: esta,
+							idZte: fzte,
+							idIni: finic,
+							idFin: ffin,
+							idEjec: feje,
 		                },
 		                // callback
 		                function(data){

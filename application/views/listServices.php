@@ -311,6 +311,7 @@ function showMessage(mensaje){
           <ul class="nav navbar-nav navbar-right">
             <li class="cam"><a >Bienvenid@ <?php print_r( $_SESSION['userName']) ?></a>
             </li>
+            <li class="cam"><a href="#"><i class="glyphicon glyphicon-warning-sign"></i><span class="badge"><?php print_r($this->Dao_service_model->cantFechasInconsistentes()->cant); ?></span></a></li>
             <li class="cam"><a href="<?= URL::to('user/principalView'); ?>">Home</a>
             </li>
             <li class="cam"><a href="#services">Servicios</a>
