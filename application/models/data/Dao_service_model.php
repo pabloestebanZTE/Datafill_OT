@@ -587,9 +587,6 @@
                       (ss.D_CLARO_F >= '2018-".$mes."-01' AND
                       ss.D_CLARO_F < '2018-".($mes + 1)."-01')";
         }
-
-
-
         $query = $this->db->query("
               SELECT 
               COUNT(s.N_TYPE) AS cant,
@@ -603,6 +600,37 @@
               ss.N_ESTADO = 'Ejecutado'
               ".$where."  
               GROUP BY s.N_TYPE, ss.D_CLARO_F
+
+        ");
+        return $query->result();
+
+      }
+
+
+       // Trae el tipo y cantidad asignados de el mes dado
+      public function cant_by_month_assign($mes){
+        if ($mes == 12) {
+            $where = "AND 
+                      (ss.D_DATE_START_P >= '2018-12-01' AND
+                      ss.D_DATE_START_P < '2019-01-01')";
+        }else{
+            $where = "AND 
+                      (ss.D_DATE_START_P >= '2018-".$mes."-01' AND
+                      ss.D_DATE_START_P < '2018-".($mes + 1)."-01')";
+        }
+        $query = $this->db->query("
+              SELECT 
+              COUNT(s.N_TYPE) AS cant,
+              s.N_TYPE AS tipo,
+              ss.D_DATE_START_P as f_asignacion
+              FROM 
+              specific_service ss
+              INNER JOIN service s
+              ON ss.K_IDSERVICE = s.K_IDSERVICE
+              WHERE 
+              ss.N_ESTADO = 'Asignada'
+              ".$where."  
+              GROUP BY s.N_TYPE, ss.D_DATE_START_P
 
         ");
         return $query->result();

@@ -167,6 +167,7 @@
       	$data['dias'] = dias_habiles_mes($mes);
       	$data['services'] = $this->Dao_service_model->cant_by_month_executed($mes);
       	$data['rf'] = $this->Dao_rf_model->cant_by_month_rf($mes);
+        $data['asig'] = $this->Dao_service_model->cant_by_month_assign($mes);
 
         // Inicio validacion de que las fechas de ejecucion no sean sab dom o fest... si lo son tomaran el sigiente dia habil
         // si dicho dia habil es despues del mes actual se le asigna la fecha del ultimo dia del arreglo de dias habiles.
@@ -216,11 +217,37 @@
           }
         }
 
+        // igual para las asignada (en ejecucion)
+        for ($i=0; $i < count($data['asig']) ; $i++) { 
+          $validacion = is_sat_sun_or_fest($data['asig']->f_asignacion);
+          if ($validacion) {
+            $data['asig'][$i]->f_asignacion = habilPostFinSemana($data['asig'][$i]->f_asignacion);
+            $data['asig'][$i]->f_asignacion = habilPostFestivo($data['asig'][$i]->f_asignacion);
+            $flag = 0;// var pra el conteo de fechas q coinciden
+            for ($j=0; $j < count($data['dias']) ; $j++) { 
+              if ($data['asig'][$i]->f_asignacion == $data['dias'][$j] ) {
+                $flag++;// si coincide el contadosr aumenta
+              }
+            }
+            if ($flag === 0) {
+              $data['asig'][$i]->f_asignacion = $data['dias'][$this->endKey($data['dias'])];
+            }
+            
+          }
+        }
+
+
+
+
+
+        // header('Content-Type: text/plain');
+        // print_r($data);
+
       	$this->generate_report($data);
       }
 
       //
-      public function generate_report($data){     	
+      public function generate_report($data){
       	//Inicio uso de phpExcel
       	$objPhpExcel = new PHPExcel();
         //Propiedades de archivo.
@@ -387,6 +414,25 @@
         $c2 = 0 ;// var para calcular cant de act c2 ejecutadas en ese mes
         $c3 = 0 ;// var para calcular cant de act c3 ejecutadas en ese mes
 
+        $as_d1 = 0 ;// var para calcular cant de act d1 asignadas en ese mes
+        $as_d2 = 0 ;// var para calcular cant de act d2 asignadas en ese mes
+        $as_d3 = 0 ;// var para calcular cant de act d3 asignadas en ese mes
+        $as_d4 = 0 ;// var para calcular cant de act d4 asignadas en ese mes
+        $as_d5 = 0 ;// var para calcular cant de act d5 asignadas en ese mes
+        $as_d6 = 0 ;// var para calcular cant de act d6 asignadas en ese mes
+        $as_t1 = 0 ;// var para calcular cant de act t1 asignadas en ese mes
+        $as_t2 = 0 ;// var para calcular cant de act t2 asignadas en ese mes
+        $as_t3 = 0 ;// var para calcular cant de act t3 asignadas en ese mes
+        $as_t4 = 0 ;// var para calcular cant de act t4 asignadas en ese mes
+        $as_t5 = 0 ;// var para calcular cant de act t5 asignadas en ese mes
+        $as_t6 = 0 ;// var para calcular cant de act t6 asignadas en ese mes
+        $as_c1 = 0 ;// var para calcular cant de act c1 asignadas en ese mes
+        $as_c2 = 0 ;// var para calcular cant de act c2 asignadas en ese mes
+        $as_c3 = 0 ;// var para calcular cant de act c3 asignadas en ese mes
+
+
+
+
         $q=0; // variable para aumento de caldas (+1)
         $p=0; // variable para aumento de caldas (+2)
         $j = 0;// Variabkle para referencia de dias (*3 columnas)
@@ -472,14 +518,15 @@
           $total_rf_ej = 0;
           $total_tr_ej = 0;
           $total_gd_ej = 0;
+          $total_tr_asig = 0;
+          $total_gd_asig = 0;
+
           $total_eje = 0;
+          $total_asig = 0;
           // Leno los datos de los servicios Recorro los servicios tr y gdatos
           for ($s=0; $s < count($data['services']) ; $s++) {
             // $data['services'][$s]->f_ejecucion = habilPostFinSemana($data['services'][$s]->f_ejecucion);
             // $data['services'][$s]->f_ejecucion = habilPostFestivo($data['services'][$s]->f_ejecucion);
-
-
-
             
             //si la fecha habil es igual a la fecha_ejecucion
             if ($data['services'][$s]->f_ejecucion == $fecha_dia->format('Y-m-d')) {
@@ -567,7 +614,7 @@
                   $d5 = $d5 + $data['services'][$s]->cant;
                   break;
                 case 'D6':
-                  $objPhpExcel->getActiveSheet()->setCellValue("$col[$q]8",$data['rf'][$t]->cant);
+                  $objPhpExcel->getActiveSheet()->setCellValue("$col[$q]9",$data['rf'][$t]->cant);
                   $total_rf_ej = $total_rf_ej + $data['rf'][$t]->cant;
                   $d6 = $d6 + $data['services'][$s]->cant;
                   break;
@@ -576,15 +623,80 @@
             }
           }
 
-          // Pinto el calculo de total ejecutadas... TABLA TOTALES
+
+
+          // Leno los datos de los servicios en ejecucion (asignados)
+          for ($s=0; $s < count($data['asig']) ; $s++) {
+            //si la fecha habil es igual a la fecha_ejecucion
+            if ($data['asig'][$s]->f_asignacion == $fecha_dia->format('Y-m-d')) {
+              // Dependiendo el tipo lo pinta en la casilla dicha
+              switch ($data['asig'][$s]->tipo) {
+                case 'C1':
+                  $objPhpExcel->getActiveSheet()->setCellValue("$col[$p]16",$data['asig'][$s]->cant);
+                  $total_gd_asig = $total_gd_asig + $data['asig'][$s]->cant;
+                  $as_c1 = $as_c1 + $data['asig'][$s]->cant;
+                  break;
+                case 'C2':
+                  $objPhpExcel->getActiveSheet()->setCellValue("$col[$p]17",$data['asig'][$s]->cant);
+                  $total_gd_asig = $total_gd_asig + $data['asig'][$s]->cant;
+                  $as_c2 = $as_c2 + $data['asig'][$s]->cant;
+                  break;
+                case 'C3':
+                  $objPhpExcel->getActiveSheet()->setCellValue("$col[$p]18",$data['asig'][$s]->cant);
+                  $total_gd_asig = $total_gd_asig + $data['asig'][$s]->cant;
+                  $as_c3 = $as_c3 + $data['asig'][$s]->cant;
+                  break;
+                case 'T1':
+                  $objPhpExcel->getActiveSheet()->setCellValue("$col[$p]10",$data['asig'][$s]->cant);
+                  $total_tr_asig = $total_tr_asig + $data['asig'][$s]->cant;
+                  $as_t1 = $as_t1 + $data['asig'][$s]->cant;
+                  break;
+                case 'T2':
+                  $objPhpExcel->getActiveSheet()->setCellValue("$col[$p]11",$data['asig'][$s]->cant);
+                  $total_tr_asig = $total_tr_asig + $data['asig'][$s]->cant;
+                  $as_t2 = $as_t2 + $data['asig'][$s]->cant;
+                  break;
+                case 'T3':
+                  $objPhpExcel->getActiveSheet()->setCellValue("$col[$p]12",$data['asig'][$s]->cant);
+                  $total_tr_asig = $total_tr_asig + $data['asig'][$s]->cant;
+                  $as_t3 = $as_t3 + $data['asig'][$s]->cant;
+                  break;
+                case 'T4':
+                  $objPhpExcel->getActiveSheet()->setCellValue("$col[$p]13",$data['asig'][$s]->cant);
+                  $total_tr_asig = $total_tr_asig + $data['asig'][$s]->cant;
+                  $as_t4 = $as_t4 + $data['asig'][$s]->cant;
+                  break;
+                case 'T5':
+                  $objPhpExcel->getActiveSheet()->setCellValue("$col[$p]14",$data['asig'][$s]->cant);
+                  $total_tr_asig = $total_tr_asig + $data['asig'][$s]->cant;
+                  $as_t5 = $as_t5 + $data['asig'][$s]->cant;
+                  break;
+                case 'T6':
+                  $objPhpExcel->getActiveSheet()->setCellValue("$col[$p]15",$data['asig'][$s]->cant);
+                  $total_tr_asig = $total_tr_asig + $data['asig'][$s]->cant;
+                  $as_t6 = $as_t6 + $data['asig'][$s]->cant;
+                  break;
+
+              }
+            }
+          }
+
+         // Pinto el calculo de total ejecutadas... TABLA TOTALES
           $total_eje = $total_tr_ej + $total_gd_ej + $total_rf_ej;
+          $total_asig = $total_tr_asig + $total_gd_asig + $total_rf_asig;
           $objPhpExcel->getActiveSheet()
                       ->setCellValue("$col[$q]19",$total_eje)
+                      ->setCellValue("$col[$p]19",$total_asig)
 
                       ->setCellValue("$col[$q]22",$total_rf_ej)
                       ->setCellValue("$col[$q]23",$total_tr_ej)
                       ->setCellValue("$col[$q]24",$total_gd_ej)
-                      ->setCellValue("$col[$q]25",$total_eje);
+                      ->setCellValue("$col[$q]25",$total_eje)
+
+                      ->setCellValue("$col[$p]22",$total_rf_asig)
+                      ->setCellValue("$col[$p]23",$total_tr_asig)
+                      ->setCellValue("$col[$p]24",$total_gd_asig)
+                      ->setCellValue("$col[$p]25",$total_asig);
            $j = $j+3;
         }
 
@@ -653,7 +765,26 @@
                     ->setCellValue($col[$p+3]."18", $c3)
                     ->setCellValue($col[$p+3]."19", $d1+$d2+$d3+$d4+$d5+$d6+$t1+$t2+$t3+$t4+$t5+$t6+$c1+$c2+$c3);
                     // en ejecucucion??????
-                    //?????????????????????????
+        // cant Finalizada
+        $objPhpExcel->getActiveSheet()
+                    ->setCellValue($col[$p+4]."4", $as_d1)
+                    ->setCellValue($col[$p+4]."5", $as_d2)
+                    ->setCellValue($col[$p+4]."6", $as_d3)
+                    ->setCellValue($col[$p+4]."7", $as_d4)
+                    ->setCellValue($col[$p+4]."8", $as_d5)
+                    ->setCellValue($col[$p+4]."9", $as_d6)
+                    ->setCellValue($col[$p+4]."10", $as_t1)
+                    ->setCellValue($col[$p+4]."11", $as_t2)
+                    ->setCellValue($col[$p+4]."12", $as_t3)
+                    ->setCellValue($col[$p+4]."13", $as_t4)
+                    ->setCellValue($col[$p+4]."14", $as_t5)
+                    ->setCellValue($col[$p+4]."15", $as_t6)
+                    ->setCellValue($col[$p+4]."16", $as_c1)
+                    ->setCellValue($col[$p+4]."17", $as_c2)
+                    ->setCellValue($col[$p+4]."18", $as_c3)
+                    ->setCellValue($col[$p+4]."19", $as_d1+$as_d2+$as_d3+$as_d4+$as_d5+$as_d6+$as_t1+$as_t2+$as_t3+$as_t4+$as_t5+$as_t6+$as_c1+$as_c2+$as_c3);
+
+
         // Cantidad proyectada $
         $objPhpExcel->getActiveSheet()
                     ->setCellValue($col[$p+5]."4", "$ 2.092.228 ")
@@ -707,6 +838,38 @@
                                                     ($c1 * 156229) +
                                                     ($c2 * 156229) +
                                                     ($c3 * 104153)));
+        //  Cantidad finalizadas $ en ejecucion
+        $objPhpExcel->getActiveSheet()
+                    ->setCellValue($col[$p+7]."4", '$ '.number_format($as_d1 * 19738))
+                    ->setCellValue($col[$p+7]."5", '$ '.number_format($as_d2 * 39477))
+                    ->setCellValue($col[$p+7]."6", '$ '.number_format($as_d3 * 78954))
+                    ->setCellValue($col[$p+7]."7", '$ '.number_format($as_d4 * 78954))
+                    ->setCellValue($col[$p+7]."8", '$ '.number_format($as_d5 * 105272))
+                    ->setCellValue($col[$p+7]."9", '$ '.number_format($as_d6 * 157908))
+                    ->setCellValue($col[$p+7]."10", '$ '.number_format($as_t1 * 44397))
+                    ->setCellValue($col[$p+7]."11", '$ '.number_format($as_t2 * 44397))
+                    ->setCellValue($col[$p+7]."12", '$ '.number_format($as_t3 * 51797))
+                    ->setCellValue($col[$p+7]."13", '$ '.number_format($as_t4 * 44397))
+                    ->setCellValue($col[$p+7]."14", '$ '.number_format($as_t5 * 19423))
+                    ->setCellValue($col[$p+7]."15", '$ '.number_format($as_t6 * 19423))
+                    ->setCellValue($col[$p+7]."16", '$ '.number_format($as_c1 * 156229))
+                    ->setCellValue($col[$p+7]."17", '$ '.number_format($as_c2 * 156229))
+                    ->setCellValue($col[$p+7]."18", '$ '.number_format($as_c3 * 104153))
+                    ->setCellValue($col[$p+7]."19", '$ '.number_format(($as_d1 * 19738) +
+                                                    ($as_d2 * 39477) +
+                                                    ($as_d3 * 78954) +
+                                                    ($as_d4 * 78954) +
+                                                    ($as_d5 * 105272) +
+                                                    ($as_d6 * 157908) +
+                                                    ($as_t1 * 44397) +
+                                                    ($as_t2 * 44397) +
+                                                    ($as_t3 * 51797) +
+                                                    ($as_t4 * 44397) +
+                                                    ($as_t5 * 19423) +
+                                                    ($as_t6 * 19423) +
+                                                    ($as_c1 * 156229) +
+                                                    ($as_c2 * 156229) +
+                                                    ($as_c3 * 104153)));
 
         //*****************************FIN TABLA 2***************************
 
@@ -734,9 +897,17 @@
 
                     ->setCellValue($col[$p+6]."24", '$ '.number_format(($c1 * 156229) + ($c2 * 156229) + ($c3 * 104153)))#gd
 
-                    ->setCellValue($col[$p+6]."25", '$ '.number_format(($d1 * 19738) + ($d2 * 39477) + ($d3 * 78954) + ($d4 * 78954) + ($d5 * 105272) + ($d6 * 157908) + ($t1 * 44397) + ($t2 * 44397) + ($t3 * 51797) + ($t4 * 44397) + ($t5 * 19423) + ($t6 * 19423) + ($c1 * 156229) + ($c2 * 156229) + ($c3 * 104153)));
-                    // cantidad $ en ejecucion por tipo ?????
-                    // ?????????????????????????????????
+                    ->setCellValue($col[$p+6]."25", '$ '.number_format(($d1 * 19738) + ($d2 * 39477) + ($d3 * 78954) + ($d4 * 78954) + ($d5 * 105272) + ($d6 * 157908) + ($t1 * 44397) + ($t2 * 44397) + ($t3 * 51797) + ($t4 * 44397) + ($t5 * 19423) + ($t6 * 19423) + ($c1 * 156229) + ($c2 * 156229) + ($c3 * 104153)))
+
+                    // cantidad $ finalizada  por tipo En ejecucion
+                    ->setCellValue($col[$p+7]."22", '$ '.number_format(($as_d1 * 19738) + ($as_d2 * 39477) + ($as_d3 * 78954) + ($as_d4 * 78954) + ($as_d5 * 105272) + ($as_d6 * 157908)))#rf
+
+                    ->setCellValue($col[$p+7]."23", '$ '.number_format(($as_t1 * 44397) + ($as_t2 * 44397) + ($as_t3 * 51797) + ($as_t4 * 44397) + ($as_t5 * 19423) + ($as_t6 * 19423)))#tr
+
+                    ->setCellValue($col[$p+7]."24", '$ '.number_format(($as_c1 * 156229) + ($as_c2 * 156229) + ($as_c3 * 104153)))#gd
+
+                    ->setCellValue($col[$p+7]."25", '$ '.number_format(($as_d1 * 19738) + ($as_d2 * 39477) + ($as_d3 * 78954) + ($as_d4 * 78954) + ($as_d5 * 105272) + ($as_d6 * 157908) + ($as_t1 * 44397) + ($as_t2 * 44397) + ($as_t3 * 51797) + ($as_t4 * 44397) + ($as_t5 * 19423) + ($as_t6 * 19423) + ($as_c1 * 156229) + ($as_c2 * 156229) + ($as_c3 * 104153)));
+              
 
         // Estilos de la tabla 2 de la hoja 1
         $objPhpExcel->getActiveSheet()->getStyle($col[$p+4]."21:".$col[$p+7]."21")->applyFromArray($style_estandar);#titulos    
@@ -802,10 +973,23 @@
                     ->setCellValue($col[$p+21]."6", '$ '.number_format($t6 * 19423))
                     ->setCellValue($col[$p+22]."6", '$ '.number_format($c1 * 156229))
                     ->setCellValue($col[$p+23]."6", '$ '.number_format($c2 * 156229))
-                    ->setCellValue($col[$p+24]."6", '$ '.number_format($c3 * 104153));
-                    // en ejecucion ???????
-                    // ??????????????????????
-
+                    ->setCellValue($col[$p+24]."6", '$ '.number_format($c3 * 104153))
+                    // en ejecucion 
+                    ->setCellValue($col[$p+10]."7", '$ '.number_format($as_d1 * 19738))
+                    ->setCellValue($col[$p+11]."7", '$ '.number_format($as_d2 * 39477))
+                    ->setCellValue($col[$p+12]."7", '$ '.number_format($as_d3 * 78954))
+                    ->setCellValue($col[$p+13]."7", '$ '.number_format($as_d4 * 78954))
+                    ->setCellValue($col[$p+14]."7", '$ '.number_format($as_d5 * 105272))
+                    ->setCellValue($col[$p+15]."7", '$ '.number_format($as_d6 * 157908))
+                    ->setCellValue($col[$p+16]."7", '$ '.number_format($as_t1 * 44397))
+                    ->setCellValue($col[$p+17]."7", '$ '.number_format($as_t2 * 44397))
+                    ->setCellValue($col[$p+18]."7", '$ '.number_format($as_t3 * 51797))
+                    ->setCellValue($col[$p+19]."7", '$ '.number_format($as_t4 * 44397))
+                    ->setCellValue($col[$p+20]."7", '$ '.number_format($as_t5 * 19423))
+                    ->setCellValue($col[$p+21]."7", '$ '.number_format($as_t6 * 19423))
+                    ->setCellValue($col[$p+22]."7", '$ '.number_format($as_c1 * 156229))
+                    ->setCellValue($col[$p+23]."7", '$ '.number_format($as_c2 * 156229))
+                    ->setCellValue($col[$p+24]."7", '$ '.number_format($as_c3 * 104153));
 
                     //ESTILOS
                     $objPhpExcel->getActiveSheet()->getStyle($col[$p+9]."4:".$col[$p+24]."7")->applyFromArray($style_estandar);

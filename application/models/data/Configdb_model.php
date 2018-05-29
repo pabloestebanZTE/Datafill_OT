@@ -48,7 +48,7 @@ class Configdb_model extends CI_Model {
     // }
 
 
-    /*     * ******************************localhost******************************* */
+    /*     * ******************************localhost  FABER******************************* */
         // public function openSession(){
         //   $user = "root";
         //   $pass =  "";
@@ -64,6 +64,7 @@ class Configdb_model extends CI_Model {
         // }
 
     
+    /*     * ******************************localhost   CAMILO******************************* */
      public function openSession() {
          $user = "root";
          $pass = "a4b3c2d1";
@@ -89,5 +90,3 @@ class Configdb_model extends CI_Model {
     }
 
 }
-
-?>
