@@ -7,6 +7,7 @@ class LoadInformation extends CI_Controller {
     function __construct() {
         parent::__construct();
         $this->load->model('data/Dao_rf_model');
+        $this->load->model('data/Dao_service_model');
         $this->load->helper('camilo');
     }
 

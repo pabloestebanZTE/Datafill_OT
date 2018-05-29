@@ -308,3 +308,14 @@ color: #5e5d5d ;
     padding:20px 50px 20px 50px;
     text-align:center;
 }
+
+
+
+.badge-mn{
+    position: absolute;
+    border: 1px solid;
+    background-color: #fff;
+    color: #f0ad4e;
+    margin: -14px -39px;
+    z-index: 1;
+}

@@ -221,3 +221,16 @@ table#table-fechas input{
     padding: 19px;
     border-radius: 15px;
 }
+
+.badge-mn{
+    position: absolute;
+    border: 1px solid;
+    background-color: #fff;
+    color: #f0ad4e;
+    margin: -14px -39px;
+    z-index: 1;
+}
+
+.fz-18{
+  font-size: 18px;
+}

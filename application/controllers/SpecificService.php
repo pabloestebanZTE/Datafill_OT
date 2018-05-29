@@ -12,6 +12,7 @@
         $this->load->model('service_spec_model');
         $this->load->model('order_model');
         $this->load->model('rf_model');
+        $this->load->model('data/Dao_service_model');
        // $this->load->model('mail/mail_manager_model');
         $this->load->model('data/configdb_model');
       //  $this->load->library('session');

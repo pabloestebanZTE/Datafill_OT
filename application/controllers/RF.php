@@ -8,6 +8,7 @@
         parent::__construct();
         $this->load->model('data/configdb_model');
         $this->load->model('data/Dao_rf_model');
+        $this->load->model('data/Dao_service_model');
       }
       // llama todas las actividades de rf
       public function getListRF(){

@@ -11,6 +11,7 @@ class Service extends CI_Controller {
         $this->load->model('data/dao_service_model');
         $this->load->model('data/dao_user_model');
         $this->load->model('data/dao_site_model');
+        $this->load->model('data/Dao_service_model');
     }
 
     public function assignService() {

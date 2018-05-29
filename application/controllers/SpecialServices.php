@@ -10,6 +10,7 @@ class SpecialServices extends CI_Controller {
     $this->load->model('data/dao_service_model');
     $this->load->model('service_spec_model');
     $this->load->model('order_model');
+    $this->load->model('data/Dao_service_model');
   }
   //funcion que retorna todas las actividades no ejecutadas ni canceladas
   //para el control de tiempo de envio de evidencias dependiendo el tipo de trabajo
