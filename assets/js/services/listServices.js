@@ -134,7 +134,7 @@ $(function () {
             description += ini;
             description += "<p id='p"+obj.id+"' style='display:none;'> "+obj.services[0].claroDescription.substring(45);
             description += "<a class='miniBoton' id='hide"+obj.id+"'><br>...menos</a>";
-             description += " </p>";
+            description += " </p>";
             description += "<a class='miniBoton' id='show"+obj.id+"'><br>... mas</a>";
             return description;
         },

@@ -19,7 +19,7 @@ class Configdb_model extends CI_Model {
         $_SESSION['role'] = $user->getRole();
     }
 
-    /*     * ************************servidor de prueba************************* */
+    /*     * ***********************servidor de prueba************************ /
 
     // public function openSession(){
     //   $user = "AdminZTE";
@@ -49,6 +49,7 @@ class Configdb_model extends CI_Model {
 
 
     /*     * ******************************localhost  FABER******************************* */
+
         // public function openSession(){
         //   $user = "root";
         //   $pass =  "";
@@ -64,7 +65,9 @@ class Configdb_model extends CI_Model {
         // }
 
     
+
     /*     * ******************************localhost   CAMILO******************************* */
+
      public function openSession() {
          $user = "root";
          $pass = "a4b3c2d1";

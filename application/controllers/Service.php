@@ -1,3 +1,4 @@
+
 <?php
 
 defined('BASEPATH') OR exit('No direct script access allowed');
@@ -22,7 +23,7 @@ class Service extends CI_Controller {
     }
 
     public function listServices() {
-        //Recibimos la variable global con el mensaje  
+        //Recibimos la variable global con el mensaje
         $message = isset($_SESSION["message"]) ? $_SESSION["message"] : null;
         $this->load->view('listServices', ["message" => $message]);
         //Limpiamos la variable glogal
@@ -64,19 +65,42 @@ class Service extends CI_Controller {
     public function actualizarfechaAsig(){
 
         $data = array(
-            'K_IDORDER' => $this->input->post('idOrden'), 
-            'D_DATE_START_P' => $this->input->post('fecha') 
+            'K_IDORDER' => $this->input->post('idOrden'),
+            'D_DATE_START_P' => $this->input->post('fecha')
         );
         $res = $this->dao_service_model->updateFecha($data);
         echo json_encode($res);
     }
 
     public function fechasInconsistentes(){
-       $data = $this->dao_service_model->fechasInconsistentes();
-       header('content-type: text/plain');
-       print_r($data);
+       $data['fechas'] = $this->dao_service_model->fechasInconsistentes();
+       $this->load->view('tablaFechasUp', $data);
+       // header('content-type: text/plain');
+       // print_r($data);
 
+    }
+    public function upDateFechInconsistentes(){
+        $data = array(
+            'K_IDCLARO' => $this->input->post('idClaro'), 
+            'K_IDORDER' => $this->input->post('idOrder'),
+            'D_DATE_START_P' => $this->input->post('idDateStar'),
+            'N_ESTADO'  => $this->input->post('idEstado'),
+            'D_DATE_START_R' => $this->input->post('idIni'),
+            'D_DATE_FINISH_R' => $this->input->post('idFin'),
+            'D_CLARO_F' => $this->input->post('idEjec')
+        );
+
+        $data2 = array(
+            'K_IDORDER' => $this->input->post('idOrder'),
+            'D_ASIG_Z' => $this->input->post('idZte')
+        );
+        $res = $this->dao_service_model->upDateInconsistentes($data);
+        $res2 = $this->dao_service_model->upDateInconsistentesOt($data2);
+
+       // print_r($res);
+      //  print_r($res2);
+        $this->json($res);
+        
     }
 
 }
-
