@@ -53,7 +53,7 @@ class Configdb_model extends CI_Model {
         // public function openSession(){
         //   $user = "root";
         //   $pass =  "";
-        //   $db = "Datafill_OT";
+        //   $db = "datafill_ot";
 
         //   try {
         //     $connection = new mysqli('localhost', $user, $pass, $db);

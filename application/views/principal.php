@@ -32,7 +32,7 @@
                     <ul class="nav navbar-nav navbar-right">
                         <li class="cam"><a >Bienvenid@ <?php echo $_SESSION['userName']?></a>
                         </li>
-                        <li class="cam fz-18"><a href="#"><i class="glyphicon glyphicon-warning-sign"></i><span class="badge badge-mn"><?php print_r($this->Dao_service_model->cantFechasInconsistentes()->cant); ?></span></a></li>
+                        <li class="cam fz-18"><a href="<?= URL::base(); ?>/Service/fechasInconsistentes"><i class="glyphicon glyphicon-warning-sign"></i><span class="badge badge-mn"><?php print_r($this->Dao_service_model->cantFechasInconsistentes()->cant); ?></span></a></li>
                         <li class="cam"><a href="#home">Home</a>
                         </li>
                         <li class="cam"><a href="#services">Servicios</a>

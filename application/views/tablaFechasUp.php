@@ -52,7 +52,7 @@
                         <li class="cam"><a >Bienvenid@ <?php echo $_SESSION['userName']?></a>
                         </li>
                         <li class="cam fz-18"><a href="#"><i class="glyphicon glyphicon-warning-sign"></i><span class="badge badge-mn"><?php print_r($this->Dao_service_model->cantFechasInconsistentes()->cant); ?></span></a></li>
-                        <li class="cam"><a href="#home">Home</a>
+                        <li class="cam"><a href="<?= URL::to('user/principalView'); ?>">Home</a>
                         </li>
                         <li class="cam"><a href="#services">Servicios</a>
                             <ul>
@@ -105,49 +105,75 @@
 							<td><?php echo $i ?></td>
 							<td id="orden_<?=$fechas[$i]->claro?>"><?=$fechas[$i]->orden?></td>
 							<td><?=$fechas[$i]->claro?></td>
-								<?php
-											if (comparar_fecha($fechas[$i]->creacion, $fechas[$i]->asig_a_ZTE )) {?>
-												<td id="creac_<?=$fechas[$i]->claro?>" style="border: 1px solid red; color: red;" ><?=$fechas[$i]->creacion?>	</td>
+								<?php 									
+									if (comparar_fecha($fechas[$i]->creacion, $fechas[$i]->asig_a_ZTE )) {?>
+							        <td id="creac_<?=$fechas[$i]->claro?>" style="border: 1px solid red; color: red;" ><?=$fechas[$i]->creacion?></td>
 								<?php } else { ?>
 												<td id="creac_<?=$fechas[$i]->claro?>" ><?=$fechas[$i]->creacion?></td>
 								<?php } ?>
-								<?php
+		  <!--ASIGNACION ZTE --><?php
+								if ($_SESSION['role'] == 4) { 
 									if (comparar_fecha($fechas[$i]->asig_a_ZTE, $fechas[$i]->asignacion)) { ?>
 										<td><input id="as_zte_<?=$fechas[$i]->claro?>" class="cambiofecha" type="date" value="<?=$fechas[$i]->asig_a_ZTE?>" style="border: 1px solid red; color: red;"/></td>
+									<?php } else { ?>
+										<td><input id="as_zte_<?=$fechas[$i]->claro?>" class="cambiofecha" type="date" value="<?=$fechas[$i]->asig_a_ZTE?>"/></td>
+								<?php } 
+								} else { 
+								?>
+									<td><?=$fechas[$i]->asig_a_ZTE?></td>
+								<?php } ?>
+								<td><?=$fechas[$i]->forecast?></td>
+	   <!-- ASIGNACION INGENIERO --><?php
+									if ($_SESSION['role'] == 4) {
+										if (comparar_fecha($fechas[$i]->asignacion, $fechas[$i]->inicio_ing)) { ?>
+											<td><input id="asign_<?=$fechas[$i]->claro?>" class="cambiofecha" type="date" value="<?=$fechas[$i]->asignacion?>" style="border: 1px solid red; color:red;"/></td>
+										<?php } else { ?>
+											<td><input id="asign_<?=$fechas[$i]->claro?>" class="cambiofecha" type="date" value="<?=$fechas[$i]->asignacion?>"/></td>
+									<?php } 
+										}else{
+									?>
+									<td><?=$fechas[$i]->asignacion?></td>
+									<?php } ?>
+	      <!-- INICIO INGENIERO --><?php
+									if ($_SESSION['role'] != 4 || $_SESSION['role'] == 4 ) {
+										if (comparar_fecha($fechas[$i]->inicio_ing, $fechas[$i]->fin_ing)) { ?>
+										<td><input id="ini_ing_<?=$fechas[$i]->claro?>" class="cambiofecha" type="date" value="<?=$fechas[$i]->inicio_ing?>" style="border: 1px solid red; color:red;"/></td>
+										<?php } else {?>
+										<td><input id="ini_ing_<?=$fechas[$i]->claro?>" class="cambiofecha" type="date" value="<?=$fechas[$i]->inicio_ing?>"/></td>
+										<?php }
+											}
+										 ?>
+              <!-- FIN INGENIERO --><?php
+									if ($_SESSION['role'] != 4 || $_SESSION['role'] == 4) {
+										if (comparar_fecha($fechas[$i]->fin_ing, $fechas[$i]->ejecucion)) { ?>
+										<td><input id="fin_ing_<?=$fechas[$i]->claro?>" class="cambiofecha" type="date" value="<?=$fechas[$i]->fin_ing?>" style="border: 1px solid red; color: red;"/></td>
+										<?php	}else{ ?>
+										<td><input id="fin_ing_<?=$fechas[$i]->claro?>" class="cambiofecha" type="date" value="<?=$fechas[$i]->fin_ing?>"/></td>
+										<?php }
+											}
+									 	?>							
+					<!--EJECUCION --> <?php 
+									if ($_SESSION['role'] == 4) { ?>
+										<td><input id="ejec_<?=$fechas[$i]->claro?>" class="cambiofecha" type="date" value="<?=$fechas[$i]->ejecucion?>"/></td>
+										<?php }else{ ?>
+										<td><?=$fechas[$i]->ejecucion?></td>
+										<?php } ?>
 
-								<?php } else { ?>
-									<td><input id="as_zte_<?=$fechas[$i]->claro?>" class="cambiofecha" type="date" value="<?=$fechas[$i]->asig_a_ZTE?>"/></td>
-								<?php } ?>
-							<td><?=$fechas[$i]->forecast?></td>
-								<?php
-									if (comparar_fecha($fechas[$i]->asignacion, $fechas[$i]->inicio_ing)) { ?>
-									<td><input id="asign_<?=$fechas[$i]->claro?>" class="cambiofecha" type="date" value="<?=$fechas[$i]->asignacion?>" style="border: 1px solid red; color:red;"/></td>
 
-								<?php } else { ?>
-										<td><input id="asign_<?=$fechas[$i]->claro?>" class="cambiofecha" type="date" value="<?=$fechas[$i]->asignacion?>"/></td>
-								<?php } ?>
-								<?php
-									if (comparar_fecha($fechas[$i]->inicio_ing, $fechas[$i]->fin_ing)) { ?>
-									<td><input id="ini_ing_<?=$fechas[$i]->claro?>" class="cambiofecha" type="date" value="<?=$fechas[$i]->inicio_ing?>" style="border: 1px solid red; color:red;"/></td>
-								<?php } else {?>
-									<td><input id="ini_ing_<?=$fechas[$i]->claro?>" class="cambiofecha" type="date" value="<?=$fechas[$i]->inicio_ing?>"/></td>
-								<?php } ?>
-								<?php
-								if (comparar_fecha($fechas[$i]->fin_ing, $fechas[$i]->ejecucion)) { ?>
-								<td><input id="fin_ing_<?=$fechas[$i]->claro?>" class="cambiofecha" type="date" value="<?=$fechas[$i]->fin_ing?>" style="border: 1px solid red; color: red;"/></td>
-							<?php	}else{ ?>
-								<td><input id="fin_ing_<?=$fechas[$i]->claro?>" class="cambiofecha" type="date" value="<?=$fechas[$i]->fin_ing?>"/></td>
-							<?php } ?>
-								<td><input id="ejec_<?=$fechas[$i]->claro?>" class="cambiofecha" type="date" value="<?=$fechas[$i]->ejecucion?>"/></td>
-								<td>
-									<select name="estado" id="estado_<?=$fechas[$i]->claro?>">
-										<option value="<?= $fechas[$i]->estado ?>" selected><?= $fechas[$i]->estado ?></option>
-										<option value="Asignada">Asignada</option>
-										<option value="Enviado">Enviado</option>
-										<option value="Ejecutado">Ejecutado</option>
-										<option value="Cancelado">Cancelado</option>
-							</td>
-							<td><?=$fechas[$i]->ingeniero?></td>
+					<!-- ESTADO --><?php 
+									if ($_SESSION['role'] == 4) { ?>	
+									<td>
+										<select name="estado" id="estado_<?=$fechas[$i]->claro?>">
+											<option value="<?= $fechas[$i]->estado ?>" selected><?= $fechas[$i]->estado ?></option>
+											<option value="Asignada">Asignada</option>
+											<option value="Enviado">Enviado</option>
+											<option value="Ejecutado">Ejecutado</option>
+											<option value="Cancelado">Cancelado</option>
+									</td>
+										<?php } else { ?>
+									<td><?= $fechas[$i]->estado ?></td>
+										<?php } ?>
+									<td><?=$fechas[$i]->ingeniero?></td>
 							<td><button class="btn-guardar btn btn-success btn-xs" title="Guardar"><i class="glyphicon glyphicon-send"></i></button></td>
 						</tr>
 						<?php  }
@@ -156,7 +182,6 @@
 				</table>
 			</tbody>
 		</div>
-
 		<!-- DataTables -->
 		<script src="<?= URL::to('assets/plugins/datatables/jquery.dataTables.min.js'); ?>"></script>
 		<script src="<?= URL::to('assets/plugins/datatables/dataTables.bootstrap.min.js'); ?>"></script>
