@@ -682,7 +682,7 @@
 
       //retorna actividades, cullas fechas sean inconsistentes
       public function fechasInconsistentes(){
-        $where = ($_SESSION['role'] == 4) ? "" : "and (ss.K_IDUSER = ".$_SESSION['id'].")";
+        $where = ($_SESSION['role'] == 4) ? "" : "AND (ss.K_IDUSER = ".$_SESSION['id'].")";
         $query = $this->db->query("
       SELECT ss.K_IDORDER AS orden, K_IDCLARO as claro, ot.D_DATE_CREATION as creacion,
          ot.D_ASIG_Z as asig_a_ZTE, ss.D_DATE_START_P as asignacion, ss.D_DATE_START_R as inicio_ing,
@@ -693,12 +693,14 @@
           ON  ss.K_IDORDER = ot.K_IDORDER
           INNER JOIN user u
           on ss.K_IDUSER = u.K_IDUSER                             
-          WHERE  ((ot.D_ASIG_Z < ot.D_DATE_CREATION and ot.D_ASIG_Z <> '0000-00-00') OR
+          WHERE  ((ot.D_ASIG_Z < ot.D_DATE_CREATION and ot.D_ASIG_Z <> '0000-00-00') OR 
           (ss.D_DATE_START_P < ot.D_ASIG_Z OR ss.D_DATE_START_P < ot.D_DATE_CREATION) OR
-          (ss.D_DATE_START_R < ss.D_DATE_START_P OR ss.D_DATE_START_R < D_ASIG_Z and (ss.D_DATE_START_R <> '0000-00-00' AND ss.D_CLARO_F <> '0000-00-00')) OR
-          (ss.D_DATE_FINISH_R < ss.D_DATE_START_R OR ss.D_DATE_FINISH_R < ss.D_DATE_START_P and (ss.D_DATE_FINISH_R <> '0000-00-00'))OR
-          (ss.D_CLARO_F < ss.D_DATE_FINISH_R OR ss.D_CLARO_F < ss.D_DATE_START_R )) AND ss.N_ESTADO ='Ejecutado';".$where.";
-          ");
+          ((ss.D_DATE_START_R < ss.D_DATE_START_P OR ss.D_DATE_START_R < D_ASIG_Z) and (ss.D_DATE_START_R <> '0000-00-00' AND ss.D_CLARO_F <> '0000-00-00')) OR
+          ((ss.D_DATE_FINISH_R < ss.D_DATE_START_R OR ss.D_DATE_FINISH_R < ss.D_DATE_START_P) and (ss.D_DATE_FINISH_R <> '0000-00-00')) OR
+          (ss.D_CLARO_F < ss.D_DATE_FINISH_R OR ss.D_CLARO_F < ss.D_DATE_START_R )) AND 
+          (ss.N_ESTADO ='Ejecutado')
+          ".$where.";
+        ");
 
         return $query->result();
       }
@@ -713,11 +715,13 @@
           ON  ss.K_IDORDER = ot.K_IDORDER
           INNER JOIN user u
           on ss.K_IDUSER = u.K_IDUSER                             
-          WHERE  ((ot.D_ASIG_Z < ot.D_DATE_CREATION and ot.D_ASIG_Z <> '0000-00-00') OR
+          WHERE  ((ot.D_ASIG_Z < ot.D_DATE_CREATION and ot.D_ASIG_Z <> '0000-00-00') OR 
           (ss.D_DATE_START_P < ot.D_ASIG_Z OR ss.D_DATE_START_P < ot.D_DATE_CREATION) OR
-          (ss.D_DATE_START_R < ss.D_DATE_START_P OR ss.D_DATE_START_R < D_ASIG_Z and (ss.D_DATE_START_R <> '0000-00-00' AND ss.D_CLARO_F <> '0000-00-00')) OR
-          (ss.D_DATE_FINISH_R < ss.D_DATE_START_R OR ss.D_DATE_FINISH_R < ss.D_DATE_START_P and (ss.D_DATE_FINISH_R <> '0000-00-00'))OR
-          (ss.D_CLARO_F < ss.D_DATE_FINISH_R OR ss.D_CLARO_F < ss.D_DATE_START_R )) AND ss.N_ESTADO ='Ejecutado';".$where.";
+          ((ss.D_DATE_START_R < ss.D_DATE_START_P OR ss.D_DATE_START_R < D_ASIG_Z) and (ss.D_DATE_START_R <> '0000-00-00' AND ss.D_CLARO_F <> '0000-00-00')) OR
+          ((ss.D_DATE_FINISH_R < ss.D_DATE_START_R OR ss.D_DATE_FINISH_R < ss.D_DATE_START_P) and (ss.D_DATE_FINISH_R <> '0000-00-00')) OR
+          (ss.D_CLARO_F < ss.D_DATE_FINISH_R OR ss.D_CLARO_F < ss.D_DATE_START_R )) AND 
+          (ss.N_ESTADO ='Ejecutado')
+          ".$where.";          
           ");
         return $query->row();
       }
