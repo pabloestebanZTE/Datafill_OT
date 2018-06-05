@@ -689,15 +689,15 @@
          ss.D_DATE_FINISH_R as fin_ing, ss.D_CLARO_F as ejecucion, ss.D_FORECAST as forecast, ss.N_ESTADO  as estado,
          concat(u.N_NAME, ' ', u.N_LASTNAME) as ingeniero
           FROM specific_service ss
-          INNER JOIN ot
+          INNER JOIN ot 
           ON  ss.K_IDORDER = ot.K_IDORDER
           INNER JOIN user u
           on ss.K_IDUSER = u.K_IDUSER                             
-          WHERE  ((ot.D_ASIG_Z < ot.D_DATE_CREATION) OR
+          WHERE  ((ot.D_ASIG_Z < ot.D_DATE_CREATION and ot.D_ASIG_Z <> '0000-00-00') OR
           (ss.D_DATE_START_P < ot.D_ASIG_Z OR ss.D_DATE_START_P < ot.D_DATE_CREATION) OR
-          (ss.D_DATE_START_R < ss.D_DATE_START_P OR ss.D_DATE_START_R < D_ASIG_Z) OR
-          (ss.D_DATE_FINISH_R < ss.D_DATE_START_R OR ss.D_DATE_FINISH_R < ss.D_DATE_START_P)OR
-          (ss.D_CLARO_F < ss.D_DATE_FINISH_R OR ss.D_CLARO_F < ss.D_DATE_START_R))".$where.";
+          (ss.D_DATE_START_R < ss.D_DATE_START_P OR ss.D_DATE_START_R < D_ASIG_Z and (ss.D_DATE_START_R <> '0000-00-00' AND ss.D_CLARO_F <> '0000-00-00')) OR
+          (ss.D_DATE_FINISH_R < ss.D_DATE_START_R OR ss.D_DATE_FINISH_R < ss.D_DATE_START_P and (ss.D_DATE_FINISH_R <> '0000-00-00'))OR
+          (ss.D_CLARO_F < ss.D_DATE_FINISH_R OR ss.D_CLARO_F < ss.D_DATE_START_R )) AND ss.N_ESTADO ='Ejecutado';".$where.";
           ");
 
         return $query->result();
@@ -709,15 +709,15 @@
         $query = $this->db->query("
           SELECT count(*) as cant
           FROM specific_service ss
-          INNER JOIN ot
+          INNER JOIN ot 
           ON  ss.K_IDORDER = ot.K_IDORDER
           INNER JOIN user u
           on ss.K_IDUSER = u.K_IDUSER                             
-          WHERE  ((ot.D_ASIG_Z < ot.D_DATE_CREATION) OR
+          WHERE  ((ot.D_ASIG_Z < ot.D_DATE_CREATION and ot.D_ASIG_Z <> '0000-00-00') OR
           (ss.D_DATE_START_P < ot.D_ASIG_Z OR ss.D_DATE_START_P < ot.D_DATE_CREATION) OR
-          (ss.D_DATE_START_R < ss.D_DATE_START_P OR ss.D_DATE_START_R < D_ASIG_Z) OR
-          (ss.D_DATE_FINISH_R < ss.D_DATE_START_R OR ss.D_DATE_FINISH_R < ss.D_DATE_START_P)OR
-          (ss.D_CLARO_F < ss.D_DATE_FINISH_R OR ss.D_CLARO_F < ss.D_DATE_START_R))".$where.";
+          (ss.D_DATE_START_R < ss.D_DATE_START_P OR ss.D_DATE_START_R < D_ASIG_Z and (ss.D_DATE_START_R <> '0000-00-00' AND ss.D_CLARO_F <> '0000-00-00')) OR
+          (ss.D_DATE_FINISH_R < ss.D_DATE_START_R OR ss.D_DATE_FINISH_R < ss.D_DATE_START_P and (ss.D_DATE_FINISH_R <> '0000-00-00'))OR
+          (ss.D_CLARO_F < ss.D_DATE_FINISH_R OR ss.D_CLARO_F < ss.D_DATE_START_R )) AND ss.N_ESTADO ='Ejecutado';".$where.";
           ");
         return $query->row();
       }
