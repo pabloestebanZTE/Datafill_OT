@@ -34,18 +34,18 @@ class Configdb_model extends CI_Model {
     //   return $connection;
     // }
     // /**************************servidor del cliente**************************/
-    // public function openSession(){
-    //   $user = "adminZTE";
-    //   $pass =  "a4b3c2d1";
-    //   $db = "datafill_ot";
-    //   try {
-    //     $connection = new mysqli('zte-coldb.cwtksnwikcx3.us-west-2.rds.amazonaws.com', $user, $pass, $db);
-    //     $connection->set_charset("utf8");
-    //   } catch (Exception $e ) {
-    //      $connection = "false";
-    //   }
-    //   return $connection;
-    // }
+    public function openSession(){
+      $user = "adminZTE";
+      $pass =  "a4b3c2d1";
+      $db = "datafill_ot";
+      try {
+        $connection = new mysqli('zte-coldb.cwtksnwikcx3.us-west-2.rds.amazonaws.com', $user, $pass, $db);
+        $connection->set_charset("utf8");
+      } catch (Exception $e ) {
+         $connection = "false";
+      }
+      return $connection;
+    }
 
 
     /*     * ******************************localhost  FABER******************************* */
@@ -68,19 +68,19 @@ class Configdb_model extends CI_Model {
 
     /*     * ******************************localhost   CAMILO******************************* */
 
-     public function openSession() {
-         $user = "root";
-         $pass = "a4b3c2d1";
-         $db = "datafill_ot";
+     // public function openSession() {
+     //     $user = "root";
+     //     $pass = "a4b3c2d1";
+     //     $db = "datafill_ot";
 
-         try {
-             $connection = new mysqli('localhost', $user, $pass, $db);
-             $connection->set_charset("utf8");
-         } catch (Exception $e) {
-             $connection = "false";
-         }
-         return $connection;
-     }
+     //     try {
+     //         $connection = new mysqli('localhost', $user, $pass, $db);
+     //         $connection->set_charset("utf8");
+     //     } catch (Exception $e) {
+     //         $connection = "false";
+     //     }
+     //     return $connection;
+     // }
    
 
 
