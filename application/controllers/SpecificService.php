@@ -872,15 +872,57 @@
                           </body>
                           </html>
                       ";
-                    $this->load->library('email');
-                    $config['mailtype'] = 'html'; // o text
-                    $this->email->initialize($config);
-                    $this->email->from('zolid@zte.com', 'ZOLID_ZTE');
-                    $this->email->to($correos);
+
+/********************************************************************************************************************/
+
+
+                     $this->load->library('parser');
+
+          $config = Array(
+              'protocol'  => 'smtp',
+              'smtp_host' => 'ssl://smtp.googlemail.com',
+              'smtp_port' => 465,
+              'smtp_user' => 'zolid.datafill@gmail.com',
+              'smtp_pass' => 'z0lid.datafil1',
+              'mailtype'  => 'html',
+              'charset'   => 'utf-8',
+              'priority'  => 5
+          );
+
+          $this->load->library('email', $config);
+          $this->email->set_newline("\r\n");
+          $this->email->from('zolid.datafill@gmail.com', 'ZOLID'); // change it to yours
+          $this->email->to($correos);// change it to yours
+          // $this->email->cc('bredi.buitrago@zte.com.cn, johnfbr1998@gmail.com');
+          $this->email->subject("Notificacion de ASIGNACIÓN de orden de servicio. Orden: ".$actividades[0]->order.". Proyecto: ".$actividades[0]->proyecto.".");
+          $this->email->message($cuerpo);
+          $this->email->send();
+
+          // if($this->email->send())
+          // { 
+          //   echo "se envio correctamente";
+          // }
+          // else
+          // {
+          //     show_error($this->email->print_debugger());
+          // }
+
+
+
+/********************************************************************************************************************/
+
+
+
+
+                    // $this->load->library('email');
+                    // $config['mailtype'] = 'html'; // o text
+                    // $this->email->initialize($config);
+                    // $this->email->from('datafill@zte.com', 'DATAFILL');
+                    // $this->email->to($correos);
                     
-                    $this->email->subject("Notificación de ASIGNACIÓN de orden de servicio. Orden: ".$actividades[0]->order.". Proyecto: ".$actividades[0]->proyecto.".");
-                    $this->email->message($cuerpo);
-                    $this->email->send();
+                    // $this->email->subject("Notificacion de ASIGNACIÓN de orden de servicio. Orden: ".$actividades[0]->order.". Proyecto: ".$actividades[0]->proyecto.".");
+                    // $this->email->message($cuerpo);
+                    // $this->email->send();
                 }
           $mensaje["message"] = 'ok';
           $this->load->view('assignService', $mensaje);
@@ -975,16 +1017,51 @@
             }
           }
 
-          $this->load->library('email');
-          $config['mailtype'] = 'html'; // o text
-          $this->email->initialize($config);
-          $this->email->from('zolid@zte.com', 'ZOLID_ZTE');
 
-          $this->email->to(strtolower($mails));
+
+
+
+          // $this->load->library('email');
+          // $config['mailtype'] = 'html'; // o text
+          // $this->email->initialize($config);
+          // $this->email->from('datafill@zte.com', 'DATAFILL');
+
+          // $this->email->to(strtolower($mails));
           
+          // $this->email->subject("Notificación de CANCELACIÓN de orden de servicio. Orden: ".$existe[0]->order->getId().". Proyecto: ".$existe[0]->proyecto.".");
+          // $this->email->message($cuerpo);
+          // $this->email->send();
+
+
+
+          $this->load->library('parser');
+
+          $config = Array(
+              'protocol'  => 'smtp',
+              'smtp_host' => 'ssl://smtp.googlemail.com',
+              'smtp_port' => 465,
+              'smtp_user' => 'zolid.datafill@gmail.com',
+              'smtp_pass' => 'z0lid.datafil1',
+              'mailtype'  => 'html',
+              'charset'   => 'utf-8',
+              'priority'  => 5
+          );
+
+          $this->load->library('email', $config);
+          $this->email->set_newline("\r\n");
+          $this->email->from('zolid.datafill@gmail.com', 'ZOLID'); // change it to yours
+          $this->email->to(strtolower($mails));// change it to yours
+          // $this->email->cc('bredi.buitrago@zte.com.cn, johnfbr1998@gmail.com');
           $this->email->subject("Notificación de CANCELACIÓN de orden de servicio. Orden: ".$existe[0]->order->getId().". Proyecto: ".$existe[0]->proyecto.".");
           $this->email->message($cuerpo);
           $this->email->send();
+
+
+
+
+
+
+
 
 
           $_SESSION["message"] = 'actualizado';
@@ -1083,20 +1160,47 @@
             }
           }
 
-          $this->load->library('email');
-          $config['mailtype'] = 'html'; // o text
-          $this->email->initialize($config);
-          $this->email->from('zolid@zte.com', 'ZOLID_ZTE');
+          // $this->load->library('email');
+          // $config['mailtype'] = 'html'; // o text
+          // $this->email->initialize($config);
+          // $this->email->from('datafill@zte.com', 'DATAFILL');
 
-          $this->email->to(strtolower($mails));
-          //$this->email->to('bredybuitrago@outlook.com, yuyupa14@gmail.com');
+          // $this->email->to(strtolower($mails));
+          // //$this->email->to('bredybuitrago@outlook.com, yuyupa14@gmail.com');
           
-          //$this->email->to('yuyupa14@gmail.com, andrea.rosero.ext@claro.com.co, andrea.lorenaroserochasoy@zte.com.cn, pablo.esteban@zte.com.cn, bredybuitrago@gmail.com');
-          //$this->email->cc('andrea.rosero.ext@claro.com.co, andrea.lorenaroserochasoy@zte.com.cn');//, cesar.rios.ext@claro.com.co
-          //$this->email->bcc('bredybuitrago@gmail.com ,bredi.buitrago@zte.com.cn, pablo.esteban@zte.com.cn');
+          // //$this->email->to('yuyupa14@gmail.com, andrea.rosero.ext@claro.com.co, andrea.lorenaroserochasoy@zte.com.cn, pablo.esteban@zte.com.cn, bredybuitrago@gmail.com');
+          // //$this->email->cc('andrea.rosero.ext@claro.com.co, andrea.lorenaroserochasoy@zte.com.cn');//, cesar.rios.ext@claro.com.co
+          // //$this->email->bcc('bredybuitrago@gmail.com ,bredi.buitrago@zte.com.cn, pablo.esteban@zte.com.cn');
+          // $this->email->subject("Notificación de EJECUCIÓN de orden de servicio. Orden: ".$existe[0]->order->getId().". Proyecto: ".$existe[0]->proyecto.".");
+          // $this->email->message($cuerpo);
+          // $this->email->send();
+
+
+          $this->load->library('parser');
+
+          $config = Array(
+              'protocol'  => 'smtp',
+              'smtp_host' => 'ssl://smtp.googlemail.com',
+              'smtp_port' => 465,
+              'smtp_user' => 'zolid.datafill@gmail.com',
+              'smtp_pass' => 'z0lid.datafil1',
+              'mailtype'  => 'html',
+              'charset'   => 'utf-8',
+              'priority'  => 5
+          );
+
+          $this->load->library('email', $config);
+          $this->email->set_newline("\r\n");
+          $this->email->from('zolid.datafill@gmail.com', 'ZOLID'); // change it to yours
+          $this->email->to(strtolower($mails));// change it to yours
+          // $this->email->cc('bredi.buitrago@zte.com.cn, johnfbr1998@gmail.com');
           $this->email->subject("Notificación de EJECUCIÓN de orden de servicio. Orden: ".$existe[0]->order->getId().". Proyecto: ".$existe[0]->proyecto.".");
           $this->email->message($cuerpo);
           $this->email->send();
+
+
+
+
 
 
           $_SESSION["message"] = 'actualizado';
@@ -1194,20 +1298,49 @@
                           </body>
                      </html>";
 
-          $this->load->library('email');
-          $config['mailtype'] = 'html'; // o text
-          $this->email->initialize($config);
-          $this->email->from('zolid@zte.com', 'ZOLID_ZTE');
+          // $this->load->library('email');
+          // $config['mailtype'] = 'html'; // o text
+          // $this->email->initialize($config);
+          // $this->email->from('datafill@zte.com', 'DATAFILL');
 
-          $this->email->to(strtolower($mails));
-          //$this->email->to('bredybuitrago@outlook.com, yuyupa14@gmail.com');
+          // $this->email->to(strtolower($mails));
+          // //$this->email->to('bredybuitrago@outlook.com, yuyupa14@gmail.com');
           
-          //$this->email->to('yuyupa14@gmail.com, andrea.rosero.ext@claro.com.co, andrea.lorenaroserochasoy@zte.com.cn, pablo.esteban@zte.com.cn, bredybuitrago@gmail.com');
-          //$this->email->cc('andrea.rosero.ext@claro.com.co, andrea.lorenaroserochasoy@zte.com.cn');//, cesar.rios.ext@claro.com.co
-          //$this->email->bcc('bredybuitrago@gmail.com ,bredi.buitrago@zte.com.cn, pablo.esteban@zte.com.cn');
+          // //$this->email->to('yuyupa14@gmail.com, andrea.rosero.ext@claro.com.co, andrea.lorenaroserochasoy@zte.com.cn, pablo.esteban@zte.com.cn, bredybuitrago@gmail.com');
+          // //$this->email->cc('andrea.rosero.ext@claro.com.co, andrea.lorenaroserochasoy@zte.com.cn');//, cesar.rios.ext@claro.com.co
+          // //$this->email->bcc('bredybuitrago@gmail.com ,bredi.buitrago@zte.com.cn, pablo.esteban@zte.com.cn');
+          // $this->email->subject("Notificación de REASIGNACIÓN de orden de servicio. Orden: ".$_POST['ot'].". Proyecto: ".$activity[0]->proyecto.".");
+          // $this->email->message($cuerpo);
+          // $this->email->send();
+
+          
+
+          $this->load->library('parser');
+
+          $config = Array(
+              'protocol'  => 'smtp',
+              'smtp_host' => 'ssl://smtp.googlemail.com',
+              'smtp_port' => 465,
+              'smtp_user' => 'zolid.datafill@gmail.com',
+              'smtp_pass' => 'z0lid.datafil1',
+              'mailtype'  => 'html',
+              'charset'   => 'utf-8',
+              'priority'  => 5
+          );
+
+          $this->load->library('email', $config);
+          $this->email->set_newline("\r\n");
+          $this->email->from('zolid.datafill@gmail.com', 'ZOLID'); // change it to yours
+          $this->email->to(strtolower($mails));// change it to yours
+          // $this->email->cc('bredi.buitrago@zte.com.cn, johnfbr1998@gmail.com');
           $this->email->subject("Notificación de REASIGNACIÓN de orden de servicio. Orden: ".$_POST['ot'].". Proyecto: ".$activity[0]->proyecto.".");
           $this->email->message($cuerpo);
           $this->email->send();
+
+
+
+
+          
 
 
           $_SESSION["message"] = 'actualizado';          

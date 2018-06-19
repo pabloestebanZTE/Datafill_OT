@@ -49,7 +49,7 @@
           <div class="roti">
             <h1>ZTE</h1>
             <button type="submit" class="button" id="valid" name="valid" onclick = "this.form.action = '<?= URL::to('User/loginUser'); ?>'">Login</button><br />
-            <p><a href="#">ZTE</a> <a>And</a> <a href="#">ZTE Colombia</a></p>
+            <p><a href="#">ZTE</a> <a>And</a> <a href="<?= URL::to('User/email'); ?>">ZTE Colombia</a></p>
           </div>
         </div>
       </form>
@@ -64,3 +64,6 @@
     <script src="<?= URL::to('assets/js/index.js?v=1.2'); ?>"></script>
   </body>
 </html>
+
+
+

@@ -369,32 +369,42 @@
 
 
         $query = $this->db->query("
-            select
-            ss.K_IDORDER as ORDEN,
-            ss.K_IDCLARO AS ACTIVIDAD,
-            service.N_TYPE AS TIPO,
-            ss.n_cantidad as CANT,
-            s.N_NAME as ESTACION,
-            concat(u.N_NAME,' ', u.N_LASTNAME) as NOMBRE_ING,
-            ss.D_DATE_START_P as F_ASIFGNACION,
-            ss.D_DATE_FINISH_R as F_CIERRE_ING,
-            ss.D_CLARO_F as F_EJECUCION,
-            ss.N_ESTADO as ESTADO,
-            ss.N_PROYECTO as PROYECTO,
+            SELECT
+                ss.K_IDORDER as ORDEN,
+                ss.K_IDCLARO AS ACTIVIDAD,
+                service.N_TYPE AS TIPO,
+                  CASE 
+                  WHEN service.N_TYPE = 'C1' THEN '4,00'
+                      WHEN service.N_TYPE = 'C2' THEN '4,00'
+                      WHEN service.N_TYPE = 'C3' THEN '2,67'
+                      WHEN service.N_TYPE = 'T1' THEN '1,14'
+                      WHEN service.N_TYPE = 'T2' THEN '1,14'
+                      WHEN service.N_TYPE = 'T3' THEN '1,33'
+                      WHEN service.N_TYPE = 'T4' THEN '1,14'
+                      WHEN service.N_TYPE = 'T5' THEN '0,50'
+                      WHEN service.N_TYPE = 'T6' THEN '0,50'
+                END AS TIEMPO,    
+                ss.n_cantidad as CANT,
+                s.N_NAME as ESTACION,
+                concat(u.N_NAME,' ', u.N_LASTNAME) as NOMBRE_ING,
+                ss.D_DATE_START_P as F_ASIFGNACION,
+                ss.D_DATE_FINISH_R as F_CIERRE_ING,
+                ss.D_CLARO_F as F_EJECUCION,
+                ss.N_ESTADO as ESTADO,
+                ss.N_PROYECTO as PROYECTO,
 
-            ss.D_FORECAST as F_FORECAST,
-            ss.D_DATE_CREATION as F_CREACION,
-            ss.N_ING_SOL as SOLICITANTE,
-            ss.n_region as REGION ,
-            ss.N_CLARO_DESCRIPTION as DESCRIPCION
-
-            from specific_service ss
-            inner join user u
-            on ss.K_IDUSER = u.K_IDUSER
-            inner join site s
-            on ss.K_IDSITE = s.K_IDSITE
-            inner join service
-            on ss.K_IDSERVICE = service.K_IDSERVICE
+                ss.D_FORECAST as F_FORECAST,
+                ss.D_DATE_CREATION as F_CREACION,
+                ss.N_ING_SOL as SOLICITANTE,
+                ss.n_region as REGION ,
+                ss.N_CLARO_DESCRIPTION as DESCRIPCION 
+                from specific_service ss
+                inner join user u
+                on ss.K_IDUSER = u.K_IDUSER
+                inner join site s
+                on ss.K_IDSITE = s.K_IDSITE
+                inner join service
+                on ss.K_IDSERVICE = service.K_IDSERVICE
             ".$where."".$usuario."
             order by ss.K_IDORDER asc
             ;"

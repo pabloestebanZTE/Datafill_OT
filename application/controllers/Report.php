@@ -57,7 +57,8 @@
 		      	<tr bgcolor="blue" style="color: white;" align="center">
 		      		<td>ORDEN</td>
 		      		<td>ACTIVIDAD</td>
-		      		<td>TIPO</td>
+              <td>TIPO</td>
+		      		<td>TIEMPO</td>
 		      		<td>CANT</td>
 		      		<td>ESTACION</td>
 		      		<td>NOMBRE ING</td>
@@ -81,7 +82,8 @@
 						echo '<tr>';
 				      		echo '<td>'.$value->ORDEN.'</td>';
 				      		echo '<td>'.$value->ACTIVIDAD.'</td>';
-				      		echo '<td>'.$value->TIPO.'</td>';
+                  echo '<td>'.$value->TIPO.'</td>';
+				      		echo '<td>'.$value->TIEMPO.'</td>';
 				      		echo '<td>'.$value->CANT.'</td>';
 				      		echo '<td>'.utf8_decode($value->ESTACION).'</td>';
 				      		echo '<td>'.utf8_decode($value->NOMBRE_ING).'</td>';
